@@ -5,180 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabuada de Gols</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #2E7D32;
-            background-image: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 40px,
-                rgba(0, 0, 0, 0.08) 40px,
-                rgba(0, 0, 0, 0.08) 80px
-            );
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .linha-central {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background-color: rgba(255, 255, 255, 0.7);
-            transform: translateY(-50%);
-            z-index: 1;
-        }
-
-        .circulo-central {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200px;
-            height: 200px;
-            border: 5px solid rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-        }
-
-        .ponto-central {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 15px;
-            height: 15px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-        }
-
-        .container-jogo {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
-        }
-
-        h1 {
-            font-size: 3.5em;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-            margin-top: 0;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .placar {
-            background-color: #1a1a1a;
-            padding: 25px 40px;
-            border-radius: 15px;
-            border: 5px solid #fff;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-size: 4.5em;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-        .caixa-numero {
-            background-color: #fff;
-            color: #000;
-            width: 90px;
-            height: 110px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
-        }
-
-        .sinal {
-            color: #FFD700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .area-chute {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        input[type="number"] {
-            font-size: 3em;
-            padding: 10px;
-            width: 160px;
-            text-align: center;
-            border-radius: 10px;
-            border: 3px solid #ccc;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.4);
-            -moz-appearance: textfield; 
-            outline: none;
-        }
+        body { margin: 0; padding: 0; background-color: #2E7D32; background-image: repeating-linear-gradient(to bottom, transparent, transparent 40px, rgba(0, 0, 0, 0.08) 40px, rgba(0, 0, 0, 0.08) 80px); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+        .linha-central { position: absolute; top: 50%; left: 0; width: 100%; height: 5px; background-color: rgba(255, 255, 255, 0.7); transform: translateY(-50%); z-index: 1; }
+        .circulo-central { position: absolute; top: 50%; left: 50%; width: 200px; height: 200px; border: 5px solid rgba(255, 255, 255, 0.7); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1; }
+        .ponto-central { position: absolute; top: 50%; left: 50%; width: 15px; height: 15px; background-color: rgba(255, 255, 255, 0.7); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1; }
         
-        input[type="number"]:focus {
-            border-color: #FFD700;
-        }
-
-        button {
-            background-color: #FF8C00;
-            color: white;
-            font-size: 1.8em;
-            padding: 15px 50px;
-            border: 3px solid #fff;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
-            transition: transform 0.1s, background-color 0.2s;
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        button:hover {
-            background-color: #FF7300;
-        }
-
-        #mensagem {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-top: 20px;
-            height: 50px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            text-align: center;
-        }
+        .container-jogo { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; background-color: rgba(0, 0, 0, 0.4); padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(3px); }
+        h1 { font-size: 3.5em; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); margin-top: 0; margin-bottom: 20px; text-align: center; }
+        
+        .placar { background-color: #1a1a1a; padding: 25px 40px; border-radius: 15px; border: 5px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 20px; font-size: 3.5em; font-weight: bold; margin-bottom: 30px; }
+        .caixa-numero { background-color: #fff; color: #000; min-width: 100px; padding: 0 15px; height: 110px; display: flex; justify-content: center; align-items: center; border-radius: 10px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); box-sizing: border-box; }
+        .sinal { color: #3498db; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-family: Arial, sans-serif; }
+        
+        .area-chute { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        input[type="number"] { font-size: 3em; padding: 10px; width: 220px; text-align: center; border-radius: 10px; border: 3px solid #ccc; box-shadow: 0 5px 10px rgba(0,0,0,0.4); outline: none; }
+        input[type="number"]:focus { border-color: #3498db; }
+        
+        button { background-color: #FF8C00; color: white; font-size: 1.8em; padding: 15px 50px; border: 3px solid #fff; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 15px rgba(0,0,0,0.5); transition: transform 0.1s; }
+        button:active { transform: scale(0.95); }
+        #mensagem { font-size: 2.5em; font-weight: bold; margin-top: 20px; height: 50px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); text-align: center; }
+        .btn-voltar-jogo { margin-top: 25px; background-color: rgba(255, 255, 255, 0.2); color: #fff; text-decoration: none; font-size: 1em; font-weight: bold; padding: 10px 25px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.4); transition: background-color 0.2s; }
+        .btn-voltar-jogo:hover { background-color: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 <body>
-
     <div class="linha-central"></div>
     <div class="circulo-central"></div>
     <div class="ponto-central"></div>
 
     <div class="container-jogo">
-        <h1>Tabuada de Gols ⚽</h1>
+        <h1 id="titulo-jogo">Jogo ⚽</h1>
         
         <div class="placar">
             <div class="caixa-numero" id="num1">?</div>
-            <div class="sinal">X</div>
+            <div class="sinal" id="sinal-operacao"></div>
             <div class="caixa-numero" id="num2">?</div>
         </div>
 
@@ -188,21 +48,96 @@
         </div>
 
         <div id="mensagem"></div>
+        <a id="link-voltar" href="#" class="btn-voltar-jogo">⬅️ Voltar</a>
     </div>
 
     <script>
+        const operacaoAtual = "{{ operacao }}";
+        const nivelAtual = "{{ nivel }}";
+        
         let valor1 = 0;
         let valor2 = 0;
-        let jogoRodando = false;
-        let tempoInicio = 0; // Nova variável do cronômetro
+        let resultadoCorreto = 0;
+        let juegoRodando = false;
+        let tempoInicio = 0;
 
-        function gerarNumero() {
-            return Math.floor(Math.random() * 9) + 1;
+        document.getElementById('link-voltar').href = `/matematica/${operacaoAtual}/`;
+        document.getElementById('titulo-jogo').innerText = `${operacaoAtual.toUpperCase()} (${nivelAtual.toUpperCase()}) ⚽`;
+
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function gerarNumerosInteligentes() {
+            let n1, n2, res, sinal;
+            
+            let minRange = 1;
+            let maxRange = 9;
+            if (nivelAtual === 'dezenas') {
+                minRange = 10;
+                maxRange = 99;
+            } else if (nivelAtual === 'centenas') {
+                minRange = 100;
+                maxRange = 999;
+            }
+
+            if (operacaoAtual === 'adicao') {
+                n1 = getRandom(minRange, maxRange);
+                n2 = getRandom(minRange, maxRange);
+                res = n1 + n2;
+                sinal = '+';
+            } else if (operacaoAtual === 'subtracao') {
+                n1 = getRandom(minRange, maxRange);
+                n2 = getRandom(minRange, maxRange);
+                if (n1 < n2) {
+                    let temp = n1;
+                    n1 = n2;
+                    n2 = temp;
+                }
+                res = n1 - n2;
+                sinal = '−';
+            } else if (operacaoAtual === 'multiplicacao') {
+                if (nivelAtual === 'unidades') {
+                    n1 = getRandom(1, 9);
+                    n2 = getRandom(1, 9);
+                } else if (nivelAtual === 'dezenas') {
+                    n1 = getRandom(10, 99);
+                    n2 = getRandom(2, 9); 
+                } else {
+                    n1 = getRandom(100, 999);
+                    n2 = getRandom(2, 9); 
+                }
+                res = n1 * n2;
+                sinal = '×';
+            } else if (operacaoAtual === 'divisao') {
+                if (nivelAtual === 'unidades') {
+                    n2 = getRandom(1, 9);
+                    res = getRandom(1, 9);
+                    n1 = n2 * res;
+                } else if (nivelAtual === 'dezenas') {
+                    n2 = getRandom(2, 9);
+                    // Garante que a multiplicação não passe de 99 (2 dígitos)
+                    let minRes = Math.ceil(10 / n2);
+                    let maxRes = Math.floor(99 / n2);
+                    res = getRandom(minRes, maxRes);
+                    n1 = n2 * res;
+                } else {
+                    n2 = getRandom(2, 9);
+                    // Garante que a multiplicação não passe de 999 (3 dígitos)
+                    let minRes = Math.ceil(100 / n2);
+                    let maxRes = Math.floor(999 / n2);
+                    res = getRandom(minRes, maxRes);
+                    n1 = n2 * res;
+                }
+                sinal = '÷';
+            }
+
+            return { n1, n2, res, sinal };
         }
 
         function girarRoleta() {
-            if (jogoRodando) return;
-            jogoRodando = true;
+            if (juegoRodando) return;
+            juegoRodando = true;
             
             document.getElementById('mensagem').innerText = "";
             document.getElementById('resposta').value = "";
@@ -211,22 +146,26 @@
             
             let contador = 0;
             let intervalo = setInterval(() => {
-                document.getElementById('num1').innerText = gerarNumero();
-                document.getElementById('num2').innerText = gerarNumero();
+                let temp = gerarNumerosInteligentes();
+                document.getElementById('num1').innerText = temp.n1;
+                document.getElementById('num2').innerText = temp.n2;
+                document.getElementById('sinal-operacao').innerText = temp.sinal;
                 contador++;
 
                 if (contador >= 15) {
                     clearInterval(intervalo);
-                    valor1 = gerarNumero();
-                    valor2 = gerarNumero();
+                    let final = gerarNumerosInteligentes();
+                    valor1 = final.n1;
+                    valor2 = final.n2;
+                    resultadoCorreto = final.res;
+                    
                     document.getElementById('num1').innerText = valor1;
                     document.getElementById('num2').innerText = valor2;
-                    jogoRodando = false;
+                    document.getElementById('sinal-operacao').innerText = final.sinal;
                     
+                    juegoRodando = false;
                     document.getElementById('resposta').disabled = false;
                     document.getElementById('resposta').focus(); 
-                    
-                    // Inicia o cronômetro assim que a roleta para e libera o campo
                     tempoInicio = Date.now(); 
                 }
             }, 50); 
@@ -236,20 +175,16 @@
             if (valor1 === 0 || valor2 === 0) return; 
             if (document.getElementById('resposta').value === "") return;
             
-            // Calcula o tempo gasto em segundos
             let tempoGasto = (Date.now() - tempoInicio) / 1000;
-            
             let respostaAluno = parseInt(document.getElementById('resposta').value);
-            let resultadoCorreto = valor1 * valor2;
             let acertouConta = (respostaAluno === resultadoCorreto);
             
-            // --- INÍCIO DA COMUNICAÇÃO COM O DJANGO ---
             fetch('/salvar_jogada/', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    operacao: operacaoAtual,
+                    nivel: nivelAtual,
                     numero_1: valor1,
                     numero_2: valor2,
                     resposta_aluno: respostaAluno,
@@ -257,7 +192,6 @@
                     tempo_segundos: tempoGasto
                 })
             });
-            // --- FIM DA COMUNICAÇÃO ---
 
             let mensagemDiv = document.getElementById('mensagem');
             let inputResposta = document.getElementById('resposta');
@@ -273,7 +207,6 @@
                 inputResposta.style.borderColor = "#FF4500";
                 document.getElementById('resposta').value = "";
                 document.getElementById('resposta').focus();
-                // Reinicia o cronômetro para a nova tentativa da mesma conta
                 tempoInicio = Date.now();
             }
         }
@@ -287,6 +220,5 @@
 
         window.onload = girarRoleta;
     </script>
-
 </body>
 </html>
