@@ -18,8 +18,20 @@ urlpatterns = [
     path('matematica/multiplicacao/', views.niveis_multiplicacao, name='niveis_multiplicacao'), 
     path('matematica/divisao/', views.niveis_divisao, name='niveis_divisao'), 
     
-    # Rota inteligente: recebe a operacao e o nivel direto da URL
     path('jogo/<str:operacao>/<str:nivel>/', views.jogo_tabuada, name='jogo_tabuada'), 
-    
     path('salvar_jogada/', views.salvar_jogada, name='salvar_jogada'), 
+
+    # --- MENUS DE NÍVEL 2 ---
+    path('portugues/', views.menu_portugues, name='menu_portugues'),
+    path('ingles/', views.menu_ingles, name='menu_ingles'),
+
+    # --- MÓDULO DE INGLÊS ---
+    path('ingles/vocabulario/', views.ingles_vocabulario, name='ingles_vocabulario'),
+    path('ingles/frases/', views.ingles_frases, name='ingles_frases'),
+
+    # --- MÓDULO DE PORTUGUÊS ---
+    path('portugues/ortografia/', views.portugues_ortografia, name='portugues_ortografia'),
+    path('portugues/silaba/', views.portugues_silaba, name='portugues_silaba'),
+    path('portugues/sinonimos/', views.portugues_sinonimos, name='portugues_sinonimos'),
+    path('portugues/silabas/', views.portugues_silabas, name='portugues_silabas'),
 ]
