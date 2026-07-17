@@ -50,8 +50,9 @@
         .cabecalho .links a:hover { text-decoration: underline; }
 
         .grade-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 20px;
         }
 
@@ -67,6 +68,8 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.35);
             transition: transform 0.15s;
             border: 3px solid transparent;
+            flex: 1 1 180px;   /* cresce/encolhe a partir de 180px, mas nunca menor que isso */
+            max-width: 220px;  /* evita ficar gigante quando sobram poucos cards na linha */
         }
         .card:hover { transform: translateY(-5px); border-color: #f4b400; }
         .card .icone { display: block; font-size: 2.6em; margin-bottom: 12px; }
@@ -75,8 +78,7 @@
             .cabecalho { flex-direction: column; align-items: flex-start; }
             .cabecalho .links { display: flex; gap: 0; }
             .cabecalho .links a { margin-left: 0; margin-right: 16px; }
-            .grade-cards { grid-template-columns: repeat(2, 1fr); }
-            .card { padding: 22px 10px; font-size: 1em; }
+            .card { flex: 1 1 130px; max-width: 45%; padding: 22px 10px; font-size: 1em; }
             .card .icone { font-size: 2.1em; }
         }
     </style>
