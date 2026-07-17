@@ -36,7 +36,7 @@
             background-color: #e8e8e0; color: #1c2b22; padding: 28px 14px;
             border-radius: 14px; text-decoration: none; font-weight: bold; font-size: 1.1em;
             transition: transform 0.15s; display: block; border: 3px solid transparent;
-            flex: 1 1 150px; max-width: 200px;
+            flex: 0 1 180px; width: 180px;
         }
         a.frente:hover { transform: translateY(-4px); border-color: #f4b400; }
         a.frente .icone { display: block; font-size: 2.4em; margin-bottom: 10px; }
@@ -52,7 +52,18 @@
         <h1>🧮 Matemática</h1>
         <div class="grade-frentes">
             <a class="frente" href="{% url 'menu_operacoes' %}">
-                <span class="icone">➕➖✖️➗</span>
+                <span class="icone">
+                    <svg viewBox="0 0 100 80" style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                        <rect x="4"  y="4"  width="44" height="34" rx="7" fill="#2ecc71"/>
+                        <text x="26" y="30" text-anchor="middle" font-size="26" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">+</text>
+                        <rect x="52" y="4"  width="44" height="34" rx="7" fill="#e74c3c"/>
+                        <text x="74" y="30" text-anchor="middle" font-size="26" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">&#8722;</text>
+                        <rect x="4"  y="42" width="44" height="34" rx="7" fill="#3498db"/>
+                        <text x="26" y="68" text-anchor="middle" font-size="24" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">&#215;</text>
+                        <rect x="52" y="42" width="44" height="34" rx="7" fill="#9b59b6"/>
+                        <text x="74" y="68" text-anchor="middle" font-size="24" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">&#247;</text>
+                    </svg>
+                </span>
                 Operações Matemáticas
             </a>
             <a class="frente" href="{% url 'numeracao_quiz' %}">
