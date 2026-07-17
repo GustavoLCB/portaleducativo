@@ -29,18 +29,20 @@
             text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
         h1 { color: #ffd54f; font-size: 1.5em; margin-bottom: 30px; }
-        .grade-niveis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .grade-niveis {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
+        }
         a.nivel {
             background-color: #f4b400; color: #2c1e00; padding: 22px 10px;
             border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 1.05em;
             transition: transform 0.15s, background-color 0.15s; display: block;
+            flex: 1 1 150px; max-width: 200px;
         }
         a.nivel:hover { background-color: #ffcb3d; transform: scale(1.05); }
         a.voltar { display: inline-block; margin-top: 26px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
         a.voltar:hover { text-decoration: underline; }
         @media (max-width: 420px) {
-            .grade-niveis { grid-template-columns: 1fr; }
-        }
+            }
     </style>
 </head>
 <body>

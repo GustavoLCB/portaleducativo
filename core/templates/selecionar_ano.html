@@ -49,8 +49,9 @@
         p.subtitulo { margin: 0 0 30px; color: #e8e8e0; }
 
         .grade-anos {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 12px;
         }
         button.ano {
@@ -63,6 +64,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.15s, background-color 0.15s;
+            flex: 1 1 70px;
+            max-width: 90px;
         }
         button.ano:hover { background-color: #ffcb3d; transform: scale(1.06); }
 
@@ -73,7 +76,6 @@
         a.sair:hover { text-decoration: underline; }
 
         @media (max-width: 480px) {
-            .grade-anos { grid-template-columns: repeat(3, 1fr); }
             button.ano { padding: 16px 0; font-size: 1.15em; }
         }
     </style>

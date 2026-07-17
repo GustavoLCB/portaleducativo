@@ -29,19 +29,21 @@
             text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
         h1 { color: #ffd54f; font-size: 1.6em; margin-bottom: 30px; }
-        .grade-frentes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+        .grade-frentes {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
+        }
         a.frente {
             background-color: #e8e8e0; color: #1c2b22; padding: 28px 14px;
             border-radius: 14px; text-decoration: none; font-weight: bold; font-size: 1.1em;
             transition: transform 0.15s; display: block; border: 3px solid transparent;
+            flex: 1 1 150px; max-width: 200px;
         }
         a.frente:hover { transform: translateY(-4px); border-color: #f4b400; }
         a.frente .icone { display: block; font-size: 2.4em; margin-bottom: 10px; }
         a.voltar { display: inline-block; margin-top: 26px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
         a.voltar:hover { text-decoration: underline; }
         @media (max-width: 420px) {
-            .grade-frentes { grid-template-columns: 1fr; }
-        }
+            }
     </style>
 </head>
 <body>
