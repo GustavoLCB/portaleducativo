@@ -43,11 +43,24 @@
         }
         .cabecalho h1 { font-size: 1.3em; margin: 0; color: #ffd54f; }
         .cabecalho .info { font-size: 0.95em; color: #e8e8e0; }
-        .cabecalho .links a {
-            color: #ffd54f; text-decoration: none; font-weight: bold;
-            margin-left: 16px; font-size: 0.9em;
+        .cabecalho .links {
+            display: flex; flex-wrap: wrap; gap: 10px;
         }
-        .cabecalho .links a:hover { text-decoration: underline; }
+        .cabecalho .links a {
+            text-decoration: none; font-weight: bold;
+            font-size: 0.85em;
+            padding: 9px 16px;
+            border-radius: 8px;
+            color: #ffffff;
+            background-color: #2980b9;
+            transition: background-color 0.15s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .cabecalho .links a:hover { background-color: #3498db; transform: translateY(-2px); }
+        .cabecalho .links a.btn-sair {
+            background-color: #c0392b;
+        }
+        .cabecalho .links a.btn-sair:hover { background-color: #e74c3c; }
 
         .grade-cards {
             display: grid;
@@ -79,8 +92,7 @@
 
         @media (max-width: 480px) {
             .cabecalho { flex-direction: column; align-items: flex-start; }
-            .cabecalho .links { display: flex; flex-wrap: wrap; gap: 8px 0; }
-            .cabecalho .links a { margin-left: 0; margin-right: 16px; }
+            .cabecalho .links { display: flex; flex-wrap: wrap; gap: 8px; }
             .card { padding: 22px 10px; font-size: 1em; }
             .card .icone { font-size: 2.1em; }
         }
@@ -101,7 +113,7 @@
                 {% if request.user.is_staff %}
                     <a href="{% url 'painel_professor' %}">👩‍🏫 Painel do Professor</a>
                 {% endif %}
-                <a href="{% url 'logout' %}">Sair</a>
+                <a href="{% url 'logout' %}" class="btn-sair">Sair</a>
             </div>
         </div>
 
