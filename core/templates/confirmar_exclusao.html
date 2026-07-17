@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Exclusão</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.55), rgba(2, 104, 115, 0.55)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(1, 45, 50, 0.7);
+            border: 2px solid #c0392b;
+            border-radius: 20px; padding: 40px 35px; width: 450px; max-width: 92vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ff8a80; font-size: 1.4em; margin-bottom: 15px; }
+        p { color: #e8e8e0; line-height: 1.6; }
+        .nome-aluno { color: #ffd54f; font-weight: bold; }
+        .aviso {
+            background-color: rgba(192,57,43,0.25); border: 1px solid #c0392b;
+            border-radius: 10px; padding: 12px; margin: 20px 0; font-size: 0.9em;
+        }
+        .botoes { display: flex; gap: 12px; justify-content: center; margin-top: 25px; flex-wrap: wrap; }
+        button, a.cancelar {
+            padding: 12px 24px; border-radius: 10px; font-weight: bold;
+            font-size: 1em; cursor: pointer; text-decoration: none; border: none;
+        }
+        button.excluir { background-color: #c0392b; color: #ffffff; }
+        button.excluir:hover { background-color: #e74c3c; }
+        a.cancelar { background-color: #444; color: #ffffff; display: inline-block; }
+        a.cancelar:hover { background-color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>⚠️ Excluir aluno?</h1>
+        <p>Tem certeza que deseja excluir <span class="nome-aluno">{{ aluno.first_name|default:aluno.username }}</span>?</p>
+        <div class="aviso">
+            Isso vai apagar <strong>permanentemente</strong> o cadastro e <strong>todas as jogadas</strong>
+            desse aluno em todas as disciplinas. Não é possível desfazer.
+        </div>
+        <div class="botoes">
+            <form method="POST" action="{% url 'excluir_aluno' aluno.id %}">
+                {% csrf_token %}
+                <button type="submit" class="excluir">Sim, excluir permanentemente</button>
+            </form>
+            <a class="cancelar" href="{% url 'painel_professor' %}">Cancelar</a>
+        </div>
+    </div>
+</body>
+</html>

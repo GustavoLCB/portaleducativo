@@ -578,3 +578,29 @@ def relatorio_aluno_view(request, aluno_id):
         'total_geral': total_geral,
         'nome_aluno': aluno.first_name or aluno.username,  # preenchido = professor vendo relatório de outro aluno
     })
+
+
+@professor_obrigatorio
+def excluir_aluno_view(request, aluno_id):
+    """
+    Exclui um aluno e TODAS as jogadas dele (apagar o usuário já apaga as
+    jogadas juntas, por causa do 'on_delete=CASCADE' no modelo). Só aceita
+    POST de propósito — assim um clique/link acidental (GET) nunca apaga
+    ninguém; é preciso confirmar de verdade, através de um formulário.
+    """
+    aluno = get_object_or_404(User, id=aluno_id)
+
+    if aluno.is_staff:
+        # Proteção extra: nunca deixa apagar outro professor por engano
+        # nem a si mesmo por aqui.
+        return redirect('painel_professor')
+
+    if request.method == 'POST':
+        nome_removido = aluno.first_name or aluno.username
+        aluno.delete()
+        logger.info("Aluno excluído pelo professor %s: %s", request.user.username, nome_removido)
+        return redirect('painel_professor')
+
+    # Se alguém tentar acessar por GET (ex: digitando a URL direto),
+    # só mostra a tela de confirmação, sem apagar nada ainda.
+    return render(request, 'confirmar_exclusao.html', {'aluno': aluno})

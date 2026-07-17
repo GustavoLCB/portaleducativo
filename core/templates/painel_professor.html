@@ -39,6 +39,12 @@
             border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9em;
         }
         a.ver-relatorio:hover { background-color: #ffcb3d; }
+        a.excluir-aluno {
+            color: #ffffff; background-color: #c0392b; padding: 6px 14px;
+            border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9em;
+            margin-left: 6px; display: inline-block; margin-top: 6px;
+        }
+        a.excluir-aluno:hover { background-color: #e74c3c; }
 
         .mensagem-vazia { text-align: center; color: #e8e8e0; margin-top: 30px; }
 
@@ -85,6 +91,7 @@
                             </td>
                             <td data-rotulo="Relatório">
                                 <a class="ver-relatorio" href="{% url 'relatorio_aluno' item.aluno.id %}">Ver relatório completo</a>
+                                <a class="excluir-aluno" href="{% url 'excluir_aluno' item.aluno.id %}">Excluir</a>
                             </td>
                         </tr>
                     {% endfor %}
