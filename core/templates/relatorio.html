@@ -1,91 +1,107 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatório de Desempenho</title>
     <style>
-        body { background-color: #2c3e50; color: #ecf0f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 40px; margin: 0; }
-        h1 { font-size: 2.5em; color: #f1c40f; margin-bottom: 40px; }
-        h2 { font-size: 2em; color: #ecf0f1; border-bottom: 2px solid #34495e; padding-bottom: 10px; margin-top: 40px; }
-        
-        .container { max-width: 1000px; margin: 0 auto; }
-        .grid-estatisticas { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
-        
-        .cartao { background-color: #34495e; border-radius: 15px; padding: 25px; width: 220px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .icone { font-size: 3em; margin-bottom: 10px; display: block; }
-        .titulo-op { font-size: 1.4em; font-weight: bold; margin-bottom: 15px; color: #3498db; }
-        
-        .dado { font-size: 1.1em; margin: 8px 0; text-align: left; }
-        .dado strong { color: #f1c40f; }
-        
-        .btn-voltar { display: inline-block; background-color: #e74c3c; color: white; padding: 12px 30px; font-size: 1.2em; text-decoration: none; border-radius: 8px; font-weight: bold; margin-top: 20px; transition: 0.2s; }
-        .btn-voltar:hover { background-color: #c0392b; }
-        
-        .mensagem-vazia { font-size: 1.2em; color: #bdc3c7; margin: 30px; width: 100%; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+            padding: 30px 20px 50px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.45), rgba(2, 104, 115, 0.45)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .conteudo { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+        h1 { color: #ffd54f; text-align: center; margin-bottom: 6px; }
+        .subtitulo { text-align: center; color: #e8e8e0; margin-bottom: 30px; }
+
+        .materia-secao { margin-bottom: 34px; }
+        .materia-titulo {
+            display: flex; align-items: center; gap: 12px;
+            color: #ffd54f; font-size: 1.3em; font-weight: bold;
+            margin-bottom: 14px;
+        }
+        .materia-titulo .linha {
+            flex: 1; height: 2px; background: rgba(255,255,255,0.35);
+        }
+
+        .grade-estatisticas {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+        }
+        .cartao {
+            background-color: rgba(1, 45, 50, 0.6);
+            border: 2px dashed rgba(255,255,255,0.35);
+            border-radius: 16px; padding: 22px; text-align: center;
+        }
+        .cartao .icone { font-size: 2.2em; }
+        .cartao .titulo { font-weight: bold; font-size: 1.15em; margin: 8px 0 14px; color: #ffd54f; }
+        .cartao .dado { font-size: 0.95em; margin: 4px 0; }
+        .mensagem-vazia-materia { color: #cfcfcf; font-size: 0.9em; font-style: italic; }
+        .mensagem-vazia { text-align: center; color: #e8e8e0; }
+
+        a.voltar {
+            display: block; width: fit-content; margin: 35px auto 0;
+            background-color: #f4b400; color: #2c1e00; padding: 12px 26px;
+            border-radius: 10px; text-decoration: none; font-weight: bold;
+        }
+        a.voltar:hover { background-color: #ffcb3d; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>📊 Relatório de Desempenho</h1>
-
-        {% if total_geral == 0 %}
-            <p class="mensagem-vazia">Nenhum jogo foi registrado ainda. Vá jogar para gerar as suas estatísticas!</p>
+    <div class="fundo-imagem"></div>
+    <div class="conteudo">
+        {% if nome_aluno %}
+            <h1>📊 Relatório de {{ nome_aluno }}</h1>
+            <p class="subtitulo">Total de jogadas: {{ total_geral }}</p>
         {% else %}
-
-            <h2>🧮 Matemática</h2>
-            <div class="grid-estatisticas">
-                {% for stat in estatisticas %}
-                    <div class="cartao">
-                        <span class="icone">{{ stat.icone }}</span>
-                        <div class="titulo-op">{{ stat.operacao }}</div>
-                        <div class="dado">Jogadas: <strong>{{ stat.total }}</strong></div>
-                        <div class="dado">Acertos: <strong>{{ stat.acertos }}</strong></div>
-                        <div class="dado">Erros: <strong>{{ stat.erros }}</strong></div>
-                        <div class="dado">Aproveitamento: <strong>{{ stat.taxa_acerto }}%</strong></div>
-                        <div class="dado">Tempo Médio: <strong>{{ stat.tempo_medio }}s</strong></div>
-                    </div>
-                {% empty %}
-                    <p class="mensagem-vazia">Ainda não há dados de Matemática.</p>
-                {% endfor %}
-            </div>
-
-            <h2>📚 Português</h2>
-            <div class="grid-estatisticas">
-                {% for stat in estatisticas_portugues %}
-                    <div class="cartao" style="border: 2px solid #2ecc71;">
-                        <span class="icone">🇧🇷</span>
-                        <div class="titulo-op">{{ stat.nome }}</div>
-                        <div class="dado">Rodadas Jogadas: <strong>{{ stat.total_rodadas }}</strong></div>
-                        <div class="dado">Rodadas Perfeitas (0 Erros): <strong>{{ stat.rodadas_perfeitas }}</strong></div>
-                        <div class="dado">Taxa de Perfeição: <strong>{{ stat.taxa_perfeicao }}%</strong></div>
-                        <div class="dado">Tempo Médio: <strong>{{ stat.tempo_medio }}s</strong></div>
-                    </div>
-                {% empty %}
-                    <p class="mensagem-vazia">Ainda não há dados de Português.</p>
-                {% endfor %}
-            </div>
-
-            <h2>🗽 Inglês</h2>
-            <div class="grid-estatisticas">
-                {% for stat in estatisticas_ingles %}
-                    <div class="cartao" style="border: 2px solid #e74c3c;">
-                        <span class="icone">🇺🇸</span>
-                        <div class="titulo-op">{{ stat.nome }}</div>
-                        <div class="dado">Rodadas Jogadas: <strong>{{ stat.total_rodadas }}</strong></div>
-                        <div class="dado">Rodadas Perfeitas (0 Erros): <strong>{{ stat.rodadas_perfeitas }}</strong></div>
-                        <div class="dado">Taxa de Perfeição: <strong>{{ stat.taxa_perfeicao }}%</strong></div>
-                        <div class="dado">Tempo Médio: <strong>{{ stat.tempo_medio }}s</strong></div>
-                    </div>
-                {% empty %}
-                    <p class="mensagem-vazia">Ainda não há dados de Inglês.</p>
-                {% endfor %}
-            </div>
-
+            <h1>📊 Meu Relatório de Desempenho</h1>
+            <p class="subtitulo">Total de jogadas: {{ total_geral }}</p>
         {% endif %}
-            
-        <a href="{% url 'home' %}" class="btn-voltar">⬅ Voltar ao Painel</a>
-    </div>
 
+        {% if total_geral > 0 %}
+            {% for materia, stats in materias.items %}
+                <div class="materia-secao">
+                    <div class="materia-titulo">
+                        <span>{{ materia }}</span>
+                        <span class="linha"></span>
+                    </div>
+                    <div class="grade-estatisticas">
+                        {% for stat in stats %}
+                            <div class="cartao">
+                                <span class="icone">{{ stat.icone }}</span>
+                                <div class="titulo">{{ stat.nome }}</div>
+                                <div class="dado">Jogadas: <strong>{{ stat.total }}</strong></div>
+                                <div class="dado">Acertos: <strong>{{ stat.acertos }}</strong></div>
+                                <div class="dado">Erros: <strong>{{ stat.erros }}</strong></div>
+                                <div class="dado">Aproveitamento: <strong>{{ stat.taxa_acerto }}%</strong></div>
+                                <div class="dado">Tempo médio: <strong>{{ stat.tempo_medio }}s</strong></div>
+                            </div>
+                        {% empty %}
+                            <p class="mensagem-vazia-materia">Ainda não há jogadas nesta matéria.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="mensagem-vazia">
+                {% if nome_aluno %}Este aluno ainda não jogou nada.{% else %}Você ainda não jogou nenhum jogo. Que tal começar agora?{% endif %}
+            </p>
+        {% endif %}
+
+        {% if nome_aluno %}
+            <a class="voltar" href="{% url 'painel_professor' %}">⬅ Voltar ao Painel do Professor</a>
+        {% else %}
+            <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
+        {% endif %}
+    </div>
 </body>
 </html>

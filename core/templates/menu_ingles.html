@@ -1,43 +1,71 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nível 2 - Inglês</title>
+    <title>Inglês</title>
     <style>
-        body { background-color: #1e3f20; background-image: radial-gradient(rgba(255,255,255,0.03) 15%, transparent 15%), radial-gradient(rgba(255,255,255,0.02) 15%, transparent 15%); background-size: 6px 6px; background-position: 0 0, 3px 3px; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 50px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; box-sizing: border-box; position: relative; }
-        .decoracao-giz { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.08; font-size: 1.8em; color: #ffffff; pointer-events: none; user-select: none; padding: 20px; box-sizing: border-box; line-height: 2em; font-weight: bold; }
-        .giz-top-left { position: absolute; top: 40px; left: 40px; } .giz-bottom-right { position: absolute; bottom: 40px; right: 40px; text-align: right; }
-        
-        .barra-superior { position: absolute; top: 20px; right: 40px; display: flex; align-items: center; gap: 15px; z-index: 20; }
-        .btn-voltar { background-color: #34495e; color: white; text-decoration: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; border: 2px solid #2c3e50; transition: 0.2s; }
-        .btn-voltar:hover { background-color: #2c3e50; }
-
-        .conteudo { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
-        h1 { font-size: 3em; margin-bottom: 40px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6); font-family: 'Courier New', Courier, monospace; text-align: center; }
-        .grid-menu { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
-        .card { background-color: #e0e0e0; border-radius: 15px; padding: 35px 20px; width: 180px; text-align: center; text-decoration: none; color: #222222; font-size: 1.3em; font-weight: bold; box-shadow: 5px 5px 15px rgba(0,0,0,0.4); transition: transform 0.2s; border: 3px solid #b0b0b0; display: flex; flex-direction: column; justify-content: center; align-items: center;}
-        .card:hover { transform: scale(1.05); background-color: #eeeeee; }
-        .icone { font-size: 2.8em; display: block; margin-bottom: 15px; color: #0056b3; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2)); }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #0d3b66;
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(13, 59, 102, 0.5), rgba(13, 59, 102, 0.5)),
+                url('{% static "img/fundoing.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(6, 30, 54, 0.6);
+            border: 2px solid rgba(255,255,255,0.35);
+            border-radius: 20px; padding: 40px 35px; width: 520px; max-width: 92vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.6em; margin-bottom: 28px; }
+        .grade-modulos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+        a.modulo {
+            background-color: #e8e8e0; color: #0d2035; padding: 24px 12px;
+            border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 1em;
+            transition: transform 0.15s; display: block; border: 3px solid transparent;
+        }
+        a.modulo:hover { transform: translateY(-4px); border-color: #f4b400; }
+        a.modulo .icone { display: block; font-size: 2.3em; margin-bottom: 8px; }
+        a.voltar { display: inline-block; margin-top: 26px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
+        a.voltar:hover { text-decoration: underline; }
+        @media (max-width: 420px) {
+            .grade-modulos { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div class="decoracao-giz">
-        <div class="giz-top-left">Hello!<br>🇺🇸</div>
-        <div class="giz-bottom-right">Dog 🐶<br>Cat 🐱</div>
-    </div>
-
-    <div class="barra-superior">
-        <a href="{% url 'home' %}" class="btn-voltar">⬅ Voltar ao Painel</a>
-    </div>
-
-    <div class="conteudo">
-        <h1>🗽 Nível 2: Inglês</h1>
-
-        <div class="grid-menu">
-            <a href="{% url 'ingles_vocabulario' %}" class="card"><span class="icone">🧩</span> Palavras (Drag & Drop)</a>
-            <a href="{% url 'ingles_frases' %}" class="card"><span class="icone">💬</span> Completar Frases</a>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>🇬🇧 Inglês — Escolha o Módulo</h1>
+        <div class="grade-modulos">
+            <a class="modulo" href="{% url 'ingles_quiz' 'weather_clothes' %}">
+                <span class="icone">☀️</span>Weather & Clothes
+            </a>
+            <a class="modulo" href="{% url 'ingles_quiz' 'atividades_like' %}">
+                <span class="icone">🏃</span>Atividades
+            </a>
+            <a class="modulo" href="{% url 'ingles_quiz' 'vocabulario_geral' %}">
+                <span class="icone">📖</span>Vocabulário Geral
+            </a>
+            <a class="modulo" href="{% url 'ingles_quiz' 'esportes_convites' %}">
+                <span class="icone">⚽</span>Esportes e Convites
+            </a>
+            <a class="modulo" href="{% url 'ingles_quiz' 'vocabulario_visual' %}">
+                <span class="icone">🖼️</span>Vocabulário Visual
+            </a>
         </div>
+        <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
     </div>
 </body>
 </html>

@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ nome_modulo }} - Português</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; text-align: center; position: relative;
+            background-color: #1b4d3e; padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(27, 77, 62, 0.58), rgba(27, 77, 62, 0.58)),
+                url('{% static "img/fundocien.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            filter: blur(4px);
+            transform: scale(1.03);
+        }
+        .btn-voltar {
+            position: relative; z-index: 3; display: inline-block; margin-bottom: 15px;
+            text-decoration: none; color: white; font-weight: bold;
+            background: rgba(40,14,36,0.8); padding: 10px 18px; border-radius: 8px;
+        }
+        h1 { position: relative; z-index: 2; color: #ffd54f; font-size: 1.7em; margin: 10px 0 20px; }
+        .area-jogo {
+            position: relative; z-index: 2; max-width: 700px; margin: 0 auto;
+            background: rgba(10, 40, 32, 0.6); border: 2px solid rgba(255,255,255,0.35);
+            padding: 35px 25px; border-radius: 20px;
+        }
+        .pergunta {
+            font-size: 1.35em; line-height: 1.5; margin-bottom: 32px;
+            background: rgba(255,255,255,0.08); padding: 18px; border-radius: 14px;
+        }
+        .grade-opcoes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .btn-opcao {
+            background-color: #e8e8e0; color: #1c2b24; padding: 18px 10px;
+            border-radius: 12px; font-size: 1.05em; font-weight: bold; cursor: pointer;
+            border: 3px solid transparent; transition: all 0.2s;
+        }
+        .btn-opcao.correto { background-color: #6fdc8c; border-color: #27ae60; }
+        .btn-opcao.errado { background-color: #ff8a80; border-color: #c0392b; animation: tremer 0.3s; }
+        @keyframes tremer {
+            0% { transform: translateX(0); } 25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); } 75% { transform: translateX(-8px); } 100% { transform: translateX(0); }
+        }
+        .placar { position: relative; z-index: 2; margin-top: 18px; font-size: 1.1em; font-weight: bold; }
+        .tela-fim { display: none; }
+        .btn-novo-jogo {
+            background: #f4b400; color: #2c1e00; padding: 14px 28px; font-size: 1.2em;
+            border: none; border-radius: 10px; cursor: pointer; margin-top: 18px; font-weight: bold;
+        }
+        @media (max-width: 500px) {
+            .grade-opcoes { grid-template-columns: 1fr; }
+            .pergunta { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <a class="btn-voltar" href="{% url 'menu_ciencias' %}">⬅ Voltar</a>
+    <h1>{{ icone_modulo }} {{ nome_modulo }}</h1>
+
+    <div class="area-jogo" id="tela-quiz">
+        <div class="pergunta" id="pergunta-display"></div>
+        <div class="grade-opcoes" id="opcoes-display"></div>
+    </div>
+
+    <div class="area-jogo tela-fim" id="tela-fim">
+        <h2>🎉 Muito bem!</h2>
+        <p>Você acertou <strong id="resumo-acertos"></strong> de <span id="resumo-total"></span> questões.</p>
+        <button class="btn-novo-jogo" onclick="location.reload()">Jogar Novamente</button>
+    </div>
+
+    <div class="placar">
+        Questão <span id="contador-atual">1</span>/<span id="total-questoes"></span> —
+        Erros: <span id="contador-erros">0</span>
+    </div>
+
+    <script>
+        const questoesData = {{ questoes_json|safe }};
+        const modulo = "{{ modulo }}";
+        let indiceAtual = 0;
+        let erros = 0;
+        let erroNestaQuestao = 0;
+        let acertosPerfeitos = 0;
+        const totalQuestoes = questoesData.length;
+        let tempoInicioQuestao = Date.now();
+
+        document.getElementById('total-questoes').innerText = totalQuestoes;
+        document.getElementById('resumo-total').innerText = totalQuestoes;
+
+        function carregarQuestao() {
+            if (indiceAtual >= totalQuestoes) { finalizarJogo(); return; }
+            const atual = questoesData[indiceAtual];
+            document.getElementById('pergunta-display').innerHTML = '<strong>' + atual.pergunta + '</strong>';
+            document.getElementById('contador-atual').innerText = indiceAtual + 1;
+
+            const opcoesDiv = document.getElementById('opcoes-display');
+            opcoesDiv.innerHTML = '';
+            atual.opcoes.forEach(opcao => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-opcao';
+                btn.innerText = opcao;
+                btn.onclick = () => verificarResposta(btn, opcao, atual.resposta);
+                opcoesDiv.appendChild(btn);
+            });
+            tempoInicioQuestao = Date.now();
+        }
+
+        function verificarResposta(botao, selecionada, correta) {
+            if (selecionada === correta) {
+                botao.classList.add('correto');
+                document.querySelectorAll('.btn-opcao').forEach(b => b.disabled = true);
+                if (erroNestaQuestao === 0) acertosPerfeitos++;
+                salvarQuestao(erroNestaQuestao === 0);
+                erroNestaQuestao = 0;
+                setTimeout(() => { indiceAtual++; carregarQuestao(); }, 1100);
+            } else {
+                botao.classList.add('errado');
+                setTimeout(() => botao.classList.remove('errado'), 400);
+                erros++; erroNestaQuestao++;
+                document.getElementById('contador-erros').innerText = erros;
+            }
+        }
+
+        function salvarQuestao(acertouSemErro) {
+            const tempo = (Date.now() - tempoInicioQuestao) / 1000;
+            fetch("{% url 'salvar_jogada' %}", {
+                method: 'POST',
+                keepalive: true,
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    operacao: 'ciencias_' + modulo,
+                    nivel: modulo + '_questao',
+                    resposta_aluno: String(indiceAtual),
+                    acertou: acertouSemErro,
+                    tempo_segundos: tempo
+                })
+            }).catch(err => console.error('Erro ao salvar jogada:', err));
+        }
+
+        function finalizarJogo() {
+            document.getElementById('tela-quiz').style.display = 'none';
+            document.getElementById('tela-fim').style.display = 'block';
+            document.getElementById('resumo-acertos').innerText = acertosPerfeitos;
+        }
+
+        carregarQuestao();
+    </script>
+</body>
+</html>

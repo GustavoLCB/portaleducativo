@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemática</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.45), rgba(2, 104, 115, 0.45)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(1, 45, 50, 0.6);
+            border: 2px solid rgba(255,255,255,0.35);
+            border-radius: 20px; padding: 45px 35px; width: 520px; max-width: 92vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.6em; margin-bottom: 30px; }
+        .grade-frentes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+        a.frente {
+            background-color: #e8e8e0; color: #1c2b22; padding: 28px 14px;
+            border-radius: 14px; text-decoration: none; font-weight: bold; font-size: 1.1em;
+            transition: transform 0.15s; display: block; border: 3px solid transparent;
+        }
+        a.frente:hover { transform: translateY(-4px); border-color: #f4b400; }
+        a.frente .icone { display: block; font-size: 2.4em; margin-bottom: 10px; }
+        a.voltar { display: inline-block; margin-top: 26px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
+        a.voltar:hover { text-decoration: underline; }
+        @media (max-width: 420px) {
+            .grade-frentes { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>🧮 Matemática</h1>
+        <div class="grade-frentes">
+            <a class="frente" href="{% url 'menu_operacoes' %}">
+                <span class="icone">➕➖✖️➗</span>
+                Operações Matemáticas
+            </a>
+            <a class="frente" href="{% url 'numeracao_quiz' %}">
+                <span class="icone">🔢</span>
+                Sistema de Numeração
+            </a>
+        </div>
+        <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
+    </div>
+</body>
+</html>

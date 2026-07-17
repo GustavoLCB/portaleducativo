@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Em breve - Portal de Educação</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.55), rgba(2, 104, 115, 0.55)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(1, 45, 50, 0.6);
+            border: 2px dashed rgba(255,255,255,0.35);
+            border-radius: 20px; padding: 45px 35px; width: 420px; max-width: 90vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.4em; }
+        p { color: #e8e8e0; }
+        a.voltar {
+            display: inline-block; margin-top: 20px; background-color: #f4b400;
+            color: #2c1e00; padding: 10px 24px; border-radius: 8px;
+            text-decoration: none; font-weight: bold;
+        }
+        a.voltar:hover { background-color: #ffcb3d; }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>🚧 {{ materia }} está sendo construída!</h1>
+        <p>Essa parte do Portal ainda está em desenvolvimento. Volte em breve — estamos construindo passo a passo. 😊</p>
+        <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
+    </div>
+</body>
+</html>

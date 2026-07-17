@@ -1,224 +1,232 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabuada de Gols</title>
+    <title>Multiplicação - Jogo</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #2E7D32; background-image: repeating-linear-gradient(to bottom, transparent, transparent 40px, rgba(0, 0, 0, 0.08) 40px, rgba(0, 0, 0, 0.08) 80px); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
-        .linha-central { position: absolute; top: 50%; left: 0; width: 100%; height: 5px; background-color: rgba(255, 255, 255, 0.7); transform: translateY(-50%); z-index: 1; }
-        .circulo-central { position: absolute; top: 50%; left: 50%; width: 200px; height: 200px; border: 5px solid rgba(255, 255, 255, 0.7); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1; }
-        .ponto-central { position: absolute; top: 50%; left: 50%; width: 15px; height: 15px; background-color: rgba(255, 255, 255, 0.7); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1; }
-        
-        .container-jogo { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; background-color: rgba(0, 0, 0, 0.4); padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(3px); }
-        h1 { font-size: 3.5em; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); margin-top: 0; margin-bottom: 20px; text-align: center; }
-        
-        .placar { background-color: #1a1a1a; padding: 25px 40px; border-radius: 15px; border: 5px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 20px; font-size: 3.5em; font-weight: bold; margin-bottom: 30px; }
-        .caixa-numero { background-color: #fff; color: #000; min-width: 100px; padding: 0 15px; height: 110px; display: flex; justify-content: center; align-items: center; border-radius: 10px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); box-sizing: border-box; }
-        .sinal { color: #3498db; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-family: Arial, sans-serif; }
-        
-        .area-chute { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        input[type="number"] { font-size: 3em; padding: 10px; width: 220px; text-align: center; border-radius: 10px; border: 3px solid #ccc; box-shadow: 0 5px 10px rgba(0,0,0,0.4); outline: none; }
-        input[type="number"]:focus { border-color: #3498db; }
-        
-        button { background-color: #FF8C00; color: white; font-size: 1.8em; padding: 15px 50px; border: 3px solid #fff; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 15px rgba(0,0,0,0.5); transition: transform 0.1s; }
-        button:active { transform: scale(0.95); }
-        #mensagem { font-size: 2.5em; font-weight: bold; margin-top: 20px; height: 50px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); text-align: center; }
-        .btn-voltar-jogo { margin-top: 25px; background-color: rgba(255, 255, 255, 0.2); color: #fff; text-decoration: none; font-size: 1em; font-weight: bold; padding: 10px 25px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.4); transition: background-color 0.2s; }
-        .btn-voltar-jogo:hover { background-color: rgba(255, 255, 255, 0.4); }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.45), rgba(2, 104, 115, 0.45)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(1, 45, 50, 0.6);
+            border: 2px dashed rgba(255,255,255,0.35);
+            border-radius: 20px; padding: 40px 30px; width: 460px; max-width: 92vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.3em; margin: 0 0 25px; text-transform: capitalize; }
+        .conta { font-size: 2.6em; font-weight: bold; margin-bottom: 25px; }
+        input#resposta {
+            width: 140px; padding: 12px; font-size: 1.4em; text-align: center;
+            border-radius: 10px; border: none; background-color: #fdf6e3; color: #2c3e50;
+        }
+        button.enviar {
+            display: block; margin: 18px auto 0; padding: 12px 30px;
+            background-color: #f4b400; color: #2c1e00; border: none; border-radius: 10px;
+            font-size: 1.1em; font-weight: bold; cursor: pointer;
+        }
+        button.enviar:hover { background-color: #ffcb3d; }
+        .feedback { margin-top: 18px; font-size: 1.2em; font-weight: bold; min-height: 30px; }
+        .feedback.certo { color: #6fdc8c; }
+        .feedback.errado { color: #ff8a80; }
+        .placar { margin-top: 20px; font-size: 0.95em; color: #e8e8e0; }
+        .tela-fim { display: none; }
+        .tela-fim h2 { color: #ffd54f; }
+        .botoes-fim { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+        .botoes-fim a {
+            padding: 12px 22px; border-radius: 10px; text-decoration: none; font-weight: bold;
+        }
+        .btn-repetir { background-color: #f4b400; color: #2c1e00; }
+        .btn-repetir:hover { background-color: #ffcb3d; }
+        .btn-voltar { background-color: #444; color: #ffffff; }
+        .btn-voltar:hover { background-color: #666; }
     </style>
 </head>
 <body>
-    <div class="linha-central"></div>
-    <div class="circulo-central"></div>
-    <div class="ponto-central"></div>
+    <div class="fundo-imagem"></div>
 
-    <div class="container-jogo">
-        <h1 id="titulo-jogo">Jogo ⚽</h1>
-        
-        <div class="placar">
-            <div class="caixa-numero" id="num1">?</div>
-            <div class="sinal" id="sinal-operacao"></div>
-            <div class="caixa-numero" id="num2">?</div>
+    <div class="caixa" id="tela-jogo">
+        <h1>{{ nome_operacao }} — {{ nivel }}</h1>
+        <div class="conta" id="conta"></div>
+        <form id="form-resposta" autocomplete="off">
+            <input type="number" id="resposta" required autofocus>
+            <button type="submit" class="enviar">Responder</button>
+        </form>
+        <div class="feedback" id="feedback"></div>
+        <div class="placar">Questão <span id="num-atual">1</span>/10 — Acertos: <span id="num-acertos">0</span></div>
+    </div>
+
+    <div class="caixa tela-fim" id="tela-fim">
+        <h2>🎉 Fim de jogo!</h2>
+        <p>Você acertou <strong id="resumo-acertos"></strong> de 10 perguntas.</p>
+        <div class="botoes-fim">
+            <a class="btn-repetir" href="{% url 'jogo_tabuada' operacao nivel %}">🔁 Jogar de novo</a>
+            {% if operacao == 'radiciacao' %}
+                <a class="btn-voltar" href="{% url 'menu_operacoes' %}">⬅ Escolher outra operação</a>
+            {% else %}
+                <a class="btn-voltar" href="{% url 'niveis_operacao' operacao %}">⬅ Escolher outro nível</a>
+            {% endif %}
         </div>
-
-        <div class="area-chute">
-            <input type="number" id="resposta" placeholder="?" autocomplete="off">
-            <button onclick="verificarChute()">Chutar a Gol!</button>
-        </div>
-
-        <div id="mensagem"></div>
-        <a id="link-voltar" href="#" class="btn-voltar-jogo">⬅️ Voltar</a>
     </div>
 
     <script>
-        const operacaoAtual = "{{ operacao }}";
-        const nivelAtual = "{{ nivel }}";
-        
-        let valor1 = 0;
-        let valor2 = 0;
-        let resultadoCorreto = 0;
-        let juegoRodando = false;
-        let tempoInicio = 0;
+        const nivel = "{{ nivel }}";
+        const operacao = "{{ operacao }}";
+        const totalQuestoes = 10;
 
-        document.getElementById('link-voltar').href = `/matematica/${operacaoAtual}/`;
-        document.getElementById('titulo-jogo').innerText = `${operacaoAtual.toUpperCase()} (${nivelAtual.toUpperCase()}) ⚽`;
+        let questaoAtual = 0;
+        let acertos = 0;
+        let numero1, numero2, respostaCorreta;
+        let inicioQuestao;
 
-        function getRandom(min, max) {
+        function sortear(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        function gerarNumerosInteligentes() {
-            let n1, n2, res, sinal;
-            
-            let minRange = 1;
-            let maxRange = 9;
-            if (nivelAtual === 'dezenas') {
-                minRange = 10;
-                maxRange = 99;
-            } else if (nivelAtual === 'centenas') {
-                minRange = 100;
-                maxRange = 999;
+        function gerarQuestao() {
+            // Cada operação tem sua própria lógica de sorteio dos números.
+            if (operacao === 'adicao') {
+                const faixas = { unidades: [1, 9], dezenas: [10, 99], centenas: [100, 999] };
+                const [min, max] = faixas[nivel] || faixas.unidades;
+                numero1 = sortear(min, max);
+                numero2 = sortear(min, max);
+                respostaCorreta = numero1 + numero2;
+                return `${numero1} + ${numero2} = ?`;
             }
 
-            if (operacaoAtual === 'adicao') {
-                n1 = getRandom(minRange, maxRange);
-                n2 = getRandom(minRange, maxRange);
-                res = n1 + n2;
-                sinal = '+';
-            } else if (operacaoAtual === 'subtracao') {
-                n1 = getRandom(minRange, maxRange);
-                n2 = getRandom(minRange, maxRange);
-                if (n1 < n2) {
-                    let temp = n1;
-                    n1 = n2;
-                    n2 = temp;
-                }
-                res = n1 - n2;
-                sinal = '−';
-            } else if (operacaoAtual === 'multiplicacao') {
-                if (nivelAtual === 'unidades') {
-                    n1 = getRandom(1, 9);
-                    n2 = getRandom(1, 9);
-                } else if (nivelAtual === 'dezenas') {
-                    n1 = getRandom(10, 99);
-                    n2 = getRandom(2, 9); 
-                } else {
-                    n1 = getRandom(100, 999);
-                    n2 = getRandom(2, 9); 
-                }
-                res = n1 * n2;
-                sinal = '×';
-            } else if (operacaoAtual === 'divisao') {
-                if (nivelAtual === 'unidades') {
-                    n2 = getRandom(1, 9);
-                    res = getRandom(1, 9);
-                    n1 = n2 * res;
-                } else if (nivelAtual === 'dezenas') {
-                    n2 = getRandom(2, 9);
-                    // Garante que a multiplicação não passe de 99 (2 dígitos)
-                    let minRes = Math.ceil(10 / n2);
-                    let maxRes = Math.floor(99 / n2);
-                    res = getRandom(minRes, maxRes);
-                    n1 = n2 * res;
-                } else {
-                    n2 = getRandom(2, 9);
-                    // Garante que a multiplicação não passe de 999 (3 dígitos)
-                    let minRes = Math.ceil(100 / n2);
-                    let maxRes = Math.floor(999 / n2);
-                    res = getRandom(minRes, maxRes);
-                    n1 = n2 * res;
-                }
-                sinal = '÷';
+            if (operacao === 'subtracao') {
+                const faixas = { unidades: [1, 9], dezenas: [10, 99], centenas: [100, 999] };
+                const [min, max] = faixas[nivel] || faixas.unidades;
+                numero1 = sortear(min, max);
+                numero2 = sortear(min, max);
+                if (numero2 > numero1) { const t = numero1; numero1 = numero2; numero2 = t; } // evita resultado negativo
+                respostaCorreta = numero1 - numero2;
+                return `${numero1} − ${numero2} = ?`;
             }
 
-            return { n1, n2, res, sinal };
+            if (operacao === 'multiplicacao') {
+                const faixas = {
+                    unidades: { min1: 1, max1: 9, min2: 1, max2: 9 },
+                    dezenas:  { min1: 10, max1: 99, min2: 2, max2: 9 },
+                    centenas: { min1: 100, max1: 999, min2: 2, max2: 9 },
+                };
+                const f = faixas[nivel] || faixas.unidades;
+                numero1 = sortear(f.min1, f.max1);
+                numero2 = sortear(f.min2, f.max2);
+                respostaCorreta = numero1 * numero2;
+                return `${numero1} × ${numero2} = ?`;
+            }
+
+            if (operacao === 'divisao') {
+                // Sempre divisão exata (sem resto), adequado ao ensino fundamental.
+                const faixasQuociente = { unidades: [1, 9], dezenas: [10, 50], centenas: [50, 150] };
+                const [minQ, maxQ] = faixasQuociente[nivel] || faixasQuociente.unidades;
+                numero2 = sortear(2, 9); // divisor
+                const quociente = sortear(minQ, maxQ);
+                numero1 = numero2 * quociente; // dividendo (garante divisão exata)
+                respostaCorreta = quociente;
+                return `${numero1} ÷ ${numero2} = ?`;
+            }
+
+            if (operacao === 'potenciacao') {
+                const config = {
+                    quadrados: { min: 2, max: 15, expoente: 2, simbolo: '²' },
+                    cubos:     { min: 2, max: 10, expoente: 3, simbolo: '³' },
+                    potencias: { min: 2, max: 6,  expoente: (Math.random() < 0.5 ? 4 : 5), simbolo: null },
+                };
+                const c = config[nivel] || config.quadrados;
+                numero1 = sortear(c.min, c.max);
+                numero2 = c.expoente;
+                respostaCorreta = Math.pow(numero1, numero2);
+                const sobrescritos = { 2: '²', 3: '³', 4: '⁴', 5: '⁵' };
+                return `${numero1}${sobrescritos[numero2]} = ?`;
+            }
+
+            // radiciacao (nível único: 'raizes')
+            const raiz = sortear(2, 15);
+            numero1 = raiz * raiz;
+            numero2 = 2;
+            respostaCorreta = raiz;
+            return `√${numero1} = ?`;
         }
 
-        function girarRoleta() {
-            if (juegoRodando) return;
-            juegoRodando = true;
-            
-            document.getElementById('mensagem').innerText = "";
-            document.getElementById('resposta').value = "";
-            document.getElementById('resposta').disabled = true;
-            document.getElementById('resposta').style.borderColor = "#ccc";
-            
-            let contador = 0;
-            let intervalo = setInterval(() => {
-                let temp = gerarNumerosInteligentes();
-                document.getElementById('num1').innerText = temp.n1;
-                document.getElementById('num2').innerText = temp.n2;
-                document.getElementById('sinal-operacao').innerText = temp.sinal;
-                contador++;
-
-                if (contador >= 15) {
-                    clearInterval(intervalo);
-                    let final = gerarNumerosInteligentes();
-                    valor1 = final.n1;
-                    valor2 = final.n2;
-                    resultadoCorreto = final.res;
-                    
-                    document.getElementById('num1').innerText = valor1;
-                    document.getElementById('num2').innerText = valor2;
-                    document.getElementById('sinal-operacao').innerText = final.sinal;
-                    
-                    juegoRodando = false;
-                    document.getElementById('resposta').disabled = false;
-                    document.getElementById('resposta').focus(); 
-                    tempoInicio = Date.now(); 
-                }
-            }, 50); 
+        function novaQuestao() {
+            document.getElementById('conta').innerText = gerarQuestao();
+            document.getElementById('resposta').value = '';
+            document.getElementById('resposta').focus();
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('feedback').className = 'feedback';
+            inicioQuestao = Date.now();
         }
 
-        function verificarChute() {
-            if (valor1 === 0 || valor2 === 0) return; 
-            if (document.getElementById('resposta').value === "") return;
-            
-            let tempoGasto = (Date.now() - tempoInicio) / 1000;
-            let respostaAluno = parseInt(document.getElementById('resposta').value);
-            let acertouConta = (respostaAluno === resultadoCorreto);
-            
-            fetch('/salvar_jogada/', {
+        function salvarJogada(respostaAluno, acertou, tempo) {
+            fetch("{% url 'salvar_jogada' %}", {
                 method: 'POST',
+                keepalive: true,
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    operacao: operacaoAtual,
-                    nivel: nivelAtual,
-                    numero_1: valor1,
-                    numero_2: valor2,
-                    resposta_aluno: respostaAluno,
-                    acertou: acertouConta,
-                    tempo_segundos: tempoGasto
+                    operacao: operacao,
+                    nivel: nivel,
+                    numero_1: numero1,
+                    numero_2: numero2,
+                    resposta_aluno: String(respostaAluno),
+                    acertou: acertou,
+                    tempo_segundos: tempo
                 })
-            });
-
-            let mensagemDiv = document.getElementById('mensagem');
-            let inputResposta = document.getElementById('resposta');
-
-            if (acertouConta) {
-                mensagemDiv.innerText = "⚽ GOOOL!!!";
-                mensagemDiv.style.color = "#00FF00"; 
-                inputResposta.style.borderColor = "#00FF00";
-                setTimeout(girarRoleta, 2000); 
-            } else {
-                mensagemDiv.innerText = "❌ Na trave! Tente de novo!";
-                mensagemDiv.style.color = "#FF4500"; 
-                inputResposta.style.borderColor = "#FF4500";
-                document.getElementById('resposta').value = "";
-                document.getElementById('resposta').focus();
-                tempoInicio = Date.now();
-            }
+            }).catch(err => console.error('Erro ao salvar jogada:', err));
         }
 
-        document.getElementById("resposta").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                verificarChute();
+        document.getElementById('form-resposta').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const campoResposta = document.getElementById('resposta');
+            const respostaAluno = parseInt(campoResposta.value, 10);
+            const tempo = (Date.now() - inicioQuestao) / 1000;
+            const acertou = respostaAluno === respostaCorreta;
+
+            const feedback = document.getElementById('feedback');
+            if (acertou) {
+                acertos++;
+                feedback.innerText = '✅ Certo!';
+                feedback.className = 'feedback certo';
+            } else {
+                feedback.innerText = `❌ Errado! Era ${respostaCorreta}`;
+                feedback.className = 'feedback errado';
+            }
+            document.getElementById('num-acertos').innerText = acertos;
+
+            salvarJogada(campoResposta.value, acertou, tempo);
+
+            questaoAtual++;
+            if (questaoAtual >= totalQuestoes) {
+                setTimeout(finalizarJogo, 1000);
+            } else {
+                document.getElementById('num-atual').innerText = questaoAtual + 1;
+                setTimeout(novaQuestao, 1000);
             }
         });
 
-        window.onload = girarRoleta;
+        function finalizarJogo() {
+            document.getElementById('tela-jogo').style.display = 'none';
+            document.getElementById('tela-fim').style.display = 'block';
+            document.getElementById('resumo-acertos').innerText = acertos;
+        }
+
+        novaQuestao();
     </script>
 </body>
 </html>

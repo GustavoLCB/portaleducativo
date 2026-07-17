@@ -1,56 +1,209 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Educativo</title>
+    <title>Portal de Educação - Início</title>
     <style>
-        body { background-color: #1e3f20; background-image: radial-gradient(rgba(255,255,255,0.03) 15%, transparent 15%), radial-gradient(rgba(255,255,255,0.02) 15%, transparent 15%); background-size: 6px 6px; background-position: 0 0, 3px 3px; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 50px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; box-sizing: border-box; position: relative; }
-        .decoracao-giz { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.08; font-size: 1.8em; color: #ffffff; pointer-events: none; user-select: none; padding: 20px; box-sizing: border-box; line-height: 2em; font-weight: bold; }
-        .giz-top-left { position: absolute; top: 40px; left: 40px; } .giz-top-right { position: absolute; top: 40px; right: 40px; text-align: right; }
-        .giz-bottom-left { position: absolute; bottom: 40px; left: 40px; } .giz-bottom-right { position: absolute; bottom: 40px; right: 40px; text-align: right; }
-        
-        .barra-superior { position: absolute; top: 20px; right: 40px; display: flex; align-items: center; gap: 15px; z-index: 20; }
-        .saudacao { font-size: 1.2em; font-weight: bold; }
-        .btn-sair { background-color: #e74c3c; color: white; text-decoration: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; border: 2px solid #c0392b; transition: 0.2s; }
-        .btn-sair:hover { background-color: #c0392b; }
+        * { box-sizing: border-box; }
 
-        .conteudo { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
-        h1 { font-size: 3em; margin-bottom: 40px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6); font-family: 'Courier New', Courier, monospace; text-align: center; }
-        .grid-menu { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
-        .card { background-color: #e0e0e0; border-radius: 15px; padding: 35px; width: 180px; text-align: center; text-decoration: none; color: #222222; font-size: 1.4em; font-weight: bold; box-shadow: 5px 5px 15px rgba(0,0,0,0.4); transition: transform 0.2s; border: 3px solid #b0b0b0; }
-        .card:hover { transform: scale(1.05); background-color: #eeeeee; }
-        .icone { font-size: 2.8em; display: block; margin-bottom: 15px; color: #0056b3; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2)); }
-        
-        .btn-relatorio { margin-top: 50px; background-color: #f1c40f; color: #222; text-decoration: none; font-size: 1.5em; font-weight: bold; padding: 15px 40px; border-radius: 30px; box-shadow: 0 8px 15px rgba(0,0,0,0.4); transition: transform 0.2s; border: 3px solid #f39c12; }
-        .btn-relatorio:hover { transform: scale(1.05); background-color: #f39c12; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            position: relative;
+            background-color: #026873;
+            padding: 30px 20px 50px;
+        }
+
+        .fundo-imagem {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.45), rgba(2, 104, 115, 0.45)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .conteudo { position: relative; z-index: 2; max-width: 1000px; margin: 0 auto; }
+
+        .cabecalho {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
+            background-color: rgba(1, 45, 50, 0.6);
+            border: 2px solid rgba(255,255,255,0.35);
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-bottom: 30px;
+        }
+        .cabecalho h1 { font-size: 1.3em; margin: 0; color: #ffd54f; }
+        .cabecalho .info { font-size: 0.95em; color: #e8e8e0; }
+        .cabecalho .links a {
+            color: #ffd54f; text-decoration: none; font-weight: bold;
+            margin-left: 16px; font-size: 0.9em;
+        }
+        .cabecalho .links a:hover { text-decoration: underline; }
+
+        .grade-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #e8e8e0;
+            color: #1c2b22;
+            border-radius: 16px;
+            padding: 30px 15px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.15em;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            transition: transform 0.15s;
+            border: 3px solid transparent;
+        }
+        .card:hover { transform: translateY(-5px); border-color: #f4b400; }
+        .card .icone { display: block; font-size: 2.6em; margin-bottom: 12px; }
+
+        @media (max-width: 480px) {
+            .cabecalho { flex-direction: column; align-items: flex-start; }
+            .cabecalho .links { display: flex; gap: 0; }
+            .cabecalho .links a { margin-left: 0; margin-right: 16px; }
+            .grade-cards { grid-template-columns: repeat(2, 1fr); }
+            .card { padding: 22px 10px; font-size: 1em; }
+            .card .icone { font-size: 2.1em; }
+        }
     </style>
 </head>
 <body>
-    <div class="decoracao-giz">
-        <div class="giz-top-left">E = mc²<br>🧪 Verbo<br>🗺️ [BR]</div>
-        <div class="giz-bottom-left">√16 = 4<br>🎒 History<br>X + Y = 10</div>
-        <div class="giz-bottom-right">Sílaba 📝<br>🧭 Sul<br>2³ = 8</div>
-    </div>
-
-    <div class="barra-superior">
-        <span class="saudacao">Olá, {{ request.user.first_name|default:request.user.username }}!</span>
-        <a href="{% url 'logout' %}" class="btn-sair">Sair ✖</a>
-    </div>
+    <div class="fundo-imagem"></div>
 
     <div class="conteudo">
-        <h1>O que vamos estudar hoje? 🚀</h1>
-
-        <div class="grid-menu">
-            <a href="{% url 'matematica' %}" class="card"><span class="icone">🧮</span> Matemática</a>
-            <a href="{% url 'menu_portugues' %}" class="card"><span class="icone">📚</span> Português</a>
-            <a href="#" class="card"><span class="icone">🔬</span> Ciências</a>
-            <a href="#" class="card"><span class="icone">🗺️</span> Geografia</a>
-            <a href="#" class="card"><span class="icone">⛪</span> História</a>
-            <a href="{% url 'menu_ingles' %}" class="card"><span class="icone">🗽</span> Inglês</a>
+        <div class="cabecalho">
+            <div>
+                <h1>🎓 Portal de Educação</h1>
+                <div class="info">Olá, {{ nome_aluno }} — {{ ano_selecionado }}º ano</div>
+            </div>
+            <div class="links">
+                <a href="{% url 'trocar_ano' %}">Trocar ano</a>
+                <a href="{% url 'relatorio' %}">Relatório de Desempenho</a>
+                {% if request.user.is_staff %}
+                    <a href="{% url 'painel_professor' %}">👩‍🏫 Painel do Professor</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Sair</a>
+            </div>
         </div>
 
-        <a href="{% url 'relatorio' %}" class="btn-relatorio">📊 Ver Relatório de Desempenho</a>
+        <div class="grade-cards">
+            <a href="{% url 'menu_matematica' %}" class="card">
+                <span class="icone">
+                    <svg viewBox="0 0 100 80" style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                        <rect x="4"  y="4"  width="44" height="34" rx="7" fill="#2ecc71"/>
+                        <text x="26" y="30" text-anchor="middle" font-size="26" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">+</text>
+                        <rect x="52" y="4"  width="44" height="34" rx="7" fill="#e74c3c"/>
+                        <text x="74" y="30" text-anchor="middle" font-size="26" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">&#8722;</text>
+                        <rect x="4"  y="42" width="44" height="34" rx="7" fill="#3498db"/>
+                        <text x="26" y="68" text-anchor="middle" font-size="24" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">&#215;</text>
+                        <rect x="52" y="42" width="44" height="34" rx="7" fill="#9b59b6"/>
+                        <text x="74" y="68" text-anchor="middle" font-size="24" font-weight="bold" fill="#ffffff" font-family="Arial, sans-serif">&#247;</text>
+                    </svg>
+                </span>
+                Matemática
+            </a>
+            <a href="{% url 'menu_portugues' %}" class="card">
+                <span class="icone">
+                    <svg viewBox="0 0 100 80" style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                        <!-- Livro de trás (fechado, inclinado) -->
+                        <g transform="translate(46,6) rotate(12 20 32)">
+                            <rect x="0" y="0" width="40" height="56" rx="3" fill="#2980b9"/>
+                            <rect x="0" y="0" width="7" height="56" fill="#1f618d"/>
+                            <line x1="14" y1="10" x2="34" y2="10" stroke="#ffffff" stroke-width="2"/>
+                            <line x1="14" y1="18" x2="34" y2="18" stroke="#ffffff" stroke-width="2"/>
+                        </g>
+                        <!-- Livro da frente (aberto) -->
+                        <g transform="translate(6,16)">
+                            <path d="M4 4 L40 0 L40 58 L4 62 Z" fill="#c0392b"/>
+                            <path d="M40 0 L76 4 L76 62 L40 58 Z" fill="#e74c3c"/>
+                            <line x1="10" y1="16" x2="34" y2="13" stroke="#ffffff" stroke-width="1.6"/>
+                            <line x1="10" y1="26" x2="34" y2="23" stroke="#ffffff" stroke-width="1.6"/>
+                            <line x1="10" y1="36" x2="34" y2="33" stroke="#ffffff" stroke-width="1.6"/>
+                            <line x1="46" y1="13" x2="70" y2="16" stroke="#ffffff" stroke-width="1.6"/>
+                            <line x1="46" y1="23" x2="70" y2="26" stroke="#ffffff" stroke-width="1.6"/>
+                            <line x1="46" y1="33" x2="70" y2="36" stroke="#ffffff" stroke-width="1.6"/>
+                            <path d="M40 0 L40 58" stroke="#7f1a12" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </span>
+                Português
+            </a>
+            <a href="{% url 'menu_geografia' %}" class="card">
+                <span class="icone">🌎</span> Geografia
+            </a>
+            <a href="{% url 'menu_historia' %}" class="card">
+                <span class="icone">🏛️</span> História
+            </a>
+            <a href="{% url 'menu_ciencias' %}" class="card">
+                <span class="icone">
+                    <svg viewBox="0 0 100 80" style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                        <!-- Microscópio -->
+                        <g fill="none" stroke="#37474f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="74" x2="46" y2="74"/>
+                            <path d="M20 74 C20 60 24 56 30 54"/>
+                            <rect x="26" y="18" width="10" height="14" rx="2" transform="rotate(-18 31 25)" fill="#607d8b" stroke="none"/>
+                            <path d="M30 54 L44 20" />
+                            <circle cx="44" cy="20" r="4" fill="#37474f" stroke="none"/>
+                            <line x1="20" y1="60" x2="38" y2="60"/>
+                            <ellipse cx="29" cy="74" rx="16" ry="3" fill="#90a4ae" stroke="none"/>
+                        </g>
+                        <!-- Tubos de ensaio -->
+                        <g stroke="#37474f" stroke-width="3" fill="none" stroke-linecap="round">
+                            <path d="M62 12 L62 56 C62 64 74 64 74 56 L74 12"/>
+                            <path d="M62 40 L74 40 L74 56 C74 64 62 64 62 56 Z" fill="#26c6da" stroke="none"/>
+                            <line x1="59" y1="12" x2="77" y2="12"/>
+                        </g>
+                        <g stroke="#37474f" stroke-width="3" fill="none" stroke-linecap="round">
+                            <path d="M80 24 L80 56 C80 64 92 64 92 56 L92 24"/>
+                            <path d="M80 44 L92 44 L92 56 C92 64 80 64 80 56 Z" fill="#ffa726" stroke="none"/>
+                            <line x1="77" y1="24" x2="95" y2="24"/>
+                        </g>
+                    </svg>
+                </span>
+                Ciências
+            </a>
+            <a href="{% url 'menu_ingles' %}" class="card">
+                <span class="icone">
+                    <svg viewBox="0 0 100 80" style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
+                        <!-- Bandeira do Reino Unido (simplificada), atrás -->
+                        <g transform="translate(2,6) rotate(-8 40 28)">
+                            <rect x="0" y="0" width="62" height="42" rx="3" fill="#00247d"/>
+                            <path d="M0 0 L62 42 M62 0 L0 42" stroke="#ffffff" stroke-width="7"/>
+                            <path d="M0 0 L62 42 M62 0 L0 42" stroke="#cf142b" stroke-width="3"/>
+                            <path d="M31 0 L31 42 M0 21 L62 21" stroke="#ffffff" stroke-width="12"/>
+                            <path d="M31 0 L31 42 M0 21 L62 21" stroke="#cf142b" stroke-width="6"/>
+                        </g>
+                        <!-- Bandeira dos EUA (simplificada), na frente -->
+                        <g transform="translate(36,30) rotate(8 40 28)">
+                            <rect x="0" y="0" width="62" height="42" rx="3" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+                            <rect x="0" y="0" width="62" height="3.2" fill="#b22234"/>
+                            <rect x="0" y="6.4" width="62" height="3.2" fill="#b22234"/>
+                            <rect x="0" y="12.8" width="62" height="3.2" fill="#b22234"/>
+                            <rect x="0" y="19.2" width="62" height="3.2" fill="#b22234"/>
+                            <rect x="0" y="25.6" width="62" height="3.2" fill="#b22234"/>
+                            <rect x="0" y="32" width="62" height="3.2" fill="#b22234"/>
+                            <rect x="0" y="38.4" width="62" height="3.2" fill="#b22234"/>
+                            <rect x="0" y="0" width="26" height="22.4" fill="#3c3b6e"/>
+                        </g>
+                    </svg>
+                </span>
+                Inglês
+            </a>
+        </div>
     </div>
 </body>
 </html>

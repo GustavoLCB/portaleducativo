@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Professor</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+            padding: 30px 20px 50px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.5), rgba(2, 104, 115, 0.5)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .conteudo { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+        h1 { color: #ffd54f; text-align: center; margin-bottom: 6px; }
+        .subtitulo { text-align: center; color: #e8e8e0; margin-bottom: 30px; }
+
+        table {
+            width: 100%; border-collapse: collapse;
+            background-color: rgba(1, 45, 50, 0.6);
+            border-radius: 14px; overflow: hidden;
+        }
+        th, td { padding: 14px 16px; text-align: left; }
+        th { background-color: rgba(0,0,0,0.25); color: #ffd54f; }
+        tr:not(:last-child) td { border-bottom: 1px solid rgba(255,255,255,0.15); }
+        tr:hover td { background-color: rgba(255,255,255,0.06); }
+
+        a.ver-relatorio {
+            color: #2c1e00; background-color: #f4b400; padding: 6px 14px;
+            border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9em;
+        }
+        a.ver-relatorio:hover { background-color: #ffcb3d; }
+
+        .mensagem-vazia { text-align: center; color: #e8e8e0; margin-top: 30px; }
+
+        a.voltar {
+            display: block; width: fit-content; margin: 35px auto 0;
+            background-color: #444; color: #ffffff; padding: 12px 26px;
+            border-radius: 10px; text-decoration: none; font-weight: bold;
+        }
+        a.voltar:hover { background-color: #666; }
+
+        /* tabela vira "cards" empilhados no celular */
+        @media (max-width: 640px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            thead { display: none; }
+            tr { margin-bottom: 14px; background-color: rgba(1, 45, 50, 0.6); border-radius: 12px; padding: 10px; }
+            td { border: none !important; padding: 6px 10px; }
+            td::before { content: attr(data-rotulo) ": "; font-weight: bold; color: #ffd54f; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="conteudo">
+        <h1>👩‍🏫 Painel do Professor</h1>
+        <p class="subtitulo">{{ lista_alunos|length }} aluno(s) cadastrado(s)</p>
+
+        {% if lista_alunos %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Jogadas</th>
+                        <th>Aproveitamento</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in lista_alunos %}
+                        <tr>
+                            <td data-rotulo="Aluno">{{ item.nome }}</td>
+                            <td data-rotulo="Jogadas">{{ item.total_jogadas }}</td>
+                            <td data-rotulo="Aproveitamento">
+                                {% if item.total_jogadas > 0 %}{{ item.taxa_acerto }}%{% else %}—{% endif %}
+                            </td>
+                            <td data-rotulo="Relatório">
+                                <a class="ver-relatorio" href="{% url 'relatorio_aluno' item.aluno.id %}">Ver relatório completo</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="mensagem-vazia">Ainda não há alunos cadastrados.</p>
+        {% endif %}
+
+        <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciências</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #1b4d3e;
+            padding: 20px; overflow: hidden;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(27, 77, 62, 0.5), rgba(27, 77, 62, 0.5)),
+                url('{% static "img/fundocien.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            filter: blur(4px);
+            transform: scale(1.03); /* esconde a borda borrada nas laterais da tela */
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(10, 40, 32, 0.6);
+            border: 2px solid rgba(255,255,255,0.35);
+            border-radius: 20px; padding: 40px 35px; width: 560px; max-width: 92vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.6em; margin-bottom: 28px; }
+        .grade-modulos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        a.modulo {
+            background-color: #e8e8e0; color: #1c2b24; padding: 22px 10px;
+            border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 0.98em;
+            transition: transform 0.15s; display: block; border: 3px solid transparent;
+        }
+        a.modulo:hover { transform: translateY(-4px); border-color: #f4b400; }
+        a.modulo .icone { display: block; font-size: 2.2em; margin-bottom: 8px; }
+        a.voltar { display: inline-block; margin-top: 26px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
+        a.voltar:hover { text-decoration: underline; }
+        @media (max-width: 480px) {
+            .grade-modulos { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>🔬 Ciências — Escolha o Módulo</h1>
+        <div class="grade-modulos">
+            <a class="modulo" href="{% url 'ciencias_quiz' 'plantas' %}">
+                <span class="icone">🌱</span>Plantas
+            </a>
+            <a class="modulo" href="{% url 'ciencias_quiz' 'sons' %}">
+                <span class="icone">🔊</span>Sons
+            </a>
+            <a class="modulo" href="{% url 'ciencias_quiz' 'solo' %}">
+                <span class="icone">🪨</span>Solo
+            </a>
+            <a class="modulo" href="{% url 'ciencias_quiz' 'petroleo' %}">
+                <span class="icone">🛢️</span>Petróleo
+            </a>
+            <a class="modulo" href="{% url 'ciencias_quiz' 'sistema_solar' %}">
+                <span class="icone">🪐</span>Sistema Solar
+            </a>
+        </div>
+        <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
+    </div>
+</body>
+</html>
