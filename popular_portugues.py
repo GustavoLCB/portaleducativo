@@ -15,7 +15,9 @@ Baseado nos temas cobrados na Avaliação de Língua Portuguesa do 2º
 Período (Colégio Santo Agostinho, 3º ano) e em conteúdo adicional do
 mesmo nível de dificuldade.
 
-Pode rodar de novo sem problema — não duplica questões já existentes.
+Pode rodar de novo sem problema — não duplica questões já existentes;
+se o enunciado já existir, os demais campos são atualizados com os
+valores atuais deste arquivo.
 """
 
 import os
@@ -28,7 +30,7 @@ from core.models import Disciplina, BancoQuestao
 
 
 def criar_questao(disciplina, modulo, tipo, enunciado, resposta, opcoes):
-    obj, criado = BancoQuestao.objects.get_or_create(
+    obj, criado = BancoQuestao.objects.update_or_create(
         disciplina=disciplina,
         modulo=modulo,
         enunciado=enunciado,
@@ -39,7 +41,7 @@ def criar_questao(disciplina, modulo, tipo, enunciado, resposta, opcoes):
             'ativo': True,
         }
     )
-    status = "✅" if criado else "⏭️ "
+    status = "✅" if criado else "🔄"
     print(f"  {status} {enunciado[:65]}")
 
 
@@ -113,7 +115,7 @@ for enunciado, resposta, opcoes in sinonimos_antonimos:
 print("\n🔤 Populando: Português › Encontros Vocálicos...")
 
 encontros_vocalicos = [
-    ('Na palavra "história", o encontro "ia" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
+    ('Na palavra "história", o encontro "ia" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na palavra "pai", o encontro "ai" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na palavra "saguão", o encontro "uão" é um:', 'Tritongo', ['Tritongo', 'Ditongo', 'Hiato', 'Dígrafo']),
     ('Na palavra "saúde", o encontro "aú" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
@@ -123,7 +125,7 @@ encontros_vocalicos = [
     ('Na palavra "chapéu", o encontro "éu" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na palavra "juiz", o encontro "ui" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
     ('Na palavra "quais", o encontro "uai" é um:', 'Tritongo', ['Tritongo', 'Ditongo', 'Hiato', 'Dígrafo']),
-    ('Na palavra "égua", o encontro "gua" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
+    ('Na palavra "égua", o encontro "ua" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na palavra "baú", o encontro "aú" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
     ('Na palavra "série", o encontro "ie" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na frase "Antônio era um menino magrinho e de óculos", a palavra com ditongo é:', 'Antônio', ['Antônio', 'menino', 'de', 'e']),
@@ -150,7 +152,7 @@ digrafos = [
     ('Qual das palavras abaixo NÃO tem dígrafo?', 'Janela', ['Janela', 'Carro', 'Chuva', 'Ninho']),
     ('Na palavra "assunto", qual é o dígrafo?', 'SS', ['SS', 'AS', 'UN', 'TO']),
     ('Na palavra "quilo", qual é o dígrafo?', 'QU', ['QU', 'IL', 'LO', 'UI']),
-    ('Classifique a palavra "digrafo" quanto à quantidade de sons representados pelo par de letras "CH", "LH" e "NH": eles formam um único:', 'Som', ['Som', 'Sílaba', 'Ditongo', 'Hiato']),
+    ('Classifique a palavra "dígrafo" quanto à quantidade de sons representados pelo par de letras "CH", "LH" e "NH": eles formam um único:', 'Som', ['Som', 'Sílaba', 'Ditongo', 'Hiato']),
 ]
 for enunciado, resposta, opcoes in digrafos:
     criar_questao(portugues, 'digrafos', 'multipla_escolha', enunciado, resposta, opcoes)
