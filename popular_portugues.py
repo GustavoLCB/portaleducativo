@@ -62,6 +62,7 @@ enunciados_antigos_com_erro = [
     'CRE___A (é importante cre___er sempre)',
     'CO___EGAR (vamos co___egar a atividade)',
     'DE___ER (é gostoso o de___er de chocolate)',
+    '___ARRAFA (a ___arrafa é um animal alto)',
 ]
 removidas = BancoQuestao.objects.filter(
     disciplina__nome='portugues', modulo='ortografia', enunciado__in=enunciados_antigos_com_erro
@@ -78,7 +79,7 @@ ortografia = [
     ('VIA___EM (fizemos uma linda via___em)', 'G', ['G', 'J', 'X', 'CH']),
     ('JI___OIA (a ji___oia é um réptil)', 'B', ['B', 'V', 'P', 'F']),
     ('EN___AME (o en___ame de abelhas voou)', 'X', ['X', 'CH', 'S', 'Z']),
-    ('___ARRAFA (a ___arrafa é um animal alto)', 'G', ['G', 'J', 'X', 'C']),
+    ('___IRAFA (a ___irafa é um animal alto)', 'G', ['G', 'J', 'X', 'C']),
     ('COME___AR (vamos come___ar a atividade)', 'Ç', ['Ç', 'SS', 'C', 'S']),
     ('___ÍCARA (tomei leite na ___ícara)', 'X', ['X', 'CH', 'S', 'SS']),
     ('SOBREME___A (é gostosa a sobreme___a de chocolate)', 'S', ['S', 'SS', 'C', 'Ç']),
