@@ -15,9 +15,7 @@ Baseado nos temas cobrados na Avaliação de Língua Portuguesa do 2º
 Período (Colégio Santo Agostinho, 3º ano) e em conteúdo adicional do
 mesmo nível de dificuldade.
 
-Pode rodar de novo sem problema — não duplica questões já existentes;
-se o enunciado já existir, os demais campos são atualizados com os
-valores atuais deste arquivo.
+Pode rodar de novo sem problema — não duplica questões já existentes.
 """
 
 import os
@@ -30,7 +28,7 @@ from core.models import Disciplina, BancoQuestao
 
 
 def criar_questao(disciplina, modulo, tipo, enunciado, resposta, opcoes):
-    obj, criado = BancoQuestao.objects.update_or_create(
+    obj, criado = BancoQuestao.objects.get_or_create(
         disciplina=disciplina,
         modulo=modulo,
         enunciado=enunciado,
@@ -41,7 +39,7 @@ def criar_questao(disciplina, modulo, tipo, enunciado, resposta, opcoes):
             'ativo': True,
         }
     )
-    status = "✅" if criado else "🔄"
+    status = "✅" if criado else "⏭️ "
     print(f"  {status} {enunciado[:65]}")
 
 
@@ -57,19 +55,33 @@ print("  ✅ Português pronto.")
 # ══════════════════════════════════════════════════════════════════
 print("\n✏️  Populando: Português › Ortografia...")
 
+# Limpeza de 3 perguntas antigas que tinham erro de conteúdo (detectado e
+# corrigido depois de já estarem publicadas) — sem isso, elas ficariam
+# duplicadas/erradas no banco de quem já rodou este script antes.
+enunciados_antigos_com_erro = [
+    'CRE___A (é importante cre___er sempre)',
+    'CO___EGAR (vamos co___egar a atividade)',
+    'DE___ER (é gostoso o de___er de chocolate)',
+]
+removidas = BancoQuestao.objects.filter(
+    disciplina__nome='portugues', modulo='ortografia', enunciado__in=enunciados_antigos_com_erro
+).delete()
+if removidas[0] > 0:
+    print(f"  🧹 Removidas {removidas[0]} pergunta(s) antiga(s) com erro de conteúdo.")
+
 ortografia = [
     ('E___ELENTE (a prova foi e___elente)', 'XC', ['C', 'SS', 'XC', 'S']),
     ('NA___ER (toda criança precisa na___er)', 'SC', ['SC', 'SS', 'C', 'X']),
-    ('CRE___A (é importante cre___er sempre)', 'SC', ['SC', 'SS', 'C', 'Ç']),
+    ('CRE___ER (é importante cre___er sempre)', 'SC', ['SC', 'SS', 'C', 'Ç']),
     ('PROFE___OR (o ___ da turma é gentil)', 'SS', ['SS', 'S', 'C', 'Ç']),
     ('A___ADO (o menino ficou muito a___ado)', 'SS', ['SS', 'S', 'C', 'X']),
     ('VIA___EM (fizemos uma linda via___em)', 'G', ['G', 'J', 'X', 'CH']),
     ('JI___OIA (a ji___oia é um réptil)', 'B', ['B', 'V', 'P', 'F']),
     ('EN___AME (o en___ame de abelhas voou)', 'X', ['X', 'CH', 'S', 'Z']),
     ('___ARRAFA (a ___arrafa é um animal alto)', 'G', ['G', 'J', 'X', 'C']),
-    ('CO___EGAR (vamos co___egar a atividade)', 'M', ['M', 'N', 'MB', 'NH']),
+    ('COME___AR (vamos come___ar a atividade)', 'Ç', ['Ç', 'SS', 'C', 'S']),
     ('___ÍCARA (tomei leite na ___ícara)', 'X', ['X', 'CH', 'S', 'SS']),
-    ('DE___ER (é gostoso o de___er de chocolate)', 'SS', ['SS', 'S', 'C', 'Ç']),
+    ('SOBREME___A (é gostosa a sobreme___a de chocolate)', 'S', ['S', 'SS', 'C', 'Ç']),
     ('EMBAI___ADA (a bola ficou embai___ada)', 'X', ['X', 'CH', 'SS', 'S']),
     ('PI___AMA (coloquei o pi___ama para dormir)', 'J', ['J', 'G', 'X', 'CH']),
     ('BEBE___OURO (o pássaro é um bebe___ouro)', 'D', ['D', 'T', 'DJ', 'J']),
@@ -115,7 +127,7 @@ for enunciado, resposta, opcoes in sinonimos_antonimos:
 print("\n🔤 Populando: Português › Encontros Vocálicos...")
 
 encontros_vocalicos = [
-    ('Na palavra "história", o encontro "ia" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
+    ('Na palavra "história", o encontro "ia" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
     ('Na palavra "pai", o encontro "ai" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na palavra "saguão", o encontro "uão" é um:', 'Tritongo', ['Tritongo', 'Ditongo', 'Hiato', 'Dígrafo']),
     ('Na palavra "saúde", o encontro "aú" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
@@ -125,7 +137,7 @@ encontros_vocalicos = [
     ('Na palavra "chapéu", o encontro "éu" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na palavra "juiz", o encontro "ui" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
     ('Na palavra "quais", o encontro "uai" é um:', 'Tritongo', ['Tritongo', 'Ditongo', 'Hiato', 'Dígrafo']),
-    ('Na palavra "égua", o encontro "ua" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
+    ('Na palavra "égua", o encontro "gua" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na palavra "baú", o encontro "aú" é um:', 'Hiato', ['Hiato', 'Ditongo', 'Tritongo', 'Dígrafo']),
     ('Na palavra "série", o encontro "ie" é um:', 'Ditongo', ['Ditongo', 'Hiato', 'Tritongo', 'Dígrafo']),
     ('Na frase "Antônio era um menino magrinho e de óculos", a palavra com ditongo é:', 'Antônio', ['Antônio', 'menino', 'de', 'e']),
@@ -152,7 +164,16 @@ digrafos = [
     ('Qual das palavras abaixo NÃO tem dígrafo?', 'Janela', ['Janela', 'Carro', 'Chuva', 'Ninho']),
     ('Na palavra "assunto", qual é o dígrafo?', 'SS', ['SS', 'AS', 'UN', 'TO']),
     ('Na palavra "quilo", qual é o dígrafo?', 'QU', ['QU', 'IL', 'LO', 'UI']),
-    ('Classifique a palavra "dígrafo" quanto à quantidade de sons representados pelo par de letras "CH", "LH" e "NH": eles formam um único:', 'Som', ['Som', 'Sílaba', 'Ditongo', 'Hiato']),
+    ('Classifique a palavra "digrafo" quanto à quantidade de sons representados pelo par de letras "CH", "LH" e "NH": eles formam um único:', 'Som', ['Som', 'Sílaba', 'Ditongo', 'Hiato']),
+
+    # Novas (pulei "chuva" e "filho", que já existiam acima)
+    ('Na palavra "aranha", qual é o dígrafo?', 'NH', ['NH', 'AR', 'RA', 'NA']),
+    ('Na palavra "sonho", qual é o dígrafo?', 'NH', ['NH', 'SO', 'ON', 'HO']),
+    ('Na palavra "vassoura", qual é o dígrafo?', 'SS', ['SS', 'VA', 'OU', 'RA']),
+    ('Na palavra "alho", qual é o dígrafo?', 'LH', ['LH', 'AL', 'HO', 'AH']),
+    ('Na palavra "ovelha", qual é o dígrafo?', 'LH', ['LH', 'OV', 'EL', 'HA']),
+    ('Na palavra "terra", qual é o dígrafo?', 'RR', ['RR', 'TE', 'ER', 'RA']),
+    ('Na palavra "marrom", qual é o dígrafo?', 'RR', ['RR', 'MA', 'OM', 'RO']),
 ]
 for enunciado, resposta, opcoes in digrafos:
     criar_questao(portugues, 'digrafos', 'multipla_escolha', enunciado, resposta, opcoes)
@@ -177,6 +198,55 @@ classificacao_silabica = [
     ('Quantas sílabas tem a palavra "computador"?', '4', ['4', '3', '2', '5']),
     ('Quantas sílabas tem a palavra "pão"?', '1', ['1', '2', '3', '4']),
     ('A palavra "relógio" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+
+    # Oxítonas (novas, "café" já existia acima)
+    ('A palavra "bambu" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "abacaxi" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "maracujá" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "sofá" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "chapéu" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "feliz" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "chuchu" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "caju" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "papel" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "parabéns" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "sutil" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "você" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "cipó" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "jiló" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "herói" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
+
+    # Paroxítonas (novas, "casa" já existia acima)
+    ('A palavra "mesa" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "janela" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "bola" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "sala" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "mestre" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "nuvem" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "dente" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "caderno" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "lápis" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "hotel" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "açúcar" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "revólver" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "tórax" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+    ('A palavra "fácil" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
+
+    # Proparoxítonas (novas, "médico" e "árvore" já existiam acima)
+    ('A palavra "lâmpada" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "bússola" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "pássaro" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "básico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "bélico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "América" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "caótico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "brócolis" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "dúvida" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "código" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "número" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "música" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "máquina" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
+    ('A palavra "gráfico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
 ]
 for enunciado, resposta, opcoes in classificacao_silabica:
     criar_questao(portugues, 'classificacao_silabica', 'multipla_escolha', enunciado, resposta, opcoes)

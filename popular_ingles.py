@@ -117,6 +117,32 @@ vocabulario_geral = [
     ('Qual é a palavra em inglês para "casa"?', 'House', ['House', 'School', 'Classroom', 'Box']),
     ('Qual é a palavra em inglês para "avião"?', 'Airplane', ['Airplane', 'Telephone', 'Computer', 'Box']),
     ('Qual é a palavra em inglês para "telefone"?', 'Telephone', ['Telephone', 'Computer', 'Airplane', 'Board']),
+
+    # Novas — móveis e objetos de casa
+    ('Qual é a palavra em inglês para "sofá"?', 'Sofa', ['Sofa', 'Armchair', 'Chair', 'Bed']),
+    ('Qual é a palavra em inglês para "poltrona"?', 'Armchair', ['Armchair', 'Sofa', 'Chair', 'Desk']),
+    ('Qual é a palavra em inglês para "cadeira"?', 'Chair', ['Chair', 'Sofa', 'Armchair', 'Bed']),
+    ('Qual é a palavra em inglês para "caixa de som"?', 'Speakers', ['Speakers', 'Remote control', 'Lamp', 'Fan']),
+    ('Qual é a palavra em inglês para "tapete"?', 'Carpet', ['Carpet', 'Cushion', 'Mirror', 'Pillow']),
+    ('Qual é a palavra em inglês para "almofada"?', 'Cushion', ['Cushion', 'Carpet', 'Pillow', 'Mirror']),
+    ('Qual é a palavra em inglês para "controle remoto"?', 'Remote control', ['Remote control', 'Speakers', 'Alarm clock', 'Fan']),
+    ('Qual é a palavra em inglês para "guarda-roupa"?', 'Closet', ['Closet', 'Desk', 'Bed', 'Chair']),
+    ('Qual é a palavra em inglês para "escrivaninha"?', 'Desk', ['Desk', 'Closet', 'Bed', 'Chair']),
+    ('Qual é a palavra em inglês para "cama"?', 'Bed', ['Bed', 'Closet', 'Desk', 'Sofa']),
+    ('Qual é a palavra em inglês para "travesseiro"?', 'Pillow', ['Pillow', 'Cushion', 'Carpet', 'Mirror']),
+    ('Qual é a palavra em inglês para "abajur"?', 'Lamp', ['Lamp', 'Fan', 'Speakers', 'Alarm clock']),
+    ('Qual é a palavra em inglês para "espelho"?', 'Mirror', ['Mirror', 'Carpet', 'Pillow', 'Cushion']),
+    ('Qual é a palavra em inglês para "ventilador"?', 'Fan', ['Fan', 'Lamp', 'Alarm clock', 'Speakers']),
+    ('Qual é a palavra em inglês para "despertador"?', 'Alarm clock', ['Alarm clock', 'Fan', 'Lamp', 'Remote control']),
+    ('Qual é a palavra em inglês para "lixeira"?', 'Trash', ['Trash', 'Folder', 'Backpack', 'Ruler']),
+
+    # Novas — material escolar
+    ('Qual é a palavra em inglês para "apagador/borracha"?', 'Eraser', ['Eraser', 'Ruler', 'Glue', 'Scissors']),
+    ('Qual é a palavra em inglês para "régua"?', 'Ruler', ['Ruler', 'Eraser', 'Glue', 'Scissors']),
+    ('Qual é a palavra em inglês para "cola"?', 'Glue', ['Glue', 'Ruler', 'Eraser', 'Folder']),
+    ('Qual é a palavra em inglês para "tesoura"?', 'Scissors', ['Scissors', 'Glue', 'Ruler', 'Eraser']),
+    ('Qual é a palavra em inglês para "mochila"?', 'Backpack', ['Backpack', 'Folder', 'Trash', 'Desk']),
+    ('Qual é a palavra em inglês para "pasta"?', 'Folder', ['Folder', 'Backpack', 'Trash', 'Ruler']),
 ]
 for enunciado, resposta, opcoes in vocabulario_geral:
     criar_questao(ingles, 'vocabulario_geral', enunciado, resposta, opcoes)
