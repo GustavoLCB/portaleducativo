@@ -4,12 +4,18 @@ popular_portugues.py
 Execute na raiz do projeto:
     python popular_portugues.py
 
-Popula o banco com questões de Português em 5 módulos:
+Popula o banco com questões de Português em 11 módulos:
   - ortografia (C, SS, XC, S, SC, G, J...)
   - sinonimos_antonimos
   - encontros_vocalicos (ditongo, hiato, tritongo)
   - digrafos
   - classificacao_silabica (tonicidade e número de sílabas)
+  - encontros_consonantais
+  - substantivos_adjetivos
+  - tipos_de_frase
+  - tempos_verbais (presente, pretérito e futuro)
+  - substantivos_singular_plural (regras de formação do plural)
+  - artigos (definidos e indefinidos)
 
 Baseado nos temas cobrados na Avaliação de Língua Portuguesa do 2º
 Período (Colégio Santo Agostinho, 3º ano) e em conteúdo adicional do
@@ -55,34 +61,19 @@ print("  ✅ Português pronto.")
 # ══════════════════════════════════════════════════════════════════
 print("\n✏️  Populando: Português › Ortografia...")
 
-# Limpeza de 3 perguntas antigas que tinham erro de conteúdo (detectado e
-# corrigido depois de já estarem publicadas) — sem isso, elas ficariam
-# duplicadas/erradas no banco de quem já rodou este script antes.
-enunciados_antigos_com_erro = [
-    'CRE___A (é importante cre___er sempre)',
-    'CO___EGAR (vamos co___egar a atividade)',
-    'DE___ER (é gostoso o de___er de chocolate)',
-    '___ARRAFA (a ___arrafa é um animal alto)',
-]
-removidas = BancoQuestao.objects.filter(
-    disciplina__nome='portugues', modulo='ortografia', enunciado__in=enunciados_antigos_com_erro
-).delete()
-if removidas[0] > 0:
-    print(f"  🧹 Removidas {removidas[0]} pergunta(s) antiga(s) com erro de conteúdo.")
-
 ortografia = [
     ('E___ELENTE (a prova foi e___elente)', 'XC', ['C', 'SS', 'XC', 'S']),
     ('NA___ER (toda criança precisa na___er)', 'SC', ['SC', 'SS', 'C', 'X']),
-    ('CRE___ER (é importante cre___er sempre)', 'SC', ['SC', 'SS', 'C', 'Ç']),
+    ('CRE___A (é importante cre___er sempre)', 'SC', ['SC', 'SS', 'C', 'Ç']),
     ('PROFE___OR (o ___ da turma é gentil)', 'SS', ['SS', 'S', 'C', 'Ç']),
     ('A___ADO (o menino ficou muito a___ado)', 'SS', ['SS', 'S', 'C', 'X']),
     ('VIA___EM (fizemos uma linda via___em)', 'G', ['G', 'J', 'X', 'CH']),
     ('JI___OIA (a ji___oia é um réptil)', 'B', ['B', 'V', 'P', 'F']),
     ('EN___AME (o en___ame de abelhas voou)', 'X', ['X', 'CH', 'S', 'Z']),
-    ('___IRAFA (a ___irafa é um animal alto)', 'G', ['G', 'J', 'X', 'C']),
-    ('COME___AR (vamos come___ar a atividade)', 'Ç', ['Ç', 'SS', 'C', 'S']),
+    ('___ARRAFA (a ___arrafa é um animal alto)', 'G', ['G', 'J', 'X', 'C']),
+    ('CO___EGAR (vamos co___egar a atividade)', 'M', ['M', 'N', 'MB', 'NH']),
     ('___ÍCARA (tomei leite na ___ícara)', 'X', ['X', 'CH', 'S', 'SS']),
-    ('SOBREME___A (é gostosa a sobreme___a de chocolate)', 'S', ['S', 'SS', 'C', 'Ç']),
+    ('DE___ER (é gostoso o de___er de chocolate)', 'SS', ['SS', 'S', 'C', 'Ç']),
     ('EMBAI___ADA (a bola ficou embai___ada)', 'X', ['X', 'CH', 'SS', 'S']),
     ('PI___AMA (coloquei o pi___ama para dormir)', 'J', ['J', 'G', 'X', 'CH']),
     ('BEBE___OURO (o pássaro é um bebe___ouro)', 'D', ['D', 'T', 'DJ', 'J']),
@@ -166,15 +157,6 @@ digrafos = [
     ('Na palavra "assunto", qual é o dígrafo?', 'SS', ['SS', 'AS', 'UN', 'TO']),
     ('Na palavra "quilo", qual é o dígrafo?', 'QU', ['QU', 'IL', 'LO', 'UI']),
     ('Classifique a palavra "digrafo" quanto à quantidade de sons representados pelo par de letras "CH", "LH" e "NH": eles formam um único:', 'Som', ['Som', 'Sílaba', 'Ditongo', 'Hiato']),
-
-    # Novas (pulei "chuva" e "filho", que já existiam acima)
-    ('Na palavra "aranha", qual é o dígrafo?', 'NH', ['NH', 'AR', 'RA', 'NA']),
-    ('Na palavra "sonho", qual é o dígrafo?', 'NH', ['NH', 'SO', 'ON', 'HO']),
-    ('Na palavra "vassoura", qual é o dígrafo?', 'SS', ['SS', 'VA', 'OU', 'RA']),
-    ('Na palavra "alho", qual é o dígrafo?', 'LH', ['LH', 'AL', 'HO', 'AH']),
-    ('Na palavra "ovelha", qual é o dígrafo?', 'LH', ['LH', 'OV', 'EL', 'HA']),
-    ('Na palavra "terra", qual é o dígrafo?', 'RR', ['RR', 'TE', 'ER', 'RA']),
-    ('Na palavra "marrom", qual é o dígrafo?', 'RR', ['RR', 'MA', 'OM', 'RO']),
 ]
 for enunciado, resposta, opcoes in digrafos:
     criar_questao(portugues, 'digrafos', 'multipla_escolha', enunciado, resposta, opcoes)
@@ -199,55 +181,6 @@ classificacao_silabica = [
     ('Quantas sílabas tem a palavra "computador"?', '4', ['4', '3', '2', '5']),
     ('Quantas sílabas tem a palavra "pão"?', '1', ['1', '2', '3', '4']),
     ('A palavra "relógio" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-
-    # Oxítonas (novas, "café" já existia acima)
-    ('A palavra "bambu" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "abacaxi" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "maracujá" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "sofá" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "chapéu" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "feliz" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "chuchu" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "caju" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "papel" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "parabéns" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "sutil" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "você" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "cipó" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "jiló" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "herói" é classificada, quanto à tonicidade, como:', 'Oxítona', ['Oxítona', 'Paroxítona', 'Proparoxítona', 'Monossílaba']),
-
-    # Paroxítonas (novas, "casa" já existia acima)
-    ('A palavra "mesa" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "janela" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "bola" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "sala" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "mestre" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "nuvem" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "dente" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "caderno" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "lápis" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "hotel" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "açúcar" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "revólver" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "tórax" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-    ('A palavra "fácil" é classificada, quanto à tonicidade, como:', 'Paroxítona', ['Paroxítona', 'Oxítona', 'Proparoxítona', 'Monossílaba']),
-
-    # Proparoxítonas (novas, "médico" e "árvore" já existiam acima)
-    ('A palavra "lâmpada" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "bússola" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "pássaro" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "básico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "bélico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "América" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "caótico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "brócolis" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "dúvida" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "código" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "número" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "música" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "máquina" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
-    ('A palavra "gráfico" é classificada, quanto à tonicidade, como:', 'Proparoxítona', ['Proparoxítona', 'Oxítona', 'Paroxítona', 'Monossílaba']),
 ]
 for enunciado, resposta, opcoes in classificacao_silabica:
     criar_questao(portugues, 'classificacao_silabica', 'multipla_escolha', enunciado, resposta, opcoes)
@@ -340,6 +273,112 @@ for enunciado, resposta, opcoes in tipos_de_frase:
     criar_questao(portugues, 'tipos_de_frase', 'multipla_escolha', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO 9 — TEMPOS VERBAIS (novo)
+# ══════════════════════════════════════════════════════════════════
+print("\n⏰ Populando: Português › Tempos Verbais...")
+
+tempos_verbais = [
+    ('Na frase "Larguei a mão da minha avó e entrei na sala", os verbos destacados estão no:', 'Pretérito (passado)',
+     ['Pretérito (passado)', 'Presente', 'Futuro', 'Imperativo']),
+    ('Complete com o verbo no PRESENTE: "Hoje eu ___ na escola." (estudar)', 'estudo',
+     ['estudo', 'estudei', 'estudarei', 'estudava']),
+    ('Complete com o verbo no PRETÉRITO (passado): "Ontem eu ___ na escola." (estudar)', 'estudei',
+     ['estudei', 'estudo', 'estudarei', 'estudarei']),
+    ('Complete com o verbo no FUTURO: "Amanhã eu ___ na escola." (estudar)', 'estudarei',
+     ['estudarei', 'estudei', 'estudo', 'estudava']),
+    ('A frase "Eu brinco no parque todos os dias" está no tempo:', 'Presente',
+     ['Presente', 'Pretérito', 'Futuro', 'Imperativo']),
+    ('A frase "Eu brinquei no parque ontem" está no tempo:', 'Pretérito (passado)',
+     ['Pretérito (passado)', 'Presente', 'Futuro', 'Imperativo']),
+    ('A frase "Eu vou brincar no parque amanhã" está no tempo:', 'Futuro',
+     ['Futuro', 'Presente', 'Pretérito', 'Imperativo']),
+    ('Qual palavra indica que a frase está no PASSADO?', 'Ontem', ['Ontem', 'Hoje', 'Amanhã', 'Agora']),
+    ('Qual palavra indica que a frase está no FUTURO?', 'Amanhã', ['Amanhã', 'Ontem', 'Hoje', 'Já']),
+    ('Qual palavra indica que a frase está no PRESENTE?', 'Agora', ['Agora', 'Ontem', 'Amanhã', 'Antigamente']),
+    ('Complete com o verbo no PRETÉRITO: "Ele ___ muito aflito quando chegou à escola." (estar)', 'estava',
+     ['estava', 'está', 'estará', 'esteja']),
+    ('Na frase "Reparei que já tinham caído dois dentes dele", o verbo "reparei" indica uma ação:', 'Que já aconteceu',
+     ['Que já aconteceu', 'Que está acontecendo agora', 'Que ainda vai acontecer', 'Que nunca aconteceu']),
+    ('Complete com o verbo no FUTURO: "No ano que vem, nós ___ para o 4º ano." (ir)', 'iremos',
+     ['iremos', 'fomos', 'vamos', 'íamos']),
+    ('A frase "Nós brincaremos no recreio" está no tempo:', 'Futuro', ['Futuro', 'Presente', 'Pretérito', 'Imperativo']),
+    ('A frase "Nós brincamos no recreio ontem" está no tempo:', 'Pretérito (passado)',
+     ['Pretérito (passado)', 'Presente', 'Futuro', 'Imperativo']),
+]
+for enunciado, resposta, opcoes in tempos_verbais:
+    criar_questao(portugues, 'tempos_verbais', 'multipla_escolha', enunciado, resposta, opcoes)
+
+
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO 10 — SUBSTANTIVO: SINGULAR E PLURAL (novo)
+# ══════════════════════════════════════════════════════════════════
+print("\n🔢 Populando: Português › Substantivo Singular e Plural...")
+
+substantivos_singular_plural = [
+    ('O substantivo que indica UM ser, objeto, lugar ou animal está no:', 'Singular',
+     ['Singular', 'Plural', 'Coletivo', 'Próprio']),
+    ('O substantivo que indica MAIS DE UM ser, objeto, lugar ou animal está no:', 'Plural',
+     ['Plural', 'Singular', 'Coletivo', 'Comum']),
+    ('Qual é o plural de "barco"?', 'Barcos', ['Barcos', 'Barcões', 'Barcais', 'Barces']),
+    ('Substantivos terminados em R, S e Z fazem o plural com o acréscimo de:', 'ES',
+     ['ES', 'S', 'AIS', 'ÕES']),
+    ('Qual é o plural de "país"?', 'Países', ['Países', 'Paíss', 'Paízes', 'Paíes']),
+    ('Qual é o plural de "luz"?', 'Luzes', ['Luzes', 'Luzs', 'Luzas', 'Luz']),
+    ('Substantivos terminados em AL, OL e UL fazem o plural em:', 'AIS, ÓIS e UIS',
+     ['AIS, ÓIS e UIS', 'ES', 'ÕES', 'NS']),
+    ('Qual é o plural de "jornal"?', 'Jornais', ['Jornais', 'Jornals', 'Jornales', 'Jornãos']),
+    ('Qual é o plural de "farol"?', 'Faróis', ['Faróis', 'Farols', 'Faroles', 'Farões']),
+    ('Substantivos terminados em EL fazem o plural em ÉIS ou EIS. Qual é o plural de "papel"?', 'Papéis',
+     ['Papéis', 'Papels', 'Papeles', 'Papelões']),
+    ('Substantivos terminados em M fazem o plural em:', 'NS', ['NS', 'MS', 'ÕES', 'ES']),
+    ('Qual é o plural de "trem"?', 'Trens', ['Trens', 'Tremes', 'Tremões', 'Trems']),
+    ('Substantivos terminados em ÃO podem fazer o plural em ÕES, ÃES ou ÃOS. Qual é o plural de "pão"?', 'Pães',
+     ['Pães', 'Pãos', 'Pões', 'Pãoes']),
+    ('Qual é o plural de "botão"?', 'Botões', ['Botões', 'Botãos', 'Botães', 'Botãoes']),
+    ('Substantivos terminados em IL fazem o plural em IS ou EIS. Qual é o plural de "funil"?', 'Funis',
+     ['Funis', 'Funiles', 'Funíeis', 'Funils']),
+    ('Qual é o plural de "réptil"?', 'Répteis', ['Répteis', 'Reptis', 'Reptíeis', 'Répteles']),
+    ('Qual é o plural de "flor"?', 'Flores', ['Flores', 'Flors', 'Florees', 'Flor']),
+    ('Qual é o plural de "coração"?', 'Corações', ['Corações', 'Coraçãos', 'Coraçães', 'Coraçãoes']),
+    ('Os substantivos paroxítonos terminados em S, como "tênis" e "ônibus", no plural:', 'Não mudam de forma',
+     ['Não mudam de forma', 'Ganham ES', 'Ganham S', 'Perdem o S']),
+    ('Qual é o plural de "ônibus"?', 'Ônibus', ['Ônibus', 'Ônibuses', 'Ônibus', 'Ônibus']),
+]
+for enunciado, resposta, opcoes in substantivos_singular_plural:
+    criar_questao(portugues, 'substantivos_singular_plural', 'multipla_escolha', enunciado, resposta, opcoes)
+
+
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO 11 — ARTIGOS DEFINIDOS E INDEFINIDOS (novo)
+# ══════════════════════════════════════════════════════════════════
+print("\n🔖 Populando: Português › Artigos...")
+
+artigos = [
+    ('Artigos são palavras que acompanham:', 'Os substantivos', ['Os substantivos', 'Os verbos', 'Os adjetivos', 'Os advérbios']),
+    ('Usamos os artigos DEFINIDOS quando falamos de algo:', 'Conhecido, preciso e específico',
+     ['Conhecido, preciso e específico', 'Vago e impreciso', 'Que não existe', 'Que é plural apenas']),
+    ('Usamos os artigos INDEFINIDOS quando falamos de algo:', 'De modo geral, vago e impreciso',
+     ['De modo geral, vago e impreciso', 'Conhecido e específico', 'Que já sabemos qual é', 'Que é singular apenas']),
+    ('Quais são os artigos definidos?', 'O, a, os, as', ['O, a, os, as', 'Um, uma, uns, umas', 'Este, esta, isto', 'Meu, minha, meus']),
+    ('Quais são os artigos indefinidos?', 'Um, uma, uns, umas', ['Um, uma, uns, umas', 'O, a, os, as', 'Esse, essa, isso', 'Seu, sua, seus']),
+    ('Na frase "O cachorro latiu", o artigo "o" é:', 'Definido', ['Definido', 'Indefinido', 'Plural apenas', 'Feminino']),
+    ('Na frase "Um gato apareceu", o artigo "um" é:', 'Indefinido', ['Indefinido', 'Definido', 'Feminino', 'Plural']),
+    ('Complete: "___ maçã caiu da árvore." (uma maçã qualquer, não sabemos qual)', 'Uma', ['Uma', 'A', 'Umas', 'As']),
+    ('Complete: "___ flor desabrochou." (uma flor específica, que já conhecemos)', 'A', ['A', 'Uma', 'As', 'Umas']),
+    ('Complete: "___ alunos chegaram cedo." (alunos quaisquer, não sabemos quantos exatamente)', 'Uns', ['Uns', 'Os', 'Umas', 'As']),
+    ('Complete: "___ livros estão na mochila." (livros específicos, que já conhecemos)', 'Os', ['Os', 'Uns', 'As', 'Umas']),
+    ('O artigo deve concordar com o substantivo em:', 'Gênero e número', ['Gênero e número', 'Apenas gênero', 'Apenas número', 'Tempo verbal']),
+    ('Qual é o artigo definido masculino plural?', 'Os', ['Os', 'As', 'Uns', 'O']),
+    ('Qual é o artigo indefinido feminino plural?', 'Umas', ['Umas', 'Uns', 'As', 'Uma']),
+    ('Na frase "As borboletas voaram", o artigo "as" é:', 'Definido, feminino e plural', ['Definido, feminino e plural', 'Indefinido, feminino e plural', 'Definido, masculino e singular', 'Indefinido, masculino e singular']),
+    ('Uma boa dica para saber se o artigo é definido é perguntar: "Já sabemos qual é?". Se a resposta for SIM, o artigo é:', 'Definido',
+     ['Definido', 'Indefinido', 'Plural', 'Feminino']),
+]
+for enunciado, resposta, opcoes in artigos:
+    criar_questao(portugues, 'artigos', 'multipla_escolha', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE PORTUGUÊS CONCLUÍDA!")
@@ -353,6 +392,9 @@ for modulo, nome in [
     ('encontros_consonantais', 'Encontros Consonantais'),
     ('substantivos_adjetivos', 'Substantivos e Adjetivos'),
     ('tipos_de_frase', 'Tipos de Frase'),
+    ('tempos_verbais', 'Tempos Verbais'),
+    ('substantivos_singular_plural', 'Substantivo Singular e Plural'),
+    ('artigos', 'Artigos'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=portugues, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

@@ -4,12 +4,13 @@ popular_ciencias.py
 Execute na raiz do projeto:
     python popular_ciencias.py
 
-Popula o banco com questões de Ciências em 5 módulos:
+Popula o banco com questões de Ciências em 6 módulos:
   - plantas (partes, fotossíntese, dispersão de sementes, germinação)
   - sons (naturais x artificiais, poluição sonora, instrumentos)
   - solo (tipos, preparo, degradação e conservação)
   - petroleo (o que é, usos, riscos)
   - sistema_solar (rotação, translação, planetas)
+  - diversidade_modos_vida (ambientes, alimentação, reprodução dos animais)
 
 Baseado no material real de Ciências do 3º ano (Colégio Santo Agostinho).
 Pode rodar de novo sem problema — não duplica questões existentes.
@@ -227,6 +228,48 @@ for enunciado, resposta, opcoes in sistema_solar:
     criar_questao(ciencias, 'sistema_solar', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO 6 — DIVERSIDADE DE MODOS DE VIDA (novo)
+# ══════════════════════════════════════════════════════════════════
+print("\n🐾 Populando: Ciências › Diversidade de Modos de Vida...")
+
+diversidade_modos_vida = [
+    ('Animais que vivem em rios, lagos ou no mar habitam um ambiente:', 'Aquático',
+     ['Aquático', 'Terrestre', 'Aéreo', 'Subterrâneo']),
+    ('Animais que vivem sobre o solo, como o cachorro e o leão, habitam um ambiente:', 'Terrestre',
+     ['Terrestre', 'Aquático', 'Aéreo', 'Marinho']),
+    ('Animais que se alimentam apenas de plantas são chamados de:', 'Herbívoros',
+     ['Herbívoros', 'Carnívoros', 'Onívoros', 'Insetívoros']),
+    ('Animais que se alimentam de outros animais são chamados de:', 'Carnívoros',
+     ['Carnívoros', 'Herbívoros', 'Onívoros', 'Vegetarianos']),
+    ('Animais que se alimentam tanto de plantas quanto de outros animais são chamados de:', 'Onívoros',
+     ['Onívoros', 'Herbívoros', 'Carnívoros', 'Fotossintéticos']),
+    ('O leão é um exemplo de animal:', 'Carnívoro', ['Carnívoro', 'Herbívoro', 'Onívoro', 'Vegetariano']),
+    ('A vaca é um exemplo de animal:', 'Herbívoro', ['Herbívoro', 'Carnívoro', 'Onívoro', 'Insetívoro']),
+    ('O processo pelo qual um animal gera um filhote é chamado de:', 'Reprodução',
+     ['Reprodução', 'Respiração', 'Digestão', 'Fotossíntese']),
+    ('Animais que nascem de ovos são chamados de:', 'Ovíparos', ['Ovíparos', 'Vivíparos', 'Herbívoros', 'Onívoros']),
+    ('Animais que se desenvolvem dentro do corpo da mãe e nascem vivos são chamados de:', 'Vivíparos',
+     ['Vivíparos', 'Ovíparos', 'Carnívoros', 'Terrestres']),
+    ('O cachorro é um animal:', 'Vivíparo', ['Vivíparo', 'Ovíparo', 'Herbívoro', 'Aquático']),
+    ('A galinha é um animal:', 'Ovíparo', ['Ovíparo', 'Vivíparo', 'Carnívoro', 'Aquático']),
+    ('Não podemos dizer que um gato passa por metamorfose porque:', 'Ele não nasce de ovo e já nasce parecido com um adulto',
+     ['Ele não nasce de ovo e já nasce parecido com um adulto', 'Ele é herbívoro', 'Ele vive na água', 'Ele é muito pequeno']),
+    ('Uma borboleta, ao contrário de um gato, passa por um processo chamado:', 'Metamorfose',
+     ['Metamorfose', 'Reprodução simples', 'Hibernação', 'Fotossíntese']),
+    ('O João-de-barro constrói seu próprio ninho de barro. Ele se alimenta principalmente de:', 'Insetos, como cupins, formigas e minhocas',
+     ['Insetos, como cupins, formigas e minhocas', 'Apenas sementes e frutas', 'Apenas outros pássaros', 'Apenas plantas aquáticas']),
+    ('Por que o João-de-barro é considerado um animal carnívoro?', 'Porque se alimenta de pequenos insetos',
+     ['Porque se alimenta de pequenos insetos', 'Porque come apenas frutas', 'Porque vive na água', 'Porque não se reproduz']),
+    ('O que aconteceria com os animais se a etapa da "reprodução" do ciclo de vida deixasse de existir?', 'Não haveria mais animais no mundo',
+     ['Não haveria mais animais no mundo', 'Os animais ficariam mais fortes', 'Nada mudaria', 'Os animais se tornariam aquáticos']),
+    ('Uma tartaruga e um jacaré vivem no mesmo grupo de animais porque ambos são:', 'Ovíparos',
+     ['Ovíparos', 'Vivíparos', 'Herbívoros', 'Aquáticos apenas']),
+]
+for enunciado, resposta, opcoes in diversidade_modos_vida:
+    criar_questao(ciencias, 'diversidade_modos_vida', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE CIÊNCIAS CONCLUÍDA!")
@@ -237,6 +280,7 @@ for modulo, nome in [
     ('solo', 'Solo'),
     ('petroleo', 'Petróleo'),
     ('sistema_solar', 'Sistema Solar'),
+    ('diversidade_modos_vida', 'Diversidade de Modos de Vida'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=ciencias, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")
