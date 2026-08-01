@@ -25,7 +25,7 @@
             position: relative; z-index: 2;
             background-color: rgba(1, 45, 50, 0.6);
             border: 2px solid rgba(255,255,255,0.35);
-            border-radius: 20px; padding: 45px 35px; width: 520px; max-width: 92vw;
+            border-radius: 20px; padding: 45px 35px; width: 620px; max-width: 92vw;
             text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
         h1 { color: #ffd54f; font-size: 1.6em; margin-bottom: 30px; }
@@ -69,6 +69,14 @@
             <a class="frente" href="{% url 'numeracao_quiz' %}">
                 <span class="icone">🔢</span>
                 Sistema de Numeração
+            </a>
+            <a class="frente" href="{% url 'desafios_calculo_quiz' %}">
+                <span class="icone">🧠</span>
+                Desafios de Cálculo
+            </a>
+            <a class="frente" href="{% url 'colmeia_multiplicacao' %}">
+                <span class="icone">🐝</span>
+                Colmeia da Multiplicação
             </a>
         </div>
         <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>

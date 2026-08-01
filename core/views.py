@@ -125,6 +125,9 @@ MODULOS_PORTUGUES = {
     'encontros_consonantais': ('Encontros Consonantais', '🔗'),
     'substantivos_adjetivos': ('Substantivos e Adjetivos', '🏷️'),
     'tipos_de_frase': ('Tipos de Frase', '💬'),
+    'tempos_verbais': ('Tempos Verbais', '⏰'),
+    'substantivos_singular_plural': ('Singular e Plural', '🔢'),
+    'artigos': ('Artigos', '🔖'),
 }
 
 
@@ -261,6 +264,7 @@ MODULOS_CIENCIAS = {
     'solo': ('Solo', '🪨'),
     'petroleo': ('Petróleo', '🛢️'),
     'sistema_solar': ('Sistema Solar', '🪐'),
+    'diversidade_modos_vida': ('Diversidade de Modos de Vida', '🐾'),
 }
 
 
@@ -391,6 +395,59 @@ def numeracao_quiz(request):
 
 
 @login_required(login_url='/')
+def desafios_calculo_quiz(request):
+    """
+    Quiz de Desafios de Cálculo (expressões numéricas, cálculo mental,
+    multiplicação/divisão armada, valor posicional, situações-problema),
+    usando o banco de questões (BancoQuestao) populado a partir das
+    provas reais de matemática. Mesmo formato do numeracao_quiz, só que
+    numa rota própria — sem mexer no que já existia.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='desafios_calculo', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'desafios_calculo_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
+def colmeia_multiplicacao_view(request):
+    """
+    Jogo 'Colmeia da Multiplicação': o aluno associa cada conta de
+    multiplicação (ex: 7 x 8) ao seu resultado correto (56), e as duas
+    células ficam coloridas com a mesma cor ao acertar — inspirado na
+    folha de atividade em papel, só que interativo.
+
+    Sorteia pares novos a cada partida, na tabuada de 0 a 12, sem
+    produtos repetidos (senão duas contas diferentes poderiam "casar"
+    com a mesma célula de resultado).
+    """
+    pares = []
+    produtos_usados = set()
+    pares_usados = set()
+    tentativas = 0
+    while len(pares) < 8 and tentativas < 500:
+        tentativas += 1
+        a = random.randint(0, 12)
+        b = random.randint(1, 12)
+        produto = a * b
+        if produto in produtos_usados or (a, b) in pares_usados:
+            continue
+        produtos_usados.add(produto)
+        pares_usados.add((a, b))
+        pares.append({'a': a, 'b': b, 'produto': produto})
+
+    return render(request, 'colmeia.html', {'pares_json': json.dumps(pares)})
+
+
+@login_required(login_url='/')
 def niveis_operacao(request, operacao):
     """
     Tela de escolha de nível. Adição/Subtração/Multiplicação/Divisão têm
@@ -503,6 +560,10 @@ def montar_estatisticas_aluno(usuario):
         _adicionar('Matemática', nome, icone, jogadas_todas.filter(operacao=op_id))
     _adicionar('Matemática', 'Sistema de Numeração', '🔢',
                jogadas_todas.filter(operacao='matematica_numeracao', nivel='numeracao_questao'))
+    _adicionar('Matemática', 'Desafios de Cálculo', '🧠',
+               jogadas_todas.filter(operacao='matematica_desafios_calculo', nivel='desafios_calculo_questao'))
+    _adicionar('Matemática', 'Colmeia da Multiplicação', '🐝',
+               jogadas_todas.filter(operacao='matematica_colmeia', nivel='colmeia_par'))
 
     # Português, Inglês, Ciências, Geografia, História: módulos de quiz
     for materia, modulos, prefixo in [

@@ -27,7 +27,7 @@
             position: relative; z-index: 2;
             background-color: rgba(10, 40, 32, 0.6);
             border: 2px solid rgba(255,255,255,0.35);
-            border-radius: 20px; padding: 40px 35px; width: 560px; max-width: 92vw;
+            border-radius: 20px; padding: 40px 35px; width: 620px; max-width: 92vw;
             text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
         h1 { color: #ffd54f; font-size: 1.6em; margin-bottom: 28px; }
@@ -67,6 +67,9 @@
             </a>
             <a class="modulo" href="{% url 'ciencias_quiz' 'sistema_solar' %}">
                 <span class="icone">🪐</span>Sistema Solar
+            </a>
+            <a class="modulo" href="{% url 'ciencias_quiz' 'diversidade_modos_vida' %}">
+                <span class="icone">🐾</span>Diversidade de Modos de Vida
             </a>
         </div>
         <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
