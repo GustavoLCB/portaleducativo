@@ -34,7 +34,7 @@ from core.models import Disciplina, BancoQuestao
 
 
 def criar_questao(disciplina, modulo, tipo, enunciado, resposta, opcoes):
-    obj, criado = BancoQuestao.objects.get_or_create(
+    obj, criado = BancoQuestao.objects.update_or_create(
         disciplina=disciplina,
         modulo=modulo,
         enunciado=enunciado,
@@ -45,8 +45,8 @@ def criar_questao(disciplina, modulo, tipo, enunciado, resposta, opcoes):
             'ativo': True,
         }
     )
-    status = "✅" if criado else "⏭️ "
-    print(f"  {status} {enunciado[:65]}")
+    status = "✅ Criado" if criado else "🔄 Atualizado"
+    print(f"  {status}: {enunciado[:65]}")
 
 
 print("\n📚 Criando disciplina Português...")
@@ -284,7 +284,7 @@ tempos_verbais = [
     ('Complete com o verbo no PRESENTE: "Hoje eu ___ na escola." (estudar)', 'estudo',
      ['estudo', 'estudei', 'estudarei', 'estudava']),
     ('Complete com o verbo no PRETÉRITO (passado): "Ontem eu ___ na escola." (estudar)', 'estudei',
-     ['estudei', 'estudo', 'estudarei', 'estudarei']),
+     ['estudei', 'estudo', 'estudarei', 'estudava']),
     ('Complete com o verbo no FUTURO: "Amanhã eu ___ na escola." (estudar)', 'estudarei',
      ['estudarei', 'estudei', 'estudo', 'estudava']),
     ('A frase "Eu brinco no parque todos os dias" está no tempo:', 'Presente',
@@ -343,7 +343,7 @@ substantivos_singular_plural = [
     ('Qual é o plural de "coração"?', 'Corações', ['Corações', 'Coraçãos', 'Coraçães', 'Coraçãoes']),
     ('Os substantivos paroxítonos terminados em S, como "tênis" e "ônibus", no plural:', 'Não mudam de forma',
      ['Não mudam de forma', 'Ganham ES', 'Ganham S', 'Perdem o S']),
-    ('Qual é o plural de "ônibus"?', 'Ônibus', ['Ônibus', 'Ônibuses', 'Ônibus', 'Ônibus']),
+    ('Qual é o plural de "ônibus"?', 'Ônibus', ['Ônibus', 'Ônibuses', 'Ônibuzes', 'Ônibuis']),
 ]
 for enunciado, resposta, opcoes in substantivos_singular_plural:
     criar_questao(portugues, 'substantivos_singular_plural', 'multipla_escolha', enunciado, resposta, opcoes)

@@ -23,7 +23,7 @@ from core.models import Disciplina, BancoQuestao
 
 
 def criar_questao(disciplina, modulo, enunciado, resposta, opcoes):
-    obj, criado = BancoQuestao.objects.get_or_create(
+    obj, criado = BancoQuestao.objects.update_or_create(
         disciplina=disciplina, modulo=modulo, enunciado=enunciado,
         defaults={
             'tipo': 'multipla_escolha',
@@ -32,7 +32,7 @@ def criar_questao(disciplina, modulo, enunciado, resposta, opcoes):
             'ativo': True,
         }
     )
-    status = "✅ Criado" if criado else "⏭️  Já existe"
+    status = "✅ Criado" if criado else "🔄 Atualizado"
     print(f"  {status}: {enunciado[:65]}")
 
 
@@ -59,10 +59,12 @@ questoes = [
     ('8 × 1.000 = ?', '8.000', ['8.000', '800', '80.000', '8.800']),
 
     # Cálculo mental com sinais = e ≠
-    ('Complete com o sinal correto: 6 × 60 ___ 360', '=', ['=', '≠', '>', '<']),
-    ('Complete com o sinal correto: 4 × 20 ___ 120', '≠', ['≠', '=', '>', '<']),
-    ('Complete com o sinal correto: 7 × 50 ___ 450', '≠', ['≠', '=', '>', '<']),
-    ('Complete com o sinal correto: 24 × 100 ___ 2.040', '≠', ['≠', '=', '>', '<']),
+    # (apenas 2 opções de propósito: com 4 símbolos, "≠" e "<"/">" podem
+    # estar corretos ao mesmo tempo quando os valores são diferentes)
+    ('Complete com o sinal correto: 6 × 60 ___ 360', '=', ['=', '≠']),
+    ('Complete com o sinal correto: 4 × 20 ___ 120', '≠', ['≠', '=']),
+    ('Complete com o sinal correto: 7 × 50 ___ 450', '≠', ['≠', '=']),
+    ('Complete com o sinal correto: 24 × 100 ___ 2.040', '≠', ['≠', '=']),
 
     # Multiplicação e divisão armadas
     ('470 × 6 = ?', '2.820', ['2.820', '2.814', '2.720', '2.920']),
