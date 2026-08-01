@@ -126,7 +126,7 @@ CATEGORIAS = {
 
 
 def criar_questao(disciplina, emoji, palavra_certa, opcoes):
-    obj, criado = BancoQuestao.objects.get_or_create(
+    obj, criado = BancoQuestao.objects.update_or_create(
         disciplina=disciplina, modulo=MODULO, enunciado=emoji,
         defaults={
             'tipo': 'multipla_escolha',
@@ -135,7 +135,7 @@ def criar_questao(disciplina, emoji, palavra_certa, opcoes):
             'ativo': True,
         }
     )
-    status = "✅" if criado else "⏭️ "
+    status = "✅ Criado" if criado else "🔄 Atualizado"
     print(f"  {status} {emoji}  {palavra_certa}")
 
 

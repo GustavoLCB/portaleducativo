@@ -26,7 +26,7 @@ from core.models import Disciplina, BancoQuestao
 
 
 def criar_questao(disciplina, modulo, enunciado, resposta, opcoes):
-    obj, criado = BancoQuestao.objects.get_or_create(
+    obj, criado = BancoQuestao.objects.update_or_create(
         disciplina=disciplina, modulo=modulo, enunciado=enunciado,
         defaults={
             'tipo': 'multipla_escolha',
@@ -35,7 +35,7 @@ def criar_questao(disciplina, modulo, enunciado, resposta, opcoes):
             'ativo': True,
         }
     )
-    status = "✅" if criado else "⏭️ "
+    status = "✅ Criado" if criado else "🔄 Atualizado"
     print(f"  {status} {enunciado[:65]}")
 
 
