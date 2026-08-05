@@ -34,6 +34,8 @@ urlpatterns = [
     path('geografia/<str:modulo>/', views.geografia_quiz, name='geografia_quiz'),
 
     path('ingles/', views.menu_ingles, name='menu_ingles'),
+    path('ingles/science/', views.menu_ingles_science, name='menu_ingles_science'),
+    path('ingles/science/hive/<str:tema>/', views.ingles_science_hive_view, name='ingles_science_hive'),
     path('ingles/<str:modulo>/', views.ingles_quiz, name='ingles_quiz'),
 
     path('ciencias/', views.menu_ciencias, name='menu_ciencias'),

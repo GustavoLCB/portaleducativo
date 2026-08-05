@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #0d3b66;
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(13, 59, 102, 0.5), rgba(13, 59, 102, 0.5)),
+                url('{% static "img/fundoing.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(6, 30, 54, 0.6);
+            border: 2px solid rgba(255,255,255,0.35);
+            border-radius: 20px; padding: 40px 35px; width: 780px; max-width: 92vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.6em; margin-bottom: 8px; }
+        h2.secao {
+            color: #e8e8e0; font-size: 1em; font-weight: normal; text-transform: uppercase;
+            letter-spacing: 1px; margin: 26px 0 14px; opacity: 0.85;
+        }
+        .grade-modulos {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
+        }
+        a.modulo {
+            background-color: #e8e8e0; color: #0d2035; padding: 22px 10px;
+            border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 0.95em;
+            transition: transform 0.15s; display: block; border: 3px solid transparent;
+            flex: 0 1 175px; width: 175px;
+        }
+        a.modulo:hover { transform: translateY(-4px); border-color: #f4b400; }
+        a.modulo .icone { display: block; font-size: 2.2em; margin-bottom: 8px; }
+        a.voltar { display: inline-block; margin-top: 26px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
+        a.voltar:hover { text-decoration: underline; }
+        @media (max-width: 480px) {
+            }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>🔬 Science</h1>
+
+        <h2 class="secao">📝 Quizzes</h2>
+        <div class="grade-modulos">
+            <a class="modulo" href="{% url 'ingles_quiz' 'science_vertebrates_invertebrates' %}">
+                <span class="icone">🦴</span>Vertebrates x Invertebrates
+            </a>
+            <a class="modulo" href="{% url 'ingles_quiz' 'science_oviparous_viviparous' %}">
+                <span class="icone">🥚</span>Oviparous x Viviparous
+            </a>
+            <a class="modulo" href="{% url 'ingles_quiz' 'science_habitats' %}">
+                <span class="icone">🌍</span>Animal Habitats
+            </a>
+            <a class="modulo" href="{% url 'ingles_quiz' 'science_eating_habits' %}">
+                <span class="icone">🍽️</span>Eating Habits
+            </a>
+        </div>
+
+        <h2 class="secao">🐝 Hive Games</h2>
+        <div class="grade-modulos">
+            <a class="modulo" href="{% url 'ingles_science_hive' 'vertebrates-invertebrates' %}">
+                <span class="icone">🦴</span>Vertebrates x Invertebrates Hive
+            </a>
+            <a class="modulo" href="{% url 'ingles_science_hive' 'oviparous-viviparous' %}">
+                <span class="icone">🥚</span>Oviparous x Viviparous Hive
+            </a>
+            <a class="modulo" href="{% url 'ingles_science_hive' 'habitats' %}">
+                <span class="icone">🌍</span>Animal Habitats Hive
+            </a>
+            <a class="modulo" href="{% url 'ingles_science_hive' 'eating-habits' %}">
+                <span class="icone">🍽️</span>Eating Habits Hive
+            </a>
+        </div>
+
+        <a class="voltar" href="{% url 'menu_ingles' %}">⬅ Voltar</a>
+    </div>
+</body>
+</html>

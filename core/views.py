@@ -220,6 +220,10 @@ MODULOS_INGLES = {
     'vocabulario_geral': ('Vocabulário Geral', '📖'),
     'esportes_convites': ('Esportes e Convites', '⚽'),
     'vocabulario_visual': ('Vocabulário Visual', '🖼️'),
+    'science_vertebrates_invertebrates': ('Vertebrates x Invertebrates', '🦴'),
+    'science_oviparous_viviparous': ('Oviparous x Viviparous', '🥚'),
+    'science_habitats': ('Animal Habitats', '🌍'),
+    'science_eating_habits': ('Eating Habits', '🍽️'),
 }
 
 
@@ -251,6 +255,87 @@ def ingles_quiz(request, modulo):
         'modulo': modulo,
         'nome_modulo': nome_modulo,
         'icone_modulo': icone_modulo,
+    })
+
+
+@login_required(login_url='/')
+def menu_ingles_science(request):
+    """
+    Sub-hub 'Science' dentro de Inglês: 4 quizzes (usam ingles_quiz,
+    sem view própria) + 4 jogos de colmeia temáticos (usam a view
+    ingles_science_hive_view abaixo).
+    """
+    return render(request, 'menu_ingles_science.html')
+
+
+# Cada tema tem um "pool" de pares (emoji do animal, rótulo em inglês
+# único). O rótulo já inclui a classificação (ex: "Lion – Vertebrate"),
+# assim cada par tem um texto único — evita a ambiguidade de ter duas
+# células iguais na tela (o mesmo problema que corrigimos na Colmeia da
+# Multiplicação, aqui resolvido de outra forma: nome do animal + categoria).
+TEMAS_SCIENCE_HIVE = {
+    'vertebrates-invertebrates': {
+        'nome': 'Vertebrates x Invertebrates',
+        'icone': '🦴',
+        'pares': [
+            ('🦁', 'Lion – Vertebrate'), ('🐍', 'Snake – Vertebrate'), ('🐸', 'Frog – Vertebrate'),
+            ('🐦', 'Bird – Vertebrate'), ('🐟', 'Fish – Vertebrate'), ('🐢', 'Turtle – Vertebrate'),
+            ('🐝', 'Bee – Invertebrate'), ('🕷️', 'Spider – Invertebrate'), ('🐌', 'Snail – Invertebrate'),
+            ('🦀', 'Crab – Invertebrate'), ('🐙', 'Octopus – Invertebrate'), ('🦋', 'Butterfly – Invertebrate'),
+        ],
+    },
+    'oviparous-viviparous': {
+        'nome': 'Oviparous x Viviparous',
+        'icone': '🥚',
+        'pares': [
+            ('🐔', 'Chicken – Oviparous'), ('🐢', 'Turtle – Oviparous'), ('🦎', 'Lizard – Oviparous'),
+            ('🐸', 'Frog – Oviparous'), ('🦆', 'Duck – Oviparous'), ('🦉', 'Owl – Oviparous'),
+            ('🐶', 'Dog – Viviparous'), ('🐱', 'Cat – Viviparous'), ('🐮', 'Cow – Viviparous'),
+            ('🐴', 'Horse – Viviparous'), ('🐷', 'Pig – Viviparous'), ('🐑', 'Sheep – Viviparous'),
+        ],
+    },
+    'habitats': {
+        'nome': 'Animal Habitats',
+        'icone': '🌍',
+        'pares': [
+            ('🐟', 'Fish – Aquatic'), ('🐬', 'Dolphin – Aquatic'), ('🦈', 'Shark – Aquatic'),
+            ('🦁', 'Lion – Terrestrial'), ('🐘', 'Elephant – Terrestrial'), ('🐴', 'Horse – Terrestrial'),
+            ('🦅', 'Eagle – Aerial'), ('🦋', 'Butterfly – Aerial'), ('🐝', 'Bee – Aerial'),
+            ('🐒', 'Monkey – Arboreal'), ('🦥', 'Sloth – Arboreal'), ('🦜', 'Parrot – Arboreal'),
+        ],
+    },
+    'eating-habits': {
+        'nome': 'Eating Habits',
+        'icone': '🍽️',
+        'pares': [
+            ('🦁', 'Lion – Carnivore'), ('🐺', 'Wolf – Carnivore'), ('🦈', 'Shark – Carnivore'),
+            ('🐰', 'Rabbit – Herbivore'), ('🐄', 'Cow – Herbivore'), ('🦒', 'Giraffe – Herbivore'),
+            ('🐻', 'Bear – Omnivore'), ('🐷', 'Pig – Omnivore'), ('🐔', 'Chicken – Omnivore'),
+        ],
+    },
+}
+
+
+@login_required(login_url='/')
+def ingles_science_hive_view(request, tema):
+    """
+    Jogo de colmeia genérico, reaproveitado pelos 4 temas de Science em
+    Inglês (mesma mecânica da Colmeia da Multiplicação: clica no bicho,
+    depois no rótulo certo, os dois ficam da mesma cor).
+    """
+    config = TEMAS_SCIENCE_HIVE.get(tema)
+    if config is None:
+        return redirect('menu_ingles_science')
+
+    pool = config['pares']
+    pares_sorteados = random.sample(pool, min(8, len(pool)))
+    pares_formatados = [{'esquerda': emoji, 'direita': rotulo} for emoji, rotulo in pares_sorteados]
+
+    return render(request, 'colmeia_science.html', {
+        'pares_json': json.dumps(pares_formatados),
+        'tema': tema,
+        'nome_tema': config['nome'],
+        'icone_tema': config['icone'],
     })
 
 
@@ -576,6 +661,12 @@ def montar_estatisticas_aluno(usuario):
         for modulo_id, (nome_modulo, icone_modulo) in modulos.items():
             _adicionar(materia, nome_modulo, icone_modulo,
                        jogadas_todas.filter(operacao=f'{prefixo}_{modulo_id}', nivel=f'{modulo_id}_questao'))
+
+    # Inglês › Science: as 4 colmeias temáticas (não usam o padrão genérico
+    # acima porque a "operacao" delas é dinâmica por tema, não por módulo).
+    for tema_id, config in TEMAS_SCIENCE_HIVE.items():
+        _adicionar('Inglês', f"{config['nome']} Hive", '🐝',
+                   jogadas_todas.filter(operacao=f'ingles_science_hive_{tema_id}', nivel='science_hive_par'))
 
     return materias, total_geral
 
