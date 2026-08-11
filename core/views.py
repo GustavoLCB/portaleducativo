@@ -653,6 +653,7 @@ def montar_estatisticas_aluno(usuario):
     materias = OrderedDict([
         ('Matemática', []), ('Português', []), ('Inglês', []),
         ('Ciências', []), ('Geografia', []), ('História', []),
+        ('Prova Multidisciplinar', []),
     ])
 
     def _adicionar(materia, nome, icone, jogadas_filtradas):

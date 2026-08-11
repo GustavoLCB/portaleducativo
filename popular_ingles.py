@@ -15,6 +15,7 @@ Pode rodar de novo sem problema — não duplica questões existentes.
 """
 
 import os
+import random
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'setup.settings')
@@ -149,48 +150,66 @@ for enunciado, resposta, opcoes in esportes_convites:
 
 
 # ══════════════════════════════════════════════════════════════════
-# MÓDULO NOVO — ROOMS IN THE HOUSE
+# MÓDULO — ROOMS IN THE HOUSE (formato visual: imagem + nome)
 # ══════════════════════════════════════════════════════════════════
 print("\n🏠 Populando: Inglês › Rooms in the House...")
 
-casa_comodos = [
-    ('What is the word for the room where you cook food?', 'Kitchen',
-     ['Kitchen', 'Bathroom', 'Bedroom', 'Living room']),
-    ('What is the word for the room where you sleep?', 'Bedroom',
-     ['Bedroom', 'Kitchen', 'Bathroom', 'Living room']),
-    ('What is the word for the room where you take a shower or a bath?', 'Bathroom',
-     ['Bathroom', 'Bedroom', 'Kitchen', 'Living room']),
-    ('What is the word for the room where the family relaxes and watches TV?', 'Living room',
-     ['Living room', 'Kitchen', 'Bathroom', 'Bedroom']),
-    ('Which piece of furniture do you use to store books?', 'A bookcase',
-     ['A bookcase', 'A stove', 'A tub', 'A rug']),
-    ('Which appliance is used to cook food on top, with an oven below?', 'A stove',
-     ['A stove', 'A microwave', 'A fireplace', 'A bookcase']),
-    ('Which appliance heats up food quickly?', 'A microwave',
-     ['A microwave', 'A stove', 'A fireplace', 'An armchair']),
-    ('Where do you take a bath?', 'In a tub',
-     ['In a tub', 'In a bookcase', 'In a stove', 'In an armchair']),
-    ('What do you use to go from one floor to another?', 'Stairs',
-     ['Stairs', 'Shelves', 'A rug', 'A fireplace']),
-    ('What is a comfortable chair for one person called?', 'An armchair',
-     ['An armchair', 'A bookcase', 'A stove', 'A shelf']),
-    ('What do you call the place in a living room where you can light a fire?', 'A fireplace',
-     ['A fireplace', 'A stove', 'A microwave', 'A tub']),
-    ('What is the soft covering on the floor called?', 'A rug',
-     ['A rug', 'A shelf', 'A stove', 'A bookcase']),
-    ('Complete: "Is there a fireplace in the living room?" — "Yes, ___."', 'there is',
-     ['there is', 'there are', "there isn't", "there aren't"]),
-    ('Complete: "Are there any shelves in the living room?" — "Yes, ___."', 'there are',
-     ['there are', 'there is', "there aren't", "there isn't"]),
-    ('Complete: "Is there a TV in the bedroom?" — "No, ___."', "there isn't",
-     ["there isn't", "there aren't", 'there is', 'there are']),
-    ('Which question word do we use for something singular, like "a stove"?', 'Is there',
-     ['Is there', 'Are there', 'Do there', 'Does there']),
-    ('Which question word do we use for something plural, like "shelves"?', 'Are there',
-     ['Are there', 'Is there', 'Do there', 'Does there']),
+# Esse módulo mudou de formato (antes era pergunta em texto, agora é
+# "imagem" (emoji grande) + nome do cômodo/móvel, igual ao Vocabulário
+# Visual). Por isso apagamos as perguntas antigas em texto antes de
+# gravar as novas — senão as duas versões ficariam misturadas no banco.
+apagadas, _ = BancoQuestao.objects.filter(disciplina=ingles, modulo='casa_comodos').delete()
+if apagadas:
+    print(f"  🗑️  Removidas {apagadas} perguntas antigas (formato texto) de Rooms in the House.")
+
+casa_comodos_visual = [
+    # Cômodos (rooms) — usam emoji (ficaram bons)
+    ('🍲', 'Kitchen'),
+    ('🛏️', 'Bedroom'),
+    ('🛁', 'Bathroom'),
+    ('🛋️', 'Living room'),
+    ('🍽️', 'Dining room'),
+    ('🌳', 'Garden'),
+    ('🚗', 'Garage'),
+    ('💻', 'Office'),
+    # Móveis e objetos com bom emoji disponível
+    ('📚', 'Bookcase'),
+    ('🪑', 'Armchair'),
+    ('🔥', 'Fireplace'),
+    ('🪜', 'Stairs'),
+    ('🛌', 'Pillow'),
+    ('📺', 'TV'),
+    ('🪞', 'Mirror'),
+    ('💡', 'Lamp'),
+    ('🪟', 'Window'),
+    ('🚪', 'Door'),
+    # Móveis e objetos SEM bom emoji — usam ícone desenhado em SVG
+    # (a "chave" abaixo precisa bater com o dicionário iconesSVG do
+    # ingles_quiz.html; se mudar um nome aqui, mude lá também)
+    ('table', 'Table'),
+    ('stove', 'Stove'),
+    ('microwave', 'Microwave'),
+    ('chair', 'Chair'),
+    ('sofa', 'Sofa'),
+    ('shelf', 'Shelf'),
+    ('fridge', 'Refrigerator'),
+    ('washing_machine', 'Washing machine'),
 ]
-for enunciado, resposta, opcoes in casa_comodos:
-    criar_questao(ingles, 'casa_comodos', enunciado, resposta, opcoes)
+
+# Verificação de segurança: nenhum emoji pode se repetir (o emoji é a
+# "identidade" da pergunta — se repetisse, uma palavra sobrescreveria a
+# outra sem querer).
+emojis_vistos = set()
+duplicados = [emoji for emoji, _ in casa_comodos_visual if emoji in emojis_vistos or emojis_vistos.add(emoji)]
+if duplicados:
+    print(f"  ⚠️  ATENÇÃO: emojis repetidos em casa_comodos_visual: {duplicados}")
+
+for emoji, palavra_certa in casa_comodos_visual:
+    outras = [palavra for (_, palavra) in casa_comodos_visual if palavra != palavra_certa]
+    erradas = random.sample(outras, min(3, len(outras)))
+    opcoes = erradas + [palavra_certa]
+    random.shuffle(opcoes)
+    criar_questao(ingles, 'casa_comodos', emoji, palavra_certa, opcoes)
 
 
 # ── RESUMO ──────────────────────────────────────────────────────────
