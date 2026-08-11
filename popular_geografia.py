@@ -212,6 +212,46 @@ for enunciado, resposta, opcoes in paisagem:
     criar_questao(geografia, 'paisagem', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — SETORES DA ECONOMIA
+# ══════════════════════════════════════════════════════════════════
+print("\n🏙️  Populando: Geografia › Setores da Economia...")
+
+setores_economia = [
+    ('A economia de um país pode ser dividida em quantos setores?', '3', ['3', '2', '4', '5']),
+    ('O setor relacionado à produção através da exploração de recursos da natureza, como agricultura e pesca, é o:', 'Setor primário',
+     ['Setor primário', 'Setor secundário', 'Setor terciário', 'Setor público']),
+    ('O setor que transforma a matéria-prima em produto industrializado é o:', 'Setor secundário',
+     ['Setor secundário', 'Setor primário', 'Setor terciário', 'Setor privado']),
+    ('O setor relacionado a serviços e comércio, com maior oferta de empregos, é o:', 'Setor terciário',
+     ['Setor terciário', 'Setor primário', 'Setor secundário', 'Setor rural']),
+    ('A construção civil, como a construção de casas e estradas, faz parte do:', 'Setor secundário',
+     ['Setor secundário', 'Setor primário', 'Setor terciário', 'Setor público']),
+    ('O extrativismo vegetal, mineral e animal faz parte do:', 'Setor primário',
+     ['Setor primário', 'Setor secundário', 'Setor terciário', 'Setor de serviços']),
+    ('Uma loja de roupas faz parte de qual setor da economia?', 'Setor terciário',
+     ['Setor terciário', 'Setor primário', 'Setor secundário', 'Setor industrial']),
+    ('Uma fábrica de roupas faz parte de qual setor da economia?', 'Setor secundário',
+     ['Setor secundário', 'Setor primário', 'Setor terciário', 'Setor de comércio']),
+    ('Serviços feitos por pessoas ou empresas que cobram diretamente pelo atendimento, como uma escola particular, são chamados de:', 'Serviço privado',
+     ['Serviço privado', 'Serviço público', 'Setor primário', 'Setor secundário']),
+    ('Serviços oferecidos pelo governo a todos os cidadãos, como escolas e hospitais públicos, são chamados de:', 'Serviço público',
+     ['Serviço público', 'Serviço privado', 'Setor primário', 'Setor secundário']),
+    ('Os serviços públicos são mantidos com o dinheiro de:', 'Impostos e taxas',
+     ['Impostos e taxas', 'Doações apenas', 'Empréstimos apenas', 'Vendas de produtos']),
+    ('Entre os serviços públicos, destacam-se: abastecimento de água tratada, coleta de lixo, iluminação pública e:', 'Segurança',
+     ['Segurança', 'Apenas transporte privado', 'Apenas lazer particular', 'Apenas bancos privados']),
+    ('Quem é responsável pelos serviços públicos?', 'Os governantes',
+     ['Os governantes', 'Apenas empresas privadas', 'Apenas os moradores', 'Nenhuma instituição']),
+    ('A cidade normalmente fornece ao campo produtos como roupas e máquinas; o campo fornece à cidade:', 'Frutas e carne',
+     ['Frutas e carne', 'Roupas e máquinas', 'Apenas serviços', 'Apenas dinheiro']),
+    ('Um hospital particular é um exemplo de:', 'Serviço privado',
+     ['Serviço privado', 'Serviço público', 'Setor primário', 'Setor secundário']),
+]
+for enunciado, resposta, opcoes in setores_economia:
+    criar_questao(geografia, 'setores_economia', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE GEOGRAFIA CONCLUÍDA!")
@@ -222,6 +262,7 @@ for modulo, nome in [
     ('agricultura', 'Agricultura'),
     ('pecuaria', 'Pecuária'),
     ('paisagem', 'Paisagem'),
+    ('setores_economia', 'Setores da Economia'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=geografia, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

@@ -270,6 +270,54 @@ for enunciado, resposta, opcoes in diversidade_modos_vida:
     criar_questao(ciencias, 'diversidade_modos_vida', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — VERTEBRADOS E INVERTEBRADOS
+# ══════════════════════════════════════════════════════════════════
+print("\n🦴 Populando: Ciências › Vertebrados e Invertebrados...")
+
+vertebrados_invertebrados = [
+    ('Os animais vertebrados apresentam esqueletos internos com crânio e:', 'Coluna vertebral',
+     ['Coluna vertebral', 'Exoesqueleto', 'Casco', 'Concha']),
+    ('Os animais invertebrados não têm esqueleto interno, ou seja, não têm crânio nem:', 'Coluna vertebral',
+     ['Coluna vertebral', 'Exoesqueleto', 'Antenas', 'Patas']),
+    ('A coluna vertebral se conecta a qual estrutura?', 'Ao crânio',
+     ['Ao crânio', 'Ao exoesqueleto', 'À pele', 'Às patas']),
+    ('O crânio é composto de ossos que formam:', 'A cabeça',
+     ['A cabeça', 'As patas', 'A cauda', 'O tronco']),
+    ('Quais são os 5 principais grupos de vertebrados?', 'Peixes, anfíbios, répteis, aves e mamíferos',
+     ['Peixes, anfíbios, répteis, aves e mamíferos', 'Insetos, aranhas e moluscos',
+      'Apenas répteis e aves', 'Cnidários e equinodermos']),
+    ('Os peixes são animais aquáticos com corpo geralmente coberto por:', 'Escamas',
+     ['Escamas', 'Penas', 'Pelos', 'Exoesqueleto']),
+    ('Os anfíbios costumam viver próximo a lagos e rios, e sua pele costuma ser:', 'Fina e úmida',
+     ['Fina e úmida', 'Grossa e seca', 'Coberta de penas', 'Coberta de conchas']),
+    ('A maioria dos répteis apresenta pele grossa, formada por escamas ou:', 'Carapaças',
+     ['Carapaças', 'Penas', 'Pelos', 'Brânquias']),
+    ('As aves são animais cobertos por penas e apresentam:', 'Bico',
+     ['Bico', 'Brânquias', 'Carapaça', 'Exoesqueleto']),
+    ('Os mamíferos alimentam seus filhotes com:', 'Leite materno',
+     ['Leite materno', 'Insetos', 'Apenas plantas', 'Néctar']),
+    ('Uma estrutura externa rígida que ajuda a sustentar o corpo de alguns invertebrados é chamada de:', 'Exoesqueleto',
+     ['Exoesqueleto', 'Endoesqueleto', 'Coluna vertebral', 'Crânio']),
+    ('Cnidários são um grupo de invertebrados que inclui corais, águas-vivas e:', 'Anêmonas',
+     ['Anêmonas', 'Caramujos', 'Minhocas', 'Estrelas-do-mar']),
+    ('Moluscos são um grupo de invertebrados que inclui caramujos, mexilhões, polvos e:', 'Lulas',
+     ['Lulas', 'Aranhas', 'Corais', 'Minhocas']),
+    ('Anelídeos são um grupo de invertebrados que inclui minhocas e:', 'Sanguessugas',
+     ['Sanguessugas', 'Formigas', 'Águas-vivas', 'Estrelas-do-mar']),
+    ('Equinodermos são um grupo de invertebrados que inclui estrelas-do-mar e:', 'Ouriços-do-mar',
+     ['Ouriços-do-mar', 'Aranhas', 'Polvos', 'Sanguessugas']),
+    ('Artrópodes são um grupo de invertebrados que inclui insetos, aranhas, caranguejos e:', 'Centopeias',
+     ['Centopeias', 'Águas-vivas', 'Estrelas-do-mar', 'Minhocas']),
+    ('Um gato é um exemplo de animal:', 'Vertebrado',
+     ['Vertebrado', 'Invertebrado', 'Cnidário', 'Molusco']),
+    ('Uma joaninha é um exemplo de animal:', 'Invertebrado',
+     ['Invertebrado', 'Vertebrado', 'Mamífero', 'Réptil']),
+]
+for enunciado, resposta, opcoes in vertebrados_invertebrados:
+    criar_questao(ciencias, 'vertebrados_invertebrados', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE CIÊNCIAS CONCLUÍDA!")
@@ -281,6 +329,7 @@ for modulo, nome in [
     ('petroleo', 'Petróleo'),
     ('sistema_solar', 'Sistema Solar'),
     ('diversidade_modos_vida', 'Diversidade de Modos de Vida'),
+    ('vertebrados_invertebrados', 'Vertebrados e Invertebrados'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=ciencias, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

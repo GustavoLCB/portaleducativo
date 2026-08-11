@@ -148,6 +148,51 @@ for enunciado, resposta, opcoes in esportes_convites:
     criar_questao(ingles, 'esportes_convites', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — ROOMS IN THE HOUSE
+# ══════════════════════════════════════════════════════════════════
+print("\n🏠 Populando: Inglês › Rooms in the House...")
+
+casa_comodos = [
+    ('What is the word for the room where you cook food?', 'Kitchen',
+     ['Kitchen', 'Bathroom', 'Bedroom', 'Living room']),
+    ('What is the word for the room where you sleep?', 'Bedroom',
+     ['Bedroom', 'Kitchen', 'Bathroom', 'Living room']),
+    ('What is the word for the room where you take a shower or a bath?', 'Bathroom',
+     ['Bathroom', 'Bedroom', 'Kitchen', 'Living room']),
+    ('What is the word for the room where the family relaxes and watches TV?', 'Living room',
+     ['Living room', 'Kitchen', 'Bathroom', 'Bedroom']),
+    ('Which piece of furniture do you use to store books?', 'A bookcase',
+     ['A bookcase', 'A stove', 'A tub', 'A rug']),
+    ('Which appliance is used to cook food on top, with an oven below?', 'A stove',
+     ['A stove', 'A microwave', 'A fireplace', 'A bookcase']),
+    ('Which appliance heats up food quickly?', 'A microwave',
+     ['A microwave', 'A stove', 'A fireplace', 'An armchair']),
+    ('Where do you take a bath?', 'In a tub',
+     ['In a tub', 'In a bookcase', 'In a stove', 'In an armchair']),
+    ('What do you use to go from one floor to another?', 'Stairs',
+     ['Stairs', 'Shelves', 'A rug', 'A fireplace']),
+    ('What is a comfortable chair for one person called?', 'An armchair',
+     ['An armchair', 'A bookcase', 'A stove', 'A shelf']),
+    ('What do you call the place in a living room where you can light a fire?', 'A fireplace',
+     ['A fireplace', 'A stove', 'A microwave', 'A tub']),
+    ('What is the soft covering on the floor called?', 'A rug',
+     ['A rug', 'A shelf', 'A stove', 'A bookcase']),
+    ('Complete: "Is there a fireplace in the living room?" — "Yes, ___."', 'there is',
+     ['there is', 'there are', "there isn't", "there aren't"]),
+    ('Complete: "Are there any shelves in the living room?" — "Yes, ___."', 'there are',
+     ['there are', 'there is', "there aren't", "there isn't"]),
+    ('Complete: "Is there a TV in the bedroom?" — "No, ___."', "there isn't",
+     ["there isn't", "there aren't", 'there is', 'there are']),
+    ('Which question word do we use for something singular, like "a stove"?', 'Is there',
+     ['Is there', 'Are there', 'Do there', 'Does there']),
+    ('Which question word do we use for something plural, like "shelves"?', 'Are there',
+     ['Are there', 'Is there', 'Do there', 'Does there']),
+]
+for enunciado, resposta, opcoes in casa_comodos:
+    criar_questao(ingles, 'casa_comodos', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE INGLÊS CONCLUÍDA!")
@@ -157,6 +202,7 @@ for modulo, nome in [
     ('atividades_like', 'Atividades (like to)'),
     ('vocabulario_geral', 'Vocabulário Geral'),
     ('esportes_convites', 'Esportes e Convites'),
+    ('casa_comodos', 'Rooms in the House'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=ingles, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

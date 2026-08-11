@@ -175,6 +175,61 @@ for enunciado, resposta, opcoes in cidadania:
     criar_questao(historia, 'cidadania', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — CULTURA BRASILEIRA
+# ══════════════════════════════════════════════════════════════════
+print("\n🎭 Populando: História › Cultura Brasileira...")
+
+cultura_brasileira = [
+    ('O que é cultura?', 'Tudo aquilo que é aprendido e compartilhado pelas pessoas em uma sociedade',
+     ['Tudo aquilo que é aprendido e compartilhado pelas pessoas em uma sociedade', 'Apenas as festas populares',
+      'Apenas a língua falada em um país', 'Apenas os monumentos antigos']),
+    ('Quais são os 3 principais povos que contribuíram para a formação da cultura brasileira?', 'Indígenas, africanos e europeus',
+     ['Indígenas, africanos e europeus', 'Apenas europeus', 'Apenas africanos', 'Apenas asiáticos']),
+    ('Os objetos antigos ajudam a conhecer a:', 'História',
+     ['História', 'Matemática', 'Geografia atual', 'Língua estrangeira']),
+    ('A mandioca faz parte da alimentação de quais povos?', 'Povos indígenas',
+     ['Povos indígenas', 'Apenas europeus', 'Apenas africanos', 'Apenas asiáticos']),
+    ('Devemos tratar todas as culturas com:', 'Respeito',
+     ['Respeito', 'Indiferença', 'Desprezo', 'Desconfiança']),
+    ('Qual destes alimentos tem origem indígena?', 'Mandioca',
+     ['Mandioca', 'Chocolate europeu', 'Trigo', 'Queijo']),
+    ('Comer mandioca, ouvir samba e dormir em rede são costumes que mostram conhecimento de tradições de quais povos?', 'Povos indígenas e africanos',
+     ['Povos indígenas e africanos', 'Apenas europeus', 'Apenas asiáticos', 'Nenhum povo específico']),
+    ('Por que um objeto antigo encontrado em um museu pode ser considerado uma fonte histórica?', 'Porque ajuda a conhecer como as pessoas viviam no passado',
+     ['Porque ajuda a conhecer como as pessoas viviam no passado', 'Porque serve apenas para decorar',
+      'Porque é um brinquedo', 'Porque não tem nenhuma utilidade']),
+    ('O Reisado é um exemplo de:', 'Uma tradição cultural brasileira passada de geração em geração',
+     ['Uma tradição cultural brasileira passada de geração em geração', 'Um esporte praticado nas escolas',
+      'Uma brincadeira inventada recentemente', 'Um prato típico europeu']),
+    ('"A cultura brasileira continua mudando com o passar do tempo." Essa afirmação é:', 'Verdadeira',
+     ['Verdadeira', 'Falsa', 'Só vale para o passado', 'Só vale para o futuro']),
+    ('"Todas as pessoas têm os mesmos costumes." Essa afirmação é:', 'Falsa',
+     ['Falsa', 'Verdadeira', 'Depende do país', 'Depende da idade']),
+    ('"É importante respeitar diferentes tradições." Essa afirmação é:', 'Verdadeira',
+     ['Verdadeira', 'Falsa', 'Só em algumas ocasiões', 'Só entre parentes']),
+    ('As festas populares, como o Reisado, ajudam a:', 'Preservar a cultura',
+     ['Preservar a cultura', 'Apagar a cultura', 'Substituir a história', 'Esquecer as tradições']),
+    ('Os portugueses aprenderam com os povos indígenas, entre outras coisas:', 'Caminhos, alimentos e o preparo de remédios',
+     ['Caminhos, alimentos e o preparo de remédios', 'Apenas a língua portuguesa',
+      'Apenas técnicas de navegação', 'Apenas armas de fogo']),
+    ('Muitos indígenas aprenderam a falar:', 'Português',
+     ['Português', 'Inglês', 'Espanhol', 'Francês']),
+    ('Em 1757, o governo de Portugal tornou obrigatório para todos que viviam no Brasil o idioma:', 'Português',
+     ['Português', 'Tupi-guarani', 'Espanhol', 'Latim']),
+    ('Jabuticaba, jacaré, lambari e perereca são exemplos de palavras de origem:', 'Indígena (tupi-guarani)',
+     ['Indígena (tupi-guarani)', 'Africana', 'Europeia', 'Asiática']),
+    ('Os terreiros de candomblé e umbanda são espaços que guardam muitas características das culturas:', 'Africanas',
+     ['Africanas', 'Europeias', 'Asiáticas', 'Apenas indígenas']),
+    ('O berimbau, o agogô e o reco-reco são instrumentos musicais de origem:', 'Africana',
+     ['Africana', 'Europeia', 'Indígena', 'Asiática']),
+    ('Acarajé e vatapá são pratos que têm origem:', 'Africana',
+     ['Africana', 'Europeia', 'Indígena', 'Asiática']),
+]
+for enunciado, resposta, opcoes in cultura_brasileira:
+    criar_questao(historia, 'cultura_brasileira', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE HISTÓRIA CONCLUÍDA!")
@@ -185,6 +240,7 @@ for modulo, nome in [
     ('capitais_brasil', 'Capitais do Brasil'),
     ('crescimento_cidades', 'Crescimento das Cidades'),
     ('cidadania', 'Cidadania'),
+    ('cultura_brasileira', 'Cultura Brasileira'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=historia, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

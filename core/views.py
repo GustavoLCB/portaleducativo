@@ -176,6 +176,7 @@ MODULOS_GEOGRAFIA = {
     'agricultura': ('Agricultura', '🌾'),
     'pecuaria': ('Pecuária', '🐄'),
     'paisagem': ('Paisagem', '🏞️'),
+    'setores_economia': ('Setores da Economia', '🏙️'),
 }
 
 
@@ -220,6 +221,7 @@ MODULOS_INGLES = {
     'vocabulario_geral': ('Vocabulário Geral', '📖'),
     'esportes_convites': ('Esportes e Convites', '⚽'),
     'vocabulario_visual': ('Vocabulário Visual', '🖼️'),
+    'casa_comodos': ('Rooms in the House', '🏠'),
     'science_vertebrates_invertebrates': ('Vertebrates x Invertebrates', '🦴'),
     'science_oviparous_viviparous': ('Oviparous x Viviparous', '🥚'),
     'science_habitats': ('Animal Habitats', '🌍'),
@@ -350,6 +352,7 @@ MODULOS_CIENCIAS = {
     'petroleo': ('Petróleo', '🛢️'),
     'sistema_solar': ('Sistema Solar', '🪐'),
     'diversidade_modos_vida': ('Diversidade de Modos de Vida', '🐾'),
+    'vertebrados_invertebrados': ('Vertebrados e Invertebrados', '🦴'),
 }
 
 
@@ -394,6 +397,7 @@ MODULOS_HISTORIA = {
     'capitais_brasil': ('Capitais do Brasil', '🏙️'),
     'crescimento_cidades': ('Crescimento das Cidades', '🏭'),
     'cidadania': ('Cidadania', '⚖️'),
+    'cultura_brasileira': ('Cultura Brasileira', '🎭'),
 }
 
 
@@ -500,6 +504,29 @@ def desafios_calculo_quiz(request):
     for item in itens_jogo:
         random.shuffle(item['opcoes'])
     return render(request, 'desafios_calculo_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
+def tabuada_6_a_9_quiz(request):
+    """
+    Quiz de Tabuada do 6 ao 9, usando o banco de questões (BancoQuestao)
+    — diferente da tabuada de 'Operações Matemáticas' (que sorteia os
+    números na hora, em JavaScript, sem nunca gravar a pergunta), aqui
+    as perguntas ficam salvas de verdade, o que permite elas entrarem
+    também na Prova Multidisciplinar.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='tabuada_6_a_9', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'tabuada_6_a_9_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
 
 
 @login_required(login_url='/')
@@ -647,6 +674,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_numeracao', nivel='numeracao_questao'))
     _adicionar('Matemática', 'Desafios de Cálculo', '🧠',
                jogadas_todas.filter(operacao='matematica_desafios_calculo', nivel='desafios_calculo_questao'))
+    _adicionar('Matemática', 'Tabuada do 6 ao 9', '✖️',
+               jogadas_todas.filter(operacao='matematica_tabuada_6_a_9', nivel='tabuada_6_a_9_questao'))
     _adicionar('Matemática', 'Colmeia da Multiplicação', '🐝',
                jogadas_todas.filter(operacao='matematica_colmeia', nivel='colmeia_par'))
 
@@ -668,7 +697,203 @@ def montar_estatisticas_aluno(usuario):
         _adicionar('Inglês', f"{config['nome']} Hive", '🐝',
                    jogadas_todas.filter(operacao=f'ingles_science_hive_{tema_id}', nivel='science_hive_par'))
 
+    # Prova Multidisciplinar: como cada prova mistura várias matérias, ela
+    # entra como uma frente própria no relatório, sem detalhar por matéria.
+    _adicionar('Prova Multidisciplinar', 'Provas Realizadas', '📝',
+               jogadas_todas.filter(operacao='prova_multidisciplinar', nivel='prova_questao'))
+
     return materias, total_geral
+
+
+# ─────────────────────────────────────────────
+# RANKING GERAL — pontuação com peso por matéria
+# ─────────────────────────────────────────────
+
+PESO_MATERIA = {
+    'Matemática': 1.5,
+    'Português': 1.5,
+    'Inglês': 1.5,
+    'Ciências': 1.0,
+    'Geografia': 1.0,
+    'História': 1.0,
+}
+
+
+def _materia_da_jogada(operacao):
+    """
+    Descobre a matéria de uma jogada a partir do campo 'operacao' do
+    RegistroJogada. As 6 operações de cálculo puro (adição, subtração
+    etc.) não têm prefixo — são um caso especial de Matemática.
+    """
+    if operacao in NOMES_OPERACOES_MATEMATICA:
+        return 'Matemática'
+    prefixos = {
+        'matematica_': 'Matemática',
+        'portugues_': 'Português',
+        'ingles_': 'Inglês',
+        'ciencias_': 'Ciências',
+        'geografia_': 'Geografia',
+        'historia_': 'História',
+    }
+    for prefixo, materia in prefixos.items():
+        if operacao.startswith(prefixo):
+            return materia
+    return None  # não deveria acontecer, mas por segurança
+
+
+@login_required(login_url='/')
+def ranking_view(request):
+    """
+    Ranking geral entre os alunos: cada acerto soma o peso da matéria em
+    pontos, cada erro subtrai o mesmo peso (Matemática, Português e
+    Inglês valem 1,5; as demais matérias valem 1).
+
+    TOP_N controla quantos alunos aparecem na lista — pra mostrar Top 20
+    ou Top 30 em vez de Top 10, só trocar o número abaixo.
+    """
+    TOP_N = 10
+
+    jogadas = RegistroJogada.objects.filter(jogador__is_staff=False).values(
+        'jogador_id', 'jogador__first_name', 'jogador__username', 'operacao', 'acertou'
+    )
+
+    pontos_por_aluno = {}
+    nomes_por_aluno = {}
+    for j in jogadas:
+        materia = _materia_da_jogada(j['operacao'])
+        peso = PESO_MATERIA.get(materia, 1.0)
+        delta = peso if j['acertou'] else -peso
+        aluno_id = j['jogador_id']
+        pontos_por_aluno[aluno_id] = pontos_por_aluno.get(aluno_id, 0.0) + delta
+        nomes_por_aluno[aluno_id] = j['jogador__first_name'] or j['jogador__username']
+
+    lista_completa = sorted(
+        (
+            {'aluno_id': aid, 'nome': nomes_por_aluno[aid], 'pontos': round(pontos, 1)}
+            for aid, pontos in pontos_por_aluno.items()
+        ),
+        key=lambda item: item['pontos'], reverse=True
+    )
+
+    ranking_top = [
+        {'posicao': i + 1, 'nome': item['nome'], 'pontos': item['pontos']}
+        for i, item in enumerate(lista_completa[:TOP_N])
+    ]
+
+    minha_posicao = None
+    for i, item in enumerate(lista_completa):
+        if item['aluno_id'] == request.user.id:
+            minha_posicao = {'posicao': i + 1, 'pontos': item['pontos']}
+            break
+
+    return render(request, 'ranking.html', {
+        'ranking': ranking_top,
+        'top_n': TOP_N,
+        'minha_posicao': minha_posicao,
+        'dentro_do_top': minha_posicao is not None and minha_posicao['posicao'] <= TOP_N,
+    })
+
+
+# ─────────────────────────────────────────────
+# PROVA MULTIDISCIPLINAR
+# ─────────────────────────────────────────────
+
+# Matemática não tem um MODULOS_MATEMATICA como as outras matérias (cada
+# frente dela tem sua própria view dedicada), então criamos aqui só a
+# lista dos módulos que TÊM perguntas salvas no banco (as 6 operações
+# básicas não têm — são geradas na hora, em JavaScript, então não podem
+# entrar na prova).
+MODULOS_MATEMATICA_BANCO = {
+    'sistema_numeracao': ('Sistema de Numeração', '🔢'),
+    'desafios_calculo': ('Desafios de Cálculo', '🧠'),
+    'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
+}
+
+# Catálogo geral: toda matéria/módulo que tem perguntas no BancoQuestao
+# pode entrar na Prova Multidisciplinar. 'disciplina_bd' é o nome salvo
+# no campo Disciplina.nome (pode ser diferente da chave usada aqui).
+PROVA_CATALOGO = {
+    'matematica': {'nome': 'Matemática', 'icone': '🧮', 'disciplina_bd': 'matematica', 'modulos': MODULOS_MATEMATICA_BANCO},
+    'portugues': {'nome': 'Português', 'icone': '📚', 'disciplina_bd': 'portugues', 'modulos': MODULOS_PORTUGUES},
+    'ciencias': {'nome': 'Ciências', 'icone': '🔬', 'disciplina_bd': 'ciencias', 'modulos': MODULOS_CIENCIAS},
+    'geografia': {'nome': 'Geografia', 'icone': '🌎', 'disciplina_bd': 'geografia', 'modulos': MODULOS_GEOGRAFIA},
+    'historia': {'nome': 'História', 'icone': '🏛️', 'disciplina_bd': 'historia', 'modulos': MODULOS_HISTORIA},
+    'ingles': {'nome': 'Inglês', 'icone': '🇬🇧', 'disciplina_bd': 'ingles', 'modulos': MODULOS_INGLES},
+}
+
+
+@login_required(login_url='/')
+def prova_config_view(request):
+    """Tela onde o aluno/professor escolhe os assuntos e a quantidade de questões da prova."""
+    return render(request, 'prova_config.html', {'catalogo': PROVA_CATALOGO})
+
+
+@login_required(login_url='/')
+def prova_gerar_view(request):
+    """
+    Monta a Prova Multidisciplinar: pega as questões dos módulos
+    escolhidos (de qualquer matéria), sorteia a quantidade pedida, e
+    reduz cada questão de 4 para 3 alternativas (a certa + 2 erradas
+    sorteadas), como pedido — sem precisar duplicar nenhum conteúdo.
+    """
+    if request.method != 'POST':
+        return redirect('prova_config')
+
+    try:
+        quantidade = int(request.POST.get('quantidade', 10))
+    except (TypeError, ValueError):
+        quantidade = 10
+    quantidade = max(5, min(quantidade, 100))  # limite de segurança, 5 a 100 questões
+
+    modulos_selecionados = request.POST.getlist('modulos')  # ex: ['matematica:sistema_numeracao', ...]
+
+    if not modulos_selecionados:
+        return render(request, 'prova_config.html', {
+            'catalogo': PROVA_CATALOGO,
+            'erro': 'Selecione ao menos um assunto para montar a prova.',
+        })
+
+    banco_geral = []
+    for item in modulos_selecionados:
+        if ':' not in item:
+            continue
+        materia_id, modulo_id = item.split(':', 1)
+        config_materia = PROVA_CATALOGO.get(materia_id)
+        if not config_materia or modulo_id not in config_materia['modulos']:
+            continue  # ignora valores inesperados (ex: formulário adulterado)
+
+        questoes = BancoQuestao.objects.filter(
+            disciplina__nome=config_materia['disciplina_bd'], modulo=modulo_id, ativo=True
+        ).values('enunciado', 'resposta_correta', 'dados_extras')
+
+        for q in questoes:
+            opcoes_originais = list(q['dados_extras'].get('opcoes', []))
+            erradas = [o for o in opcoes_originais if o != q['resposta_correta']]
+            if len(erradas) < 2:
+                continue  # segurança: precisa de pelo menos 2 opções erradas pra formar 3 alternativas
+            opcoes_prova = random.sample(erradas, 2) + [q['resposta_correta']]
+            random.shuffle(opcoes_prova)
+            banco_geral.append({
+                'pergunta': q['enunciado'],
+                'resposta': q['resposta_correta'],
+                'opcoes': opcoes_prova,
+                'materia': config_materia['nome'],
+            })
+
+    if not banco_geral:
+        return render(request, 'prova_config.html', {
+            'catalogo': PROVA_CATALOGO,
+            'erro': 'Não há questões suficientes nos assuntos escolhidos. Tente marcar mais assuntos.',
+        })
+
+    quantidade_final = min(quantidade, len(banco_geral))
+    itens_prova = random.sample(banco_geral, quantidade_final)
+
+    return render(request, 'prova_quiz.html', {
+        'questoes_json': json.dumps(itens_prova),
+        'total_disponivel': len(banco_geral),
+        'quantidade_pedida': quantidade,
+    })
 
 
 @login_required(login_url='/')
