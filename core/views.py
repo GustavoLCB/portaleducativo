@@ -1,6 +1,8 @@
 import json
 import logging
 import random
+import secrets
+import string
 from collections import OrderedDict
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
@@ -996,3 +998,52 @@ def excluir_aluno_view(request, aluno_id):
     # Se alguém tentar acessar por GET (ex: digitando a URL direto),
     # só mostra a tela de confirmação, sem apagar nada ainda.
     return render(request, 'confirmar_exclusao.html', {'aluno': aluno})
+
+
+def _gerar_senha_temporaria():
+    """
+    Gera uma senha temporária numérica de 6 dígitos, fácil de ler e
+    repassar verbalmente a uma criança (ex: ao telefone ou em sala de
+    aula). Usa o módulo 'secrets' (e não 'random') porque, mesmo sendo
+    uma senha temporária, ela concede acesso à conta — 'secrets' é a
+    escolha adequada do Python sempre que o valor gerado tem função de
+    segurança/autenticação.
+    """
+    return ''.join(secrets.choice(string.digits) for _ in range(6))
+
+
+@professor_obrigatorio
+def redefinir_senha_aluno_view(request, aluno_id):
+    """
+    Permite ao professor gerar uma nova senha temporária para um aluno,
+    sem precisar saber (nem poder ver) a senha antiga — o Django nunca
+    guarda senhas em texto puro, então redefinir é a única forma de
+    ajudar um aluno que esqueceu a senha.
+
+    Só aceita POST de propósito (mesmo padrão de excluir_aluno_view):
+    um clique/link acidental (GET) nunca troca a senha de ninguém sem
+    confirmação explícita do professor.
+    """
+    aluno = get_object_or_404(User, id=aluno_id)
+
+    if aluno.is_staff:
+        # Proteção extra: nunca deixa redefinir a senha de outro
+        # professor por engano nem a de si mesmo por aqui.
+        return redirect('painel_professor')
+
+    if request.method == 'POST':
+        nova_senha = _gerar_senha_temporaria()
+        aluno.set_password(nova_senha)
+        aluno.save()
+        logger.info(
+            "Senha redefinida pelo professor %s para o aluno: %s",
+            request.user.username, aluno.first_name or aluno.username
+        )
+        return render(request, 'senha_redefinida.html', {
+            'aluno': aluno,
+            'nova_senha': nova_senha,
+        })
+
+    # Se alguém tentar acessar por GET (ex: digitando a URL direto),
+    # só mostra a tela de confirmação, sem trocar a senha ainda.
+    return render(request, 'confirmar_redefinir_senha.html', {'aluno': aluno})

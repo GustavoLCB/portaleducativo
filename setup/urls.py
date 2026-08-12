@@ -30,6 +30,7 @@ urlpatterns = [
     path('painel-professor/', views.painel_professor_view, name='painel_professor'),
     path('painel-professor/aluno/<int:aluno_id>/', views.relatorio_aluno_view, name='relatorio_aluno'),
     path('painel-professor/aluno/<int:aluno_id>/excluir/', views.excluir_aluno_view, name='excluir_aluno'),
+    path('painel-professor/aluno/<int:aluno_id>/redefinir-senha/', views.redefinir_senha_aluno_view, name='redefinir_senha_aluno'),
 
     path('portugues/', views.menu_portugues, name='menu_portugues'),
     path('portugues/<str:modulo>/', views.portugues_quiz, name='portugues_quiz'),

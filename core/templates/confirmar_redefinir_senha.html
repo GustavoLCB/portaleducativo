@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.5), rgba(2, 104, 115, 0.5)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(1, 45, 50, 0.6);
+            border: 2px dashed rgba(255,255,255,0.35);
+            border-radius: 20px;
+            padding: 40px; width: 420px; max-width: 92vw;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.4em; margin-bottom: 18px; }
+        p { color: #e8e8e0; line-height: 1.5; margin-bottom: 30px; }
+        p strong { color: #ffffff; }
+        .botoes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        button, a.cancelar {
+            padding: 12px 24px; border-radius: 10px; border: none;
+            font-size: 1em; font-weight: bold; cursor: pointer;
+            text-decoration: none; display: inline-block;
+        }
+        button {
+            background-color: #2980b9; color: #ffffff;
+        }
+        button:hover { background-color: #3498db; }
+        a.cancelar {
+            background-color: #444; color: #ffffff;
+        }
+        a.cancelar:hover { background-color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>🔑 Redefinir Senha</h1>
+        <p>
+            Deseja gerar uma nova senha temporária para
+            <strong>{{ aluno.first_name|default:aluno.username }}</strong>?<br><br>
+            A senha atual deixará de funcionar imediatamente. A nova senha
+            será exibida na próxima tela — anote-a para repassar ao aluno.
+        </p>
+        <div class="botoes">
+            <form method="POST" action="{% url 'redefinir_senha_aluno' aluno.id %}">
+                {% csrf_token %}
+                <button type="submit">Sim, gerar nova senha</button>
+            </form>
+            <a class="cancelar" href="{% url 'painel_professor' %}">Cancelar</a>
+        </div>
+    </div>
+</body>
+</html>

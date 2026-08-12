@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senha Redefinida</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: #026873;
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.5), rgba(2, 104, 115, 0.5)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: rgba(1, 45, 50, 0.6);
+            border: 2px dashed rgba(255,255,255,0.35);
+            border-radius: 20px;
+            padding: 40px; width: 420px; max-width: 92vw;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.4em; margin-bottom: 8px; }
+        .nome-aluno { color: #e8e8e0; margin-bottom: 26px; }
+
+        .senha-caixa {
+            background-color: #fdf6e3;
+            color: #2c1e00;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 6px;
+            margin-bottom: 22px;
+            border: 3px dashed #f4b400;
+        }
+
+        .aviso {
+            background-color: rgba(244, 180, 0, 0.18);
+            border: 1px solid #f4b400;
+            color: #ffe9a8;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.9em;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        a.voltar {
+            display: inline-block;
+            background-color: #f4b400; color: #2c1e00; padding: 12px 26px;
+            border-radius: 10px; text-decoration: none; font-weight: bold;
+        }
+        a.voltar:hover { background-color: #ffcb3d; }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>✅ Senha Redefinida</h1>
+        <p class="nome-aluno">Nova senha temporária de <strong>{{ aluno.first_name|default:aluno.username }}</strong>:</p>
+
+        <div class="senha-caixa">{{ nova_senha }}</div>
+
+        <div class="aviso">
+            ⚠️ Anote esta senha agora — ela não será exibida novamente.
+            Repasse ao aluno e, se possível, oriente-o a trocá-la depois
+            de entrar no Portal.
+        </div>
+
+        <a class="voltar" href="{% url 'painel_professor' %}">⬅ Voltar ao Painel do Professor</a>
+    </div>
+</body>
+</html>
