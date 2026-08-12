@@ -823,77 +823,91 @@ PROVA_CATALOGO = {
 }
 
 
+def _montar_catalogo_com_contagem():
+    """
+    Monta o catálogo da Prova Multidisciplinar já com a quantidade de
+    questões disponíveis em cada assunto (pra mostrar na tela e pra
+    limitar quanto o aluno/professor pode pedir de cada um).
+    """
+    catalogo = OrderedDict()
+    for materia_id, config in PROVA_CATALOGO.items():
+        modulos_lista = []
+        for modulo_id, (nome_modulo, icone_modulo) in config['modulos'].items():
+            total = BancoQuestao.objects.filter(
+                disciplina__nome=config['disciplina_bd'], modulo=modulo_id, ativo=True
+            ).count()
+            modulos_lista.append({
+                'id': modulo_id, 'nome': nome_modulo, 'icone': icone_modulo, 'total_disponivel': total,
+            })
+        catalogo[materia_id] = {'nome': config['nome'], 'icone': config['icone'], 'modulos': modulos_lista}
+    return catalogo
+
+
 @login_required(login_url='/')
 def prova_config_view(request):
-    """Tela onde o aluno/professor escolhe os assuntos e a quantidade de questões da prova."""
-    return render(request, 'prova_config.html', {'catalogo': PROVA_CATALOGO})
+    """Tela onde o aluno/professor escolhe QUANTAS questões de CADA assunto entram na prova."""
+    return render(request, 'prova_config.html', {'catalogo': _montar_catalogo_com_contagem()})
 
 
 @login_required(login_url='/')
 def prova_gerar_view(request):
     """
-    Monta a Prova Multidisciplinar: pega as questões dos módulos
-    escolhidos (de qualquer matéria), sorteia a quantidade pedida, e
-    reduz cada questão de 4 para 3 alternativas (a certa + 2 erradas
-    sorteadas), como pedido — sem precisar duplicar nenhum conteúdo.
+    Monta a Prova Multidisciplinar: para cada assunto, pega exatamente a
+    quantidade de questões pedida (campo 'qtd__<materia>__<modulo>' no
+    formulário), sorteando quais delas entram. Cada questão é reduzida
+    de 4 para 3 alternativas (a certa + 2 erradas sorteadas).
     """
     if request.method != 'POST':
         return redirect('prova_config')
 
-    try:
-        quantidade = int(request.POST.get('quantidade', 10))
-    except (TypeError, ValueError):
-        quantidade = 10
-    quantidade = max(5, min(quantidade, 100))  # limite de segurança, 5 a 100 questões
+    itens_prova = []
 
-    modulos_selecionados = request.POST.getlist('modulos')  # ex: ['matematica:sistema_numeracao', ...]
-
-    if not modulos_selecionados:
-        return render(request, 'prova_config.html', {
-            'catalogo': PROVA_CATALOGO,
-            'erro': 'Selecione ao menos um assunto para montar a prova.',
-        })
-
-    banco_geral = []
-    for item in modulos_selecionados:
-        if ':' not in item:
+    for chave, valor in request.POST.items():
+        if not chave.startswith('qtd__'):
             continue
-        materia_id, modulo_id = item.split(':', 1)
+        try:
+            _, materia_id, modulo_id = chave.split('__', 2)
+            quantidade_pedida = int(valor)
+        except ValueError:
+            continue
+        if quantidade_pedida <= 0:
+            continue
+
         config_materia = PROVA_CATALOGO.get(materia_id)
         if not config_materia or modulo_id not in config_materia['modulos']:
             continue  # ignora valores inesperados (ex: formulário adulterado)
 
-        questoes = BancoQuestao.objects.filter(
+        questoes = list(BancoQuestao.objects.filter(
             disciplina__nome=config_materia['disciplina_bd'], modulo=modulo_id, ativo=True
-        ).values('enunciado', 'resposta_correta', 'dados_extras')
+        ).values('enunciado', 'resposta_correta', 'dados_extras'))
 
-        for q in questoes:
+        quantidade_final = min(quantidade_pedida, len(questoes))
+        selecionadas = random.sample(questoes, quantidade_final)
+
+        for q in selecionadas:
             opcoes_originais = list(q['dados_extras'].get('opcoes', []))
             erradas = [o for o in opcoes_originais if o != q['resposta_correta']]
             if len(erradas) < 2:
                 continue  # segurança: precisa de pelo menos 2 opções erradas pra formar 3 alternativas
             opcoes_prova = random.sample(erradas, 2) + [q['resposta_correta']]
             random.shuffle(opcoes_prova)
-            banco_geral.append({
+            itens_prova.append({
                 'pergunta': q['enunciado'],
                 'resposta': q['resposta_correta'],
                 'opcoes': opcoes_prova,
                 'materia': config_materia['nome'],
             })
 
-    if not banco_geral:
+    if not itens_prova:
         return render(request, 'prova_config.html', {
-            'catalogo': PROVA_CATALOGO,
-            'erro': 'Não há questões suficientes nos assuntos escolhidos. Tente marcar mais assuntos.',
+            'catalogo': _montar_catalogo_com_contagem(),
+            'erro': 'Nenhuma questão foi selecionada. Digite uma quantidade maior que zero em pelo menos um assunto.',
         })
 
-    quantidade_final = min(quantidade, len(banco_geral))
-    itens_prova = random.sample(banco_geral, quantidade_final)
+    random.shuffle(itens_prova)  # embaralha a ordem das matérias na prova
 
     return render(request, 'prova_quiz.html', {
         'questoes_json': json.dumps(itens_prova),
-        'total_disponivel': len(banco_geral),
-        'quantidade_pedida': quantidade,
     })
 
 
