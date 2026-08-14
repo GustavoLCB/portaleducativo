@@ -509,6 +509,28 @@ def desafios_calculo_quiz(request):
 
 
 @login_required(login_url='/')
+def multiplos_de_10_quiz(request):
+    """
+    Quiz de Multiplicação por Dezenas, Centenas e Milhares (10, 100,
+    1.000, 20, 30, 40), usando o banco de questões (BancoQuestao) —
+    mesmo padrão dos outros quizzes de matemática guardados de verdade
+    no banco, o que permite entrarem na Prova Multidisciplinar.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='multiplos_de_10', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'multiplos_de_10_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
 def tabuada_2_a_5_quiz(request):
     """
     Quiz de Tabuada do 2 ao 5, mesmo padrão do 'tabuada_6_a_9_quiz' —
@@ -698,6 +720,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_numeracao', nivel='numeracao_questao'))
     _adicionar('Matemática', 'Desafios de Cálculo', '🧠',
                jogadas_todas.filter(operacao='matematica_desafios_calculo', nivel='desafios_calculo_questao'))
+    _adicionar('Matemática', 'Multiplicação por Dezenas, Centenas e Milhares', '🔟',
+               jogadas_todas.filter(operacao='matematica_multiplos_de_10', nivel='multiplos_de_10_questao'))
     _adicionar('Matemática', 'Tabuada do 2 ao 5', '✖️',
                jogadas_todas.filter(operacao='matematica_tabuada_2_a_5', nivel='tabuada_2_a_5_questao'))
     _adicionar('Matemática', 'Tabuada do 6 ao 9', '✖️',
@@ -832,6 +856,7 @@ def ranking_view(request):
 MODULOS_MATEMATICA_BANCO = {
     'sistema_numeracao': ('Sistema de Numeração', '🔢'),
     'desafios_calculo': ('Desafios de Cálculo', '🧠'),
+    'multiplos_de_10': ('Multiplicação por Dezenas, Centenas e Milhares', '🔟'),
     'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
     'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
 }

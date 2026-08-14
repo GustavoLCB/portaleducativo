@@ -18,6 +18,7 @@ urlpatterns = [
     path('matematica/operacoes/', views.menu_operacoes, name='menu_operacoes'),
     path('matematica/numeracao/', views.numeracao_quiz, name='numeracao_quiz'),
     path('matematica/desafios-calculo/', views.desafios_calculo_quiz, name='desafios_calculo_quiz'),
+    path('matematica/multiplos-de-10/', views.multiplos_de_10_quiz, name='multiplos_de_10_quiz'),
     path('matematica/tabuada-2-a-5/', views.tabuada_2_a_5_quiz, name='tabuada_2_a_5_quiz'),
     path('matematica/tabuada-6-a-9/', views.tabuada_6_a_9_quiz, name='tabuada_6_a_9_quiz'),
     path('matematica/colmeia/', views.colmeia_multiplicacao_view, name='colmeia_multiplicacao'),
