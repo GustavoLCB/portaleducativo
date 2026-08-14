@@ -509,6 +509,27 @@ def desafios_calculo_quiz(request):
 
 
 @login_required(login_url='/')
+def tabuada_2_a_5_quiz(request):
+    """
+    Quiz de Tabuada do 2 ao 5, mesmo padrão do 'tabuada_6_a_9_quiz' —
+    usa o banco de questões (BancoQuestao), o que permite essas perguntas
+    entrarem também na Prova Multidisciplinar.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='tabuada_2_a_5', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'tabuada_2_a_5_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
 def tabuada_6_a_9_quiz(request):
     """
     Quiz de Tabuada do 6 ao 9, usando o banco de questões (BancoQuestao)
@@ -677,6 +698,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_numeracao', nivel='numeracao_questao'))
     _adicionar('Matemática', 'Desafios de Cálculo', '🧠',
                jogadas_todas.filter(operacao='matematica_desafios_calculo', nivel='desafios_calculo_questao'))
+    _adicionar('Matemática', 'Tabuada do 2 ao 5', '✖️',
+               jogadas_todas.filter(operacao='matematica_tabuada_2_a_5', nivel='tabuada_2_a_5_questao'))
     _adicionar('Matemática', 'Tabuada do 6 ao 9', '✖️',
                jogadas_todas.filter(operacao='matematica_tabuada_6_a_9', nivel='tabuada_6_a_9_questao'))
     _adicionar('Matemática', 'Colmeia da Multiplicação', '🐝',
@@ -809,6 +832,7 @@ def ranking_view(request):
 MODULOS_MATEMATICA_BANCO = {
     'sistema_numeracao': ('Sistema de Numeração', '🔢'),
     'desafios_calculo': ('Desafios de Cálculo', '🧠'),
+    'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
     'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
 }
 
