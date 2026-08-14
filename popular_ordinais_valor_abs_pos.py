@@ -93,7 +93,7 @@ questoes = [
     ('Qual número ordinal vem imediatamente depois do 16º?', '17º', ['17º', '15º', '18º', '14º']),
     ('Qual número ordinal vem imediatamente antes do 11º?', '10º', ['10º', '12º', '9º', '13º']),
     ('Qual número ordinal vem imediatamente depois do 2º?', '3º', ['3º', '1º', '4º', '5º']),
-    ('Se a 5ª formiguinha da fila está ligada à 7ª (2 posições à frente), seguindo o mesmo padrão, a 7ª deve se ligar a qual?', '9ª', ['9ª', '8ª', '10ª', '6ª']),
+    ('Se a 5ª formiguinha da fila está ligada à 7ª (2 posições depois dela), seguindo o mesmo padrão, a 7ª deve se ligar a qual?', '9ª', ['9ª', '8ª', '10ª', '6ª']),
 
     # Números ordinais — escrita por extenso (folha das formiguinhas)
     ('Como se escreve por extenso a posição 8º?', 'Oitavo', ['Oitavo', 'Oito', 'Octogésimo', 'Nono']),
@@ -139,7 +139,7 @@ questoes = [
     ('Qual número ordinal vem imediatamente depois do 9º?', '10º', ['10º', '8º', '11º', '12º']),
     ('Qual número ordinal vem imediatamente antes do 25º?', '24º', ['24º', '26º', '23º', '27º']),
     ('Qual número ordinal vem imediatamente depois do 33º?', '34º', ['34º', '32º', '35º', '36º']),
-    ('Se a 4ª formiguinha da fila está ligada à 6ª (2 posições à frente), seguindo o mesmo padrão, a 6ª deve se ligar a qual?', '8ª', ['8ª', '7ª', '9ª', '5ª']),
+    ('Se a 4ª formiguinha da fila está ligada à 6ª (2 posições depois dela), seguindo o mesmo padrão, a 6ª deve se ligar a qual?', '8ª', ['8ª', '7ª', '9ª', '5ª']),
 
     # Números ordinais — escrita por extenso (números autorais)
     ('Como se escreve por extenso a posição 6º?', 'Sexto', ['Sexto', 'Seis', 'Sexagésimo', 'Sétimo']),
@@ -175,3 +175,24 @@ removidas, _ = BancoQuestao.objects.filter(
 
 if removidas:
     print(f"\n🧹 Limpeza: removidas {removidas} questões duplicadas que estavam em 'sistema_numeracao'.")
+
+
+# ══════════════════════════════════════════════════════════════════
+# LIMPEZA — remove as 2 questões das formiguinhas com o texto antigo
+# e ambíguo ("2 posições à frente", que soava invertido numa fila).
+# Só tem efeito se você já rodou uma versão anterior deste script —
+# rodar de novo não faz mal.
+# ══════════════════════════════════════════════════════════════════
+textos_antigos_ambiguos = [
+    'Se a 5ª formiguinha da fila está ligada à 7ª (2 posições à frente), seguindo o mesmo padrão, a 7ª deve se ligar a qual?',
+    'Se a 4ª formiguinha da fila está ligada à 6ª (2 posições à frente), seguindo o mesmo padrão, a 6ª deve se ligar a qual?',
+]
+
+removidas_ambiguas, _ = BancoQuestao.objects.filter(
+    disciplina=matematica,
+    modulo='ordinais_valor_abs_pos',
+    enunciado__in=textos_antigos_ambiguos,
+).delete()
+
+if removidas_ambiguas:
+    print(f"\n🧹 Limpeza: removidas {removidas_ambiguas} questões com o texto antigo e ambíguo (\"à frente\").")
