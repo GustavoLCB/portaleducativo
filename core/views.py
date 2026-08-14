@@ -509,6 +509,31 @@ def desafios_calculo_quiz(request):
 
 
 @login_required(login_url='/')
+def ordinais_valor_abs_pos_quiz(request):
+    """
+    Quiz de Números Ordinais, Valor Absoluto e Posicional — banco
+    dedicado ao conjunto de conteúdos cobrados na Avaliação de
+    Matemática (ordens, classes, algarismos, posição e nome das
+    ordens, composição/decomposição, antecessor/sucessor, valor
+    absoluto e posicional). Fica separado do 'Sistema de Numeração'
+    de propósito, para o aluno conseguir treinar só esse recorte
+    específico antes da prova.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='ordinais_valor_abs_pos', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'ordinais_valor_abs_pos_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
 def multiplos_de_10_quiz(request):
     """
     Quiz de Multiplicação por Dezenas, Centenas e Milhares (10, 100,
@@ -720,6 +745,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_numeracao', nivel='numeracao_questao'))
     _adicionar('Matemática', 'Desafios de Cálculo', '🧠',
                jogadas_todas.filter(operacao='matematica_desafios_calculo', nivel='desafios_calculo_questao'))
+    _adicionar('Matemática', 'Números Ordinais, Valor Absoluto e Posicional', '#️⃣',
+               jogadas_todas.filter(operacao='matematica_ordinais_valor_abs_pos', nivel='ordinais_valor_abs_pos_questao'))
     _adicionar('Matemática', 'Multiplicação por Dezenas, Centenas e Milhares', '🔟',
                jogadas_todas.filter(operacao='matematica_multiplos_de_10', nivel='multiplos_de_10_questao'))
     _adicionar('Matemática', 'Tabuada do 2 ao 5', '✖️',
@@ -856,6 +883,7 @@ def ranking_view(request):
 MODULOS_MATEMATICA_BANCO = {
     'sistema_numeracao': ('Sistema de Numeração', '🔢'),
     'desafios_calculo': ('Desafios de Cálculo', '🧠'),
+    'ordinais_valor_abs_pos': ('Números Ordinais, Valor Absoluto e Posicional', '#️⃣'),
     'multiplos_de_10': ('Multiplicação por Dezenas, Centenas e Milhares', '🔟'),
     'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
     'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
