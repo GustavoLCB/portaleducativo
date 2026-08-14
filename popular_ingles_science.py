@@ -89,6 +89,30 @@ vertebrates_invertebrates = [
 for enunciado, resposta, opcoes in vertebrates_invertebrates:
     criar_questao(ingles, 'science_vertebrates_invertebrates', enunciado, resposta, opcoes)
 
+# ── Extra: Mammals and Birds (com base no material "Mammals and Birds",
+#    Ms. Dordron) — aprofunda o mesmo tema de vertebrados, comparando
+#    especificamente estes dois grupos.
+mammals_and_birds = [
+    ('What do mammals and birds have in common?', 'They are warm-blooded and have a backbone',
+     ['They are warm-blooded and have a backbone', 'They both have feathers', 'They both lay eggs only',
+      'They are both invertebrates']),
+    ('What covers the body of a bird?', 'Feathers', ['Feathers', 'Fur', 'Scales', 'A shell']),
+    ('Do mammals have feathers?', 'No, only birds have feathers',
+     ['No, only birds have feathers', 'Yes, all mammals have feathers', 'Only baby mammals do', 'Yes, but only in winter']),
+    ("A bird's feathers can have different:", 'Functions', ['Functions', 'Names only', 'Colors only', 'Sizes only']),
+    ('How do birds reproduce?', 'They lay eggs',
+     ['They lay eggs', 'They give birth to live babies', "They don't reproduce", 'They split in half']),
+    ('Are birds warm-blooded or cold-blooded?', 'Warm-blooded', ['Warm-blooded', 'Cold-blooded', 'Neither', 'Both']),
+    ('Are mammals warm-blooded or cold-blooded?', 'Warm-blooded', ['Warm-blooded', 'Cold-blooded', 'Neither', 'Both']),
+    ('Do both mammals and birds have a backbone (spine)?', 'Yes, both have a backbone',
+     ['Yes, both have a backbone', 'No, neither has one', 'Only mammals have one', 'Only birds have one']),
+    ('Which of these is an example of a mammal?', 'Lion', ['Lion', 'Eagle', 'Ostrich', 'Penguin']),
+    ('Which of these is an example of a bird?', 'Eagle', ['Eagle', 'Lion', 'Dog', 'Cat']),
+    ('Which of these animals can fly, thanks to its feathers?', 'Eagle', ['Eagle', 'Lion', 'Elephant', 'Bear']),
+]
+for enunciado, resposta, opcoes in mammals_and_birds:
+    criar_questao(ingles, 'science_vertebrates_invertebrates', enunciado, resposta, opcoes)
+
 
 # ══════════════════════════════════════════════════════════════════
 # MÓDULO — OVIPAROUS X VIVIPAROUS
