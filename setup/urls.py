@@ -22,6 +22,7 @@ urlpatterns = [
     path('matematica/multiplos-de-10/', views.multiplos_de_10_quiz, name='multiplos_de_10_quiz'),
     path('matematica/tabuada-2-a-5/', views.tabuada_2_a_5_quiz, name='tabuada_2_a_5_quiz'),
     path('matematica/tabuada-6-a-9/', views.tabuada_6_a_9_quiz, name='tabuada_6_a_9_quiz'),
+    path('matematica/arme-e-efetue/', views.arme_efetua_quiz, name='arme_efetua_quiz'),
     path('matematica/colmeia/', views.colmeia_multiplicacao_view, name='colmeia_multiplicacao'),
     path('matematica/<str:operacao>/', views.niveis_operacao, name='niveis_operacao'),
     path('jogo/<str:operacao>/<str:nivel>/', views.jogo_tabuada, name='jogo_tabuada'),

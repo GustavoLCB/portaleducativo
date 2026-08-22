@@ -246,6 +246,27 @@ substantivos_adjetivos = [
 for enunciado, resposta, opcoes in substantivos_adjetivos:
     criar_questao(portugues, 'substantivos_adjetivos', 'multipla_escolha', enunciado, resposta, opcoes)
 
+# ── Bloco novo (06/08): gênero (feminino) e classe gramatical
+substantivos_adjetivos_novo = [
+    ('Qual é o feminino de "rei"?', 'Rainha', ['Rainha', 'Reia', 'Reína', 'Reisa']),
+    ('Reescrevendo a frase "No tabuleiro do jogo de xadrez havia um rei." trocando "rei" para o feminino, ela fica:', 'No tabuleiro do jogo de xadrez havia uma rainha.',
+     ['No tabuleiro do jogo de xadrez havia uma rainha.', 'No tabuleiro do jogo de xadrez havia um reia.',
+      'No tabuleiro do jogo de xadrez havia uma reína.', 'No tabuleiro do jogo de xadrez havia um rei.']),
+    ('Qual é o feminino de "padrasto"?', 'Madrasta', ['Madrasta', 'Padrasta', 'Padastra', 'Madastra']),
+    ('Na frase "Nem um fiozinho dourado de cabelo aparecia no berço do Sol", a palavra "fiozinho" é um:', 'Substantivo comum',
+     ['Substantivo comum', 'Substantivo próprio', 'Adjetivo', 'Verbo']),
+    ('Na frase "Nem um fiozinho dourado de cabelo aparecia no berço do Sol", a palavra "dourado" é um:', 'Adjetivo',
+     ['Adjetivo', 'Substantivo comum', 'Substantivo próprio', 'Artigo']),
+    ('Na frase "Nem um fiozinho dourado de cabelo aparecia no berço do Sol", a palavra "Sol" é um:', 'Substantivo próprio',
+     ['Substantivo próprio', 'Substantivo comum', 'Adjetivo', 'Verbo']),
+    ('Na frase "...entre as montanhas imensas", a palavra "montanhas" é um:', 'Substantivo comum',
+     ['Substantivo comum', 'Substantivo próprio', 'Adjetivo', 'Artigo']),
+    ('Na frase "...entre as montanhas imensas", a palavra "imensas" é um:', 'Adjetivo',
+     ['Adjetivo', 'Substantivo comum', 'Substantivo próprio', 'Verbo']),
+]
+for enunciado, resposta, opcoes in substantivos_adjetivos_novo:
+    criar_questao(portugues, 'substantivos_adjetivos', 'multipla_escolha', enunciado, resposta, opcoes)
+
 
 # ══════════════════════════════════════════════════════════════════
 # MÓDULO 8 — TIPOS DE FRASE (novo)
@@ -309,6 +330,25 @@ tempos_verbais = [
 for enunciado, resposta, opcoes in tempos_verbais:
     criar_questao(portugues, 'tempos_verbais', 'multipla_escolha', enunciado, resposta, opcoes)
 
+# ── Bloco novo (06/08): infinitivo, conjugação e terminações -ram/-rão
+tempos_verbais_novo = [
+    ('O verbo "prenderam" está em qual tempo verbal?', 'Pretérito (passado)', ['Pretérito (passado)', 'Presente', 'Futuro', 'Imperativo']),
+    ('Qual é o infinitivo do verbo "prenderam"?', 'Prender', ['Prender', 'Prendeu', 'Prendendo', 'Prendido']),
+    ('O verbo "prender" pertence a qual conjugação?', '2ª conjugação (terminado em -ER)', ['2ª conjugação (terminado em -ER)', '1ª conjugação (terminado em -AR)', '3ª conjugação (terminado em -IR)', 'Não tem conjugação']),
+    ('Reescrevendo a frase "E por que te prenderam?" com o verbo no futuro, ela fica:', 'E por que te prenderão?', ['E por que te prenderão?', 'E por que te prendem?', 'E por que te prendia?', 'E por que te prendeste?']),
+    ('Usamos a terminação verbal "-RAM" para indicar o tempo:', 'Passado (pretérito)', ['Passado (pretérito)', 'Presente', 'Futuro', 'Imperativo']),
+    ('Usamos a terminação verbal "-RÃO" para indicar o tempo:', 'Futuro', ['Futuro', 'Presente', 'Passado (pretérito)', 'Imperativo']),
+    ('Qual destes verbos está no FUTURO?', 'Votarão', ['Votarão', 'Fugiram', 'Sorriram', 'Decidiram']),
+    ('Qual destes verbos está no FUTURO?', 'Resolverão', ['Resolverão', 'Brincam', 'Pintaram', 'Aprenderam']),
+    ('Qual destes verbos NÃO está no futuro?', 'Aprenderam', ['Aprenderam', 'Lerão', 'Sentirão', 'Escreverão']),
+    ('Complete com o verbo correto: "No mês que vem, meus primos ___ para a Europa." (viajarão / viajaram)', 'viajarão', ['viajarão', 'viajaram', 'viajam', 'viajavam']),
+    ('Complete com o verbo correto: "Ontem, os gêmeos Marcos e Lucas ___ 8 anos de idade." (completaram / completarão)', 'completaram', ['completaram', 'completarão', 'completam', 'completavam']),
+    ('Complete com o verbo correto: "As crianças ___ o bolo da festa mais tarde." (comeram / comerão)', 'comerão', ['comerão', 'comeram', 'comem', 'comiam']),
+    ('Um verbo é uma palavra que indica, principalmente:', 'Uma ação, um estado ou um fenômeno', ['Uma ação, um estado ou um fenômeno', 'O nome de uma pessoa ou lugar', 'Uma característica de um substantivo', 'A quantidade de algo']),
+]
+for enunciado, resposta, opcoes in tempos_verbais_novo:
+    criar_questao(portugues, 'tempos_verbais', 'multipla_escolha', enunciado, resposta, opcoes)
+
 
 # ══════════════════════════════════════════════════════════════════
 # MÓDULO 10 — SUBSTANTIVO: SINGULAR E PLURAL (novo)
@@ -348,6 +388,30 @@ substantivos_singular_plural = [
 for enunciado, resposta, opcoes in substantivos_singular_plural:
     criar_questao(portugues, 'substantivos_singular_plural', 'multipla_escolha', enunciado, resposta, opcoes)
 
+# ── Bloco novo (06/08): mais palavras para praticar as regras de plural
+substantivos_singular_plural_novo = [
+    ('Qual é o plural de "batom"?', 'Batons', ['Batons', 'Batões', 'Batomes', 'Batons']),
+    ('Qual é o plural de "carretel"?', 'Carretéis', ['Carretéis', 'Carreteis', 'Carretels', 'Carreteles']),
+    ('Qual é o plural de "francês"?', 'Franceses', ['Franceses', 'Francêses', 'Francezes', 'Francês']),
+    ('Qual é o plural de "cão"?', 'Cães', ['Cães', 'Cãos', 'Cões', 'Cãoes']),
+    ('Qual é o plural de "elevador"?', 'Elevadores', ['Elevadores', 'Elevadors', 'Elevadão', 'Elevador']),
+    ('Qual é o plural de "mural"?', 'Murais', ['Murais', 'Murals', 'Murões', 'Muraizes']),
+    ('Qual é o plural de "papel"?', 'Papéis', ['Papéis', 'Papels', 'Papeles', 'Papelões']),
+    ('Qual é o plural de "estrela"?', 'Estrelas', ['Estrelas', 'Estrelaas', 'Estrelões', 'Estrelais']),
+    ('Qual é o plural de "rapaz"?', 'Rapazes', ['Rapazes', 'Rapazs', 'Rapazãos', 'Rapaz']),
+    ('Qual é o plural de "animal"?', 'Animais', ['Animais', 'Animals', 'Animales', 'Animalões']),
+    ('Qual é o plural de "sol"?', 'Sóis', ['Sóis', 'Sols', 'Soles', 'Solzões']),
+    ('Qual é o plural de "órgão"?', 'Órgãos', ['Órgãos', 'Órgãs', 'Orgões', 'Órgãoes']),
+    ('Qual é o plural de "árvore"?', 'Árvores', ['Árvores', 'Árvors', 'Arvorezes', 'Árvore']),
+    ('Qual é o plural de "parede"?', 'Paredes', ['Paredes', 'Pareds', 'Paredezes', 'Parede']),
+    ('Qual é o plural de "muro"?', 'Muros', ['Muros', 'Murões', 'Murais', 'Muro']),
+    ('Qual é o plural de "pudim"?', 'Pudins', ['Pudins', 'Pudis', 'Pudões', 'Pudim']),
+    ('Qual é o plural de "pião"?', 'Piões', ['Piões', 'Piãos', 'Piães', 'Piãoes']),
+    ('Qual é o plural de "jornal"?', 'Jornais', ['Jornais', 'Jornals', 'Jornales', 'Jornãos']),
+]
+for enunciado, resposta, opcoes in substantivos_singular_plural_novo:
+    criar_questao(portugues, 'substantivos_singular_plural', 'multipla_escolha', enunciado, resposta, opcoes)
+
 
 # ══════════════════════════════════════════════════════════════════
 # MÓDULO 11 — ARTIGOS DEFINIDOS E INDEFINIDOS (novo)
@@ -378,6 +442,55 @@ artigos = [
 for enunciado, resposta, opcoes in artigos:
     criar_questao(portugues, 'artigos', 'multipla_escolha', enunciado, resposta, opcoes)
 
+# ── Bloco novo (06/08): identificação de artigos em frases
+artigos_novo = [
+    ('Na frase "Nem um fiozinho dourado de cabelo aparecia no berço do Sol", a palavra "um" é um:', 'Artigo indefinido',
+     ['Artigo indefinido', 'Artigo definido', 'Substantivo', 'Adjetivo']),
+    ('Na frase "...entre as montanhas imensas", a palavra "as" é um:', 'Artigo definido',
+     ['Artigo definido', 'Artigo indefinido', 'Substantivo', 'Adjetivo']),
+    ('Na frase "O meu papagaio voou sem ajuda", a palavra em destaque "O" é um artigo:', 'Definido', ['Definido', 'Indefinido', 'Plural', 'Feminino']),
+    ('Na frase "O garoto comeu um hambúrguer", a palavra em destaque "um" é um artigo:', 'Indefinido', ['Indefinido', 'Definido', 'Plural', 'Feminino']),
+    ('Na frase "Quando chover, eu vou usar uma capa", a palavra em destaque "uma" é um artigo:', 'Indefinido', ['Indefinido', 'Definido', 'Plural', 'Masculino']),
+    ('Na frase "A escola colou um cartaz no pátio", a palavra em destaque "A" é um artigo:', 'Definido', ['Definido', 'Indefinido', 'Plural', 'Masculino']),
+]
+for enunciado, resposta, opcoes in artigos_novo:
+    criar_questao(portugues, 'artigos', 'multipla_escolha', enunciado, resposta, opcoes)
+
+
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO 12 — INTERPRETAÇÃO DE TEXTO (novo, card criado com pouco
+# material — a ideia é ir ampliando conforme novos textos/tirinhas
+# forem enviados)
+# ══════════════════════════════════════════════════════════════════
+print("\n📖 Populando: Português › Interpretação de Texto...")
+
+interpretacao_texto = [
+    ('Na tirinha em que a planta pergunta "E por que te prenderam?", qual verbo aparece na fala da planta?', 'Prenderam',
+     ['Prenderam', 'Prendeu', 'Prender', 'Prendendo']),
+    ('Em que tempo verbal está o verbo "prenderam", na fala da planta?', 'Pretérito (passado)',
+     ['Pretérito (passado)', 'Presente', 'Futuro', 'Imperativo']),
+    ('Na tirinha do caranguejo Caranga, além do cheiro do manguezal, o que mais ele diz que adora sentir?', 'A brisa, ao som da natureza',
+     ['A brisa, ao som da natureza', 'O frio da neve', 'O barulho do trânsito', 'O cheiro de fumaça']),
+    ('A expressão "nosso querido lar", dita por Caranga, mostra que ele:', 'Demonstra carinho pelo lugar onde vive',
+     ['Demonstra carinho pelo lugar onde vive', 'Não conhece muito bem o manguezal', 'Deseja procurar outro lugar para morar', 'Tem medo do manguezal']),
+    ('Releia: "Nada como nosso querido lar! Adoro viver aqui no manguezal!". As palavras destacadas "querido", "Adoro" e "manguezal" são, respectivamente:', 'Adjetivo, verbo e substantivo',
+     ['Adjetivo, verbo e substantivo', 'Substantivo, verbo e adjetivo', 'Verbo, substantivo e adjetivo', 'Adjetivo, substantivo e verbo']),
+    ('Em um texto narrativo, o lugar onde os fatos ocorrem recebe o nome de:', 'Espaço',
+     ['Espaço', 'Tempo', 'Personagem', 'Enredo']),
+    ('Os verbos "entrei", "fui" e "reparei", destacados em um trecho de narrativa, ajudam a identificar que a narração está no:', 'Pretérito (passado)',
+     ['Pretérito (passado)', 'Presente', 'Futuro', 'Imperativo']),
+    ('Em um trecho de carta que menciona "um dos docinhos... e o bolo do vovô", quantos bolos haverá na festa?', 'Um bolo',
+     ['Um bolo', 'Mais de um bolo', 'Nenhum bolo', 'Não é possível saber']),
+    ('No mesmo trecho, quantos docinhos haverá na festa?', 'Mais de um docinho',
+     ['Mais de um docinho', 'Um docinho', 'Nenhum docinho', 'Não é possível saber']),
+    ('Na frase "Por que você está chorando, meu amor? — perguntou a minha avó com voz meiguinha", as palavras destacadas "meu amor" e "meiguinha" expressam:', 'Carinho, afeto',
+     ['Carinho, afeto', 'O tamanho da voz da avó', 'Tristeza e irritação', 'Formalidade']),
+    ('De acordo com a tirinha do caranguejo, cite uma característica do manguezal que faz Caranga gostar desse lugar.', 'O cheiro do lugar',
+     ['O cheiro do lugar', 'O frio constante', 'A falta de plantas', 'O barulho de carros']),
+]
+for enunciado, resposta, opcoes in interpretacao_texto:
+    criar_questao(portugues, 'interpretacao_texto', 'multipla_escolha', enunciado, resposta, opcoes)
+
 
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
@@ -395,6 +508,7 @@ for modulo, nome in [
     ('tempos_verbais', 'Tempos Verbais'),
     ('substantivos_singular_plural', 'Substantivo Singular e Plural'),
     ('artigos', 'Artigos'),
+    ('interpretacao_texto', 'Interpretação de Texto'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=portugues, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

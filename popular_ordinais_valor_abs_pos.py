@@ -160,6 +160,78 @@ print(f"\n✅ Concluído! Total de questões de Números Ordinais, Valor Absolut
 
 
 # ══════════════════════════════════════════════════════════════════
+# BLOCO NOVO — questões das provas de 07/08, 11/08, 14/08, 18/08 e
+# 19/08/2026 (Colégio Santo Agostinho, 3º ano). Cobre: ordens/classes/
+# algarismos com números novos, decomposição em ordens, sucessor de
+# um número, dobro/triplo/quádruplo/sêxtuplo/metade/terça parte,
+# número misterioso (charadas) e ordinal aplicado à posição de letras
+# numa palavra.
+# ══════════════════════════════════════════════════════════════════
+print("\n#️⃣ Populando: Matemática › Números Ordinais... (bloco de 19/08)...")
+
+questoes_novas = [
+    # Ordens, classes e algarismos (números novos: 4.589, 3.672, 2.435, 4.392)
+    ('Quantos algarismos, ordens e classes possui o número 4.589?', '4 algarismos, 4 ordens e 2 classes',
+     ['4 algarismos, 4 ordens e 2 classes', '3 algarismos, 3 ordens e 1 classe',
+      '4 algarismos, 2 ordens e 4 classes', '5 algarismos, 4 ordens e 2 classes']),
+    ('Qual é o valor absoluto do algarismo da 4ª ordem no número 4.589?', '4', ['4', '5', '8', '9']),
+    ('Quantas dezenas há no número 4.589?', '458', ['458', '45', '4589', '85']),
+    ('Quantas centenas há no número 4.589?', '45', ['45', '458', '4', '85']),
+    ('Decomponha em ordens o número 4.589.', '4UM + 5C + 8D + 9U',
+     ['4UM + 5C + 8D + 9U', '4UM + 8C + 5D + 9U', '9UM + 5C + 8D + 4U', '4UM + 5C + 9D + 8U']),
+    ('Qual é o sucessor do número 4.589?', '4.590', ['4.590', '4.588', '4.599', '4.580']),
+    ('Observando o número 3.672, quantas ordens, classes e algarismos ele possui?', '4 ordens, 2 classes e 4 algarismos',
+     ['4 ordens, 2 classes e 4 algarismos', '3 ordens, 1 classe e 3 algarismos',
+      '4 ordens, 4 classes e 2 algarismos', '2 ordens, 2 classes e 4 algarismos']),
+    ('Qual é o valor posicional do algarismo 6 no número 3.672?', '600', ['600', '60', '6', '6.000']),
+    ('Qual é o valor absoluto do algarismo 7 no número 3.672?', '7', ['7', '70', '700', '3']),
+    ('O menor numeral que se pode formar com os algarismos de 3.672 é:', '2.367', ['2.367', '3.672', '7.632', '2.376']),
+    ('Se adicionarmos 2 dezenas ao número 3.672, obtemos:', '3.692', ['3.692', '3.674', '3.872', '3.692']),
+    ('Observando o número 2.435, quantos algarismos, ordens e classes ele possui?', '4 algarismos, 4 ordens e 2 classes',
+     ['4 algarismos, 4 ordens e 2 classes', '3 algarismos, 3 ordens e 1 classe',
+      '4 algarismos, 2 ordens e 4 classes', '5 algarismos, 5 ordens e 2 classes']),
+    ('Escreva por extenso o número 2.435.', 'Dois mil, quatrocentos e trinta e cinco',
+     ['Dois mil, quatrocentos e trinta e cinco', 'Dois mil e quatrocentos', 'Duzentos e quarenta e três',
+      'Dois mil, trezentos e quarenta e cinco']),
+    ('Quantos algarismos, ordens e classes possui o número 4.392?', '4 algarismos, 4 ordens e 2 classes',
+     ['4 algarismos, 4 ordens e 2 classes', '3 algarismos, 3 ordens e 1 classe',
+      '4 algarismos, 2 ordens e 4 classes', '4 algarismos, 3 ordens e 2 classes']),
+    ('Se subtrairmos 3 centenas do número 4.392, obtemos:', '4.092', ['4.092', '4.062', '4.392', '4.062']),
+
+    # Dobro, triplo, quádruplo, sêxtuplo, metade e terça parte de um algarismo
+    ('O sêxtuplo do algarismo que ocupa a 3ª ordem no número 4.392 (o algarismo 3) é:', '18', ['18', '9', '12', '15']),
+    ('A metade do algarismo que ocupa a ordem das unidades no número 4.392 (o algarismo 2) é:', '1', ['1', '2', '4', '0']),
+    ('A terça parte do algarismo que ocupa a ordem das dezenas no número 4.392 (o algarismo 9) é impossível de calcular exatamente porque:', '9 não é múltiplo de 3 quando dividido de forma exata sobra resto',
+     ['9 não é múltiplo de 3 quando dividido de forma exata sobra resto', '9 é ímpar', '9 é maior que 3', '9 é o maior algarismo']),
+    ('O quíntuplo do algarismo 9 (ordem das centenas de um número) é:', '45', ['45', '36', '54', '27']),
+    ('24 é o quádruplo de:', '6', ['6', '4', '8', '12']),
+    ('18 é o triplo de:', '6', ['6', '9', '3', '8']),
+    ('O sêxtuplo de 5 é:', '30', ['30', '25', '35', '18']),
+    ('O triplo de 6 é:', '18', ['18', '12', '24', '15']),
+    ('A quarta parte de 20 é:', '5', ['5', '4', '10', '8']),
+    ('O dobro de 45 é:', '90', ['90', '85', '95', '80']),
+
+    # Número misterioso (charadas)
+    ('Descubra o número misterioso: possui 4 algarismos e 4 ordens; o algarismo da unidade de milhar é 5; possui o sucessor do algarismo 2 na 3ª ordem; possui a metade do algarismo 4 na ordem das dezenas; possui o quociente de 16 : 2 na 1ª ordem. Que número é esse?', '5.328',
+     ['5.328', '5.238', '5.823', '5.382']),
+    ('Descubra o número misterioso: possui 4 algarismos; o algarismo da unidade de milhar é o dobro de 2; o algarismo da centena é o antecessor de 8; o algarismo da dezena é a metade de 18; o algarismo da unidade é o triplo de 1. Que número é esse?', '4.793',
+     ['4.793', '4.973', '4.739', '4.397']),
+
+    # Números ordinais aplicados à posição de letras numa palavra
+    ('Observe as letras da palavra FUTEBOLISTA. Qual é a 8ª letra?', 'I', ['I', 'L', 'S', 'T']),
+    ('Observe as letras da palavra FUTEBOLISTA. Que posição ocupa a letra "L"?', '7ª', ['7ª', '6ª', '8ª', '5ª']),
+    ('Observe as letras da palavra MATEMÁTICA. Qual é a 5ª letra?', 'M', ['M', 'A', 'T', 'I']),
+    ('Observe as letras da palavra ESCOLINHA. Que posição ocupa a letra "N"?', '8ª', ['8ª', '7ª', '9ª', '6ª']),
+]
+
+for enunciado, resposta, opcoes in questoes_novas:
+    criar_questao(matematica, 'ordinais_valor_abs_pos', enunciado, resposta, opcoes)
+
+total_novo = BancoQuestao.objects.filter(disciplina=matematica, modulo='ordinais_valor_abs_pos').count()
+print(f"\n✅ Concluído! Total de questões de Números Ordinais, Valor Absoluto e Posicional (com o bloco novo): {total_novo}")
+
+
+# ══════════════════════════════════════════════════════════════════
 # LIMPEZA — remove do "Sistema de Numeração" as questões que tinham
 # sido colocadas lá por engano antes de decidirmos criar este card
 # separado. Só tem efeito se você chegou a rodar o popular_numeracao.py

@@ -130,6 +130,7 @@ MODULOS_PORTUGUES = {
     'tempos_verbais': ('Tempos Verbais', '⏰'),
     'substantivos_singular_plural': ('Singular e Plural', '🔢'),
     'artigos': ('Artigos', '🔖'),
+    'interpretacao_texto': ('Interpretação de Texto', '📖'),
 }
 
 
@@ -600,6 +601,34 @@ def tabuada_6_a_9_quiz(request):
 
 
 @login_required(login_url='/')
+def arme_efetua_quiz(request):
+    """
+    Quiz 'Arme e Efetue': em vez de escolher entre alternativas prontas,
+    o aluno digita o resultado casa por casa (unidade, dezena, centena),
+    igual faria armando a conta no caderno — cobre as 4 operações
+    (adição, subtração, multiplicação e divisão).
+
+    Como o formato de resposta aqui é diferente (dígitos digitados,
+    não múltipla escolha), este módulo usa seu próprio 'dados_extras'
+    (num1/num2/resultado, ou dividendo/divisor/quociente/resto) em vez
+    do formato {'opcoes': [...]} usado pelos outros quizzes — e por
+    isso ele NÃO entra no catálogo da Prova Multidisciplinar, que
+    espera sempre 4 alternativas prontas.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='arme_efetua', ativo=True)
+        .values('resposta_correta', 'dados_extras')
+    )
+    itens_selecionados = random.sample(todas, min(10, len(todas)))
+    contas = [
+        {'dados': item['dados_extras'], 'resposta': item['resposta_correta']}
+        for item in itens_selecionados
+    ]
+    random.shuffle(contas)
+    return render(request, 'arme_efetua_quiz.html', {'contas_json': json.dumps(contas)})
+
+
+@login_required(login_url='/')
 def colmeia_multiplicacao_view(request):
     """
     Jogo 'Colmeia da Multiplicação': o aluno associa cada conta de
@@ -755,6 +784,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_tabuada_6_a_9', nivel='tabuada_6_a_9_questao'))
     _adicionar('Matemática', 'Colmeia da Multiplicação', '🐝',
                jogadas_todas.filter(operacao='matematica_colmeia', nivel='colmeia_par'))
+    _adicionar('Matemática', 'Arme e Efetue', '🧮',
+               jogadas_todas.filter(operacao='matematica_arme_efetua', nivel='arme_efetua_questao'))
 
     # Português, Inglês, Ciências, Geografia, História: módulos de quiz
     for materia, modulos, prefixo in [
@@ -887,6 +918,9 @@ MODULOS_MATEMATICA_BANCO = {
     'multiplos_de_10': ('Multiplicação por Dezenas, Centenas e Milhares', '🔟'),
     'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
     'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
+    # 'arme_efetua' fica de fora de propósito: seu 'dados_extras' guarda
+    # num1/num2/resultado (ou dividendo/divisor/quociente/resto), não o
+    # formato {'opcoes': [...]} que a Prova Multidisciplinar espera.
 }
 
 # Catálogo geral: toda matéria/módulo que tem perguntas no BancoQuestao

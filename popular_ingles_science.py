@@ -113,6 +113,47 @@ mammals_and_birds = [
 for enunciado, resposta, opcoes in mammals_and_birds:
     criar_questao(ingles, 'science_vertebrates_invertebrates', enunciado, resposta, opcoes)
 
+# ── Extra: Fish (com base no material "Fish", Ms. Dordron) — aprofunda
+#    o tema de vertebrados, focando nas características dos peixes.
+fish = [
+    ('Fish are vertebrate animals, so they have a:', 'Backbone', ['Backbone', 'Exoskeleton', 'Shell', 'Cartilage only']),
+    ('How do fish breathe?', 'Using their gills', ['Using their gills', 'Using lungs', 'Using their skin only', 'They do not breathe']),
+    ('What are the bodies of fish covered with?', 'Scales', ['Scales', 'Feathers', 'Fur', 'Shells']),
+    ('What do fish have to help them swim?', 'Fins', ['Fins', 'Wings', 'Legs', 'Paws']),
+    ('Fish live in the water, so they are considered:', 'Aquatic animals', ['Aquatic animals', 'Terrestrial animals', 'Aerial animals', 'Arboreal animals']),
+    ('Are fish oviparous or viviparous?', 'Oviparous', ['Oviparous', 'Viviparous', 'Neither', 'Both']),
+    ('Are fish cold-blooded or warm-blooded?', 'Cold-blooded', ['Cold-blooded', 'Warm-blooded', 'Neither', 'Both']),
+    ('How many habitats do fish usually have?', '1', ['1', '2', '3', '4']),
+    ('Fish usually have jaws and:', 'Teeth', ['Teeth', 'Fur', 'Feathers', 'Wings']),
+    ('Can many fish see colors?', 'Yes, many fish can see colors', ['Yes, many fish can see colors', 'No, fish are completely blind', 'Only at night', 'Only baby fish can']),
+    ('Which of these is an example of a fish?', 'Shark', ['Shark', 'Frog', 'Turtle', 'Dolphin']),
+]
+for enunciado, resposta, opcoes in fish:
+    criar_questao(ingles, 'science_vertebrates_invertebrates', enunciado, resposta, opcoes)
+
+# ── Extra: Reptiles and Amphibians (com base no material "Reptiles and
+#    Amphibians", Ms. Dordron) — compara estes dois grupos de vertebrados.
+reptiles_amphibians = [
+    ('Which of these animals are examples of reptiles?', 'Turtles, snakes, lizards and crocodiles',
+     ['Turtles, snakes, lizards and crocodiles', 'Frogs and salamanders', 'Fish and birds', 'Only snakes']),
+    ('Which of these animals are examples of amphibians?', 'Frogs and salamanders',
+     ['Frogs and salamanders', 'Turtles and snakes', 'Lizards and crocodiles', 'Only frogs']),
+    ('What kind of skin do amphibians have?', 'Moist skin', ['Moist skin', 'Dry skin', 'Skin covered in feathers', 'Skin covered in fur']),
+    ('Are amphibians cold-blooded or warm-blooded?', 'Cold-blooded', ['Cold-blooded', 'Warm-blooded', 'Neither', 'Both']),
+    ('How many habitats do amphibians usually have?', '2', ['2', '1', '3', '4']),
+    ('Most adult amphibians are:', 'Carnivore animals', ['Carnivore animals', 'Herbivore animals', 'Omnivore animals', 'They do not eat']),
+    ('How do amphibians reproduce?', 'They lay eggs', ['They lay eggs', 'They give birth to live babies', 'They do not reproduce', 'They split in half']),
+    ('Are reptiles invertebrate or vertebrate animals?', 'Vertebrate', ['Vertebrate', 'Invertebrate', 'Neither', 'Both']),
+    ('Are reptiles cold-blooded or warm-blooded?', 'Cold-blooded', ['Cold-blooded', 'Warm-blooded', 'Neither', 'Both']),
+    ('What is the body of a reptile covered with?', 'Scales', ['Scales', 'Feathers', 'Fur', 'Moist skin']),
+    ('Are most reptiles herbivores?', 'No, most reptiles are not herbivores', ['No, most reptiles are not herbivores', 'Yes, all reptiles are herbivores', 'Yes, but only baby reptiles', 'Reptiles do not eat']),
+    ('Are all reptiles only terrestrial animals?', 'No, some reptiles also live in water', ['No, some reptiles also live in water', 'Yes, all reptiles only live on land', 'Yes, reptiles can only fly', 'Reptiles only live underground']),
+    ('Which of these has moist skin and needs to live near water?', 'Frog', ['Frog', 'Turtle', 'Snake', 'Crocodile']),
+    ('Which of these is covered in dry scales and lays eggs on land?', 'Lizard', ['Lizard', 'Frog', 'Salamander', 'Toad']),
+]
+for enunciado, resposta, opcoes in reptiles_amphibians:
+    criar_questao(ingles, 'science_vertebrates_invertebrates', enunciado, resposta, opcoes)
+
 
 # ══════════════════════════════════════════════════════════════════
 # MÓDULO — OVIPAROUS X VIVIPAROUS

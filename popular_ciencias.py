@@ -318,6 +318,67 @@ for enunciado, resposta, opcoes in vertebrados_invertebrados:
     criar_questao(ciencias, 'vertebrados_invertebrados', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# BLOCO NOVO — a partir da atividade e do mapa mental de 14/08/2026
+# (Unidade 3, capítulos 1 e 2 — "Seres humanos e outros animais")
+# ══════════════════════════════════════════════════════════════════
+print("\n🦴 Populando: Ciências › Vertebrados e Invertebrados (bloco novo)...")
+
+vertebrados_invertebrados_novo = [
+    ('O grupo dos aracnídeos, que possui esqueleto externo, inclui as aranhas e:', 'Os escorpiões',
+     ['Os escorpiões', 'Os camarões', 'As minhocas', 'Os caramujos']),
+    ('O grupo dos crustáceos, que possui esqueleto externo, inclui os camarões e:', 'Os caranguejos',
+     ['Os caranguejos', 'As aranhas', 'As minhocas', 'Os caracóis']),
+    ('Insetos como borboletas, abelhas e formigas pertencem ao grupo dos:', 'Invertebrados',
+     ['Invertebrados', 'Vertebrados', 'Mamíferos', 'Répteis']),
+    ('O bem-te-vi pertence a qual grupo de vertebrados?', 'Aves', ['Aves', 'Répteis', 'Mamíferos', 'Anfíbios']),
+    ('O jacaré pertence a qual grupo de vertebrados?', 'Répteis', ['Répteis', 'Aves', 'Anfíbios', 'Mamíferos']),
+    ('O tamanduá-bandeira pertence a qual grupo de vertebrados?', 'Mamíferos', ['Mamíferos', 'Répteis', 'Aves', 'Peixes']),
+    ('O sapo pertence a qual grupo de vertebrados?', 'Anfíbios', ['Anfíbios', 'Répteis', 'Peixes', 'Mamíferos']),
+    ('A tilápia pertence a qual grupo de vertebrados?', 'Peixes', ['Peixes', 'Anfíbios', 'Répteis', 'Mamíferos']),
+    ('Um animal vive na água, respira por brânquias, possui nadadeiras e o corpo coberto por escamas. Esse animal pertence ao grupo dos:', 'Peixes',
+     ['Peixes', 'Mamíferos', 'Aves', 'Anfíbios']),
+    ('Um animal possui penas, tem bico e nasce de ovos. Esse animal pertence ao grupo dos:', 'Aves',
+     ['Aves', 'Répteis', 'Mamíferos', 'Peixes']),
+    ('Entre cachorro, borboleta, sapo, peixe, formiga, bem-te-vi, lagarto e polvo, quais são invertebrados?', 'Borboleta, formiga e polvo',
+     ['Borboleta, formiga e polvo', 'Cachorro, sapo e peixe', 'Bem-te-vi e lagarto', 'Todos são invertebrados']),
+    ('Entre cachorro, borboleta, sapo, peixe, formiga, bem-te-vi, lagarto e polvo, quais são vertebrados?', 'Cachorro, sapo, peixe, bem-te-vi e lagarto',
+     ['Cachorro, sapo, peixe, bem-te-vi e lagarto', 'Borboleta, formiga e polvo', 'Apenas o cachorro', 'Todos são vertebrados']),
+]
+for enunciado, resposta, opcoes in vertebrados_invertebrados_novo:
+    criar_questao(ciencias, 'vertebrados_invertebrados', enunciado, resposta, opcoes)
+
+
+print("\n🐾 Populando: Ciências › Diversidade de Modos de Vida (bloco novo)...")
+
+diversidade_modos_vida_novo = [
+    ('A galinha vive em ambiente terrestre e se alimenta de grãos, sementes e pequenos insetos. Por isso, ela é classificada como:', 'Onívora',
+     ['Onívora', 'Herbívora', 'Carnívora', 'Aquática']),
+    ('A galinha se reproduz da seguinte forma:', 'É ovípara, pois nasce de ovos',
+     ['É ovípara, pois nasce de ovos', 'É vivípara, pois nasce do corpo da mãe', 'Não se reproduz', 'É ovovivípara']),
+    ('A vaca vive em ambiente terrestre, se alimenta de plantas e nasce do corpo da mãe. Sobre sua reprodução, podemos dizer que ela é:', 'Vivípara',
+     ['Vivípara', 'Ovípara', 'Ovovivípara', 'Não se reproduz']),
+    ('A baleia vive no ambiente aquático, mas, ao contrário dos peixes, ela é um animal:', 'Vivíparo e mamífero',
+     ['Vivíparo e mamífero', 'Ovíparo e peixe', 'Ovíparo e réptil', 'Vivíparo e ave']),
+    ('A baleia se alimenta de outros animais, sendo portanto classificada como:', 'Carnívora',
+     ['Carnívora', 'Herbívora', 'Onívora', 'Fotossintética']),
+    ('O bem-te-vi vive em ambiente terrestre e se alimenta tanto de insetos quanto de frutas. Por isso, é classificado como:', 'Onívoro',
+     ['Onívoro', 'Herbívoro', 'Carnívoro', 'Aquático']),
+    ('O cavalo vive, principalmente, em qual ambiente?', 'Terrestre', ['Terrestre', 'Aquático', 'Aéreo', 'Subterrâneo']),
+    ('Animais como leões, elefantes, cachorros e formigas, que vivem sobre a terra, são chamados de animais:', 'Terrestres',
+     ['Terrestres', 'Aquáticos', 'Aéreos', 'Arborícolas']),
+    ('Animais como peixes, golfinhos, polvos e baleias, que vivem na água, são chamados de animais:', 'Aquáticos',
+     ['Aquáticos', 'Terrestres', 'Aéreos', 'Anfíbios']),
+    ('Humanos, ursos e porcos são exemplos de animais que se alimentam tanto de plantas quanto de outros animais, sendo por isso chamados de:', 'Onívoros',
+     ['Onívoros', 'Herbívoros', 'Carnívoros', 'Vegetarianos']),
+    ('Por que o ambiente em que um animal vive influencia o seu modo de vida?', 'Porque cada ambiente exige adaptações diferentes para a sobrevivência do animal',
+     ['Porque cada ambiente exige adaptações diferentes para a sobrevivência do animal', 'O ambiente não influencia em nada o modo de vida do animal',
+      'Porque todos os animais vivem exatamente da mesma forma, em qualquer lugar', 'Porque o ambiente só influencia a cor do animal']),
+]
+for enunciado, resposta, opcoes in diversidade_modos_vida_novo:
+    criar_questao(ciencias, 'diversidade_modos_vida', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE CIÊNCIAS CONCLUÍDA!")

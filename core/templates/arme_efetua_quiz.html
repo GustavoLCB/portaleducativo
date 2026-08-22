@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arme e Efetue</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; text-align: center; position: relative;
+            background-color: #026873; padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.45), rgba(2, 104, 115, 0.45)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .btn-voltar {
+            position: relative; z-index: 3; display: inline-block; margin-bottom: 15px;
+            text-decoration: none; color: white; font-weight: bold;
+            background: rgba(1,45,50,0.8); padding: 10px 18px; border-radius: 8px;
+        }
+        h1 { position: relative; z-index: 2; color: #ffd54f; font-size: 1.8em; margin: 10px 0 20px; }
+        .area-jogo {
+            position: relative; z-index: 2; max-width: 460px; margin: 0 auto;
+            background: rgba(1, 45, 50, 0.6); border: 2px solid rgba(255,255,255,0.35);
+            padding: 35px 25px; border-radius: 20px;
+        }
+        .conta-coluna {
+            display: flex; justify-content: center; gap: 6px; font-size: 1.7em;
+            font-weight: bold; font-family: 'Courier New', monospace;
+        }
+        .conta-coluna span.casa { display: inline-block; width: 40px; text-align: center; }
+        .linha-traco { border-top: 3px solid #ffffff; margin: 6px auto 16px; width: fit-content; }
+        .caixa-inputs { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; }
+        .caixa-inputs input {
+            width: 40px; height: 46px; text-align: center; font-size: 1.5em;
+            border-radius: 8px; border: 3px solid transparent; padding: 0;
+        }
+        .caixa-inputs input.correto { background-color: #6fdc8c; border-color: #27ae60; }
+        .caixa-inputs input.errado { background-color: #ff8a80; border-color: #c0392b; }
+        .divisao-linha { font-size: 1.6em; font-weight: bold; margin-bottom: 18px; }
+        .divisao-campos { display: flex; justify-content: center; gap: 22px; margin-bottom: 8px; }
+        .divisao-campo label { display: block; font-size: 0.85em; margin-bottom: 6px; color: #ffe9a8; }
+        .divisao-campo input {
+            width: 64px; height: 46px; text-align: center; font-size: 1.4em;
+            border-radius: 8px; border: 3px solid transparent; padding: 0;
+        }
+        .divisao-campo input.correto { background-color: #6fdc8c; border-color: #27ae60; }
+        .divisao-campo input.errado { background-color: #ff8a80; border-color: #c0392b; }
+        .btn-conferir {
+            background: #f4b400; color: #2c1e00; padding: 12px 30px; font-size: 1.1em;
+            border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold;
+        }
+        .msg-erro { color: #ffb3ab; font-size: 0.95em; min-height: 20px; margin-top: 8px; }
+        .placar { position: relative; z-index: 2; margin-top: 18px; font-size: 1.1em; font-weight: bold; }
+        .tela-fim { display: none; }
+        .btn-novo-jogo {
+            background: #f4b400; color: #2c1e00; padding: 14px 28px; font-size: 1.2em;
+            border: none; border-radius: 10px; cursor: pointer; margin-top: 18px; font-weight: bold;
+        }
+        @media (max-width: 480px) {
+            .conta-coluna span.casa, .caixa-inputs input { width: 32px; }
+            .caixa-inputs input { height: 40px; font-size: 1.25em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <a class="btn-voltar" href="{% url 'menu_matematica' %}">⬅ Voltar</a>
+    <h1>🧮 Arme e Efetue</h1>
+
+    <div class="area-jogo" id="tela-quiz">
+        <div id="area-conta"></div>
+        <button class="btn-conferir" id="btn-conferir">Conferir</button>
+        <p class="msg-erro" id="msg-erro"></p>
+    </div>
+
+    <div class="area-jogo tela-fim" id="tela-fim">
+        <h2>🎉 Muito bem, matemático(a)!</h2>
+        <p>Você acertou <strong id="resumo-acertos"></strong> de <span id="resumo-total"></span> contas.</p>
+        <button class="btn-novo-jogo" onclick="location.reload()">Jogar Novamente</button>
+    </div>
+
+    <div class="placar">
+        Conta <span id="contador-atual">1</span>/<span id="total-questoes"></span> —
+        Erros: <span id="contador-erros">0</span>
+    </div>
+
+    <script>
+        const contasData = {{ contas_json|safe }};
+        let indiceAtual = 0;
+        let erros = 0;
+        let erroNestaQuestao = 0;
+        let acertosPerfeitos = 0;
+        const totalContas = contasData.length;
+        let tempoInicioQuestao = Date.now();
+        let jaConferido = false;
+
+        document.getElementById('total-questoes').innerText = totalContas;
+        document.getElementById('resumo-total').innerText = totalContas;
+
+        function carregarConta() {
+            if (indiceAtual >= totalContas) { finalizarJogo(); return; }
+            jaConferido = false;
+            document.getElementById('msg-erro').innerText = '';
+            document.getElementById('contador-atual').innerText = indiceAtual + 1;
+
+            const atual = contasData[indiceAtual];
+            const dados = atual.dados;
+            const area = document.getElementById('area-conta');
+
+            if (dados.operador === '÷') {
+                area.innerHTML =
+                    '<div class="divisao-linha">' + dados.dividendo + '  ÷  ' + dados.divisor + '</div>' +
+                    '<div class="divisao-campos">' +
+                        '<div class="divisao-campo"><label>Quociente</label><input maxlength="3" inputmode="numeric" id="in-quociente"></div>' +
+                        '<div class="divisao-campo"><label>Resto</label><input maxlength="3" inputmode="numeric" id="in-resto"></div>' +
+                    '</div>';
+            } else {
+                const resultLen = dados.resultado.length;
+                const num1Str = String(dados.num1).padStart(resultLen, ' ');
+                const num2Str = String(dados.num2).padStart(resultLen, ' ');
+                let linha1 = '<div class="conta-coluna"><span class="casa">&nbsp;</span>';
+                for (const ch of num1Str) { linha1 += '<span class="casa">' + (ch === ' ' ? '&nbsp;' : ch) + '</span>'; }
+                linha1 += '</div>';
+                let linha2 = '<div class="conta-coluna"><span class="casa">' + dados.operador + '</span>';
+                for (const ch of num2Str) { linha2 += '<span class="casa">' + (ch === ' ' ? '&nbsp;' : ch) + '</span>'; }
+                linha2 += '</div>';
+                let inputs = '<div class="caixa-inputs"><span class="casa">&nbsp;</span>';
+                for (let i = 0; i < resultLen; i++) {
+                    inputs += '<input maxlength="1" inputmode="numeric" class="digito-resultado" data-indice="' + i + '">';
+                }
+                inputs += '</div>';
+                area.innerHTML = linha1 + linha2 + '<div class="linha-traco"></div>' + inputs;
+            }
+            tempoInicioQuestao = Date.now();
+        }
+
+        function conferir() {
+            if (jaConferido) return;
+            const atual = contasData[indiceAtual];
+            const dados = atual.dados;
+            const msgErro = document.getElementById('msg-erro');
+            let acertou = false;
+
+            if (dados.operador === '÷') {
+                const inQuociente = document.getElementById('in-quociente');
+                const inResto = document.getElementById('in-resto');
+                const vQuociente = inQuociente.value.trim();
+                const vResto = inResto.value.trim();
+                if (!vQuociente || !vResto) {
+                    msgErro.innerText = 'Preencha o quociente e o resto antes de conferir.';
+                    return;
+                }
+                acertou = (vQuociente === dados.quociente && vResto === dados.resto);
+                inQuociente.classList.add(acertou ? 'correto' : 'errado');
+                inResto.classList.add(acertou ? 'correto' : 'errado');
+                inQuociente.disabled = true;
+                inResto.disabled = true;
+            } else {
+                const inputsDigitos = document.querySelectorAll('.digito-resultado');
+                let respostaDigitada = '';
+                for (const inp of inputsDigitos) {
+                    if (!inp.value.trim()) {
+                        msgErro.innerText = 'Preencha todas as casinhas antes de conferir.';
+                        return;
+                    }
+                    respostaDigitada += inp.value.trim();
+                }
+                acertou = (respostaDigitada === dados.resultado);
+                inputsDigitos.forEach(inp => {
+                    inp.classList.add(acertou ? 'correto' : 'errado');
+                    inp.disabled = true;
+                });
+            }
+
+            jaConferido = true;
+            msgErro.innerText = '';
+            document.getElementById('btn-conferir').disabled = true;
+
+            if (acertou) {
+                if (erroNestaQuestao === 0) acertosPerfeitos++;
+                salvarConta(erroNestaQuestao === 0);
+                erroNestaQuestao = 0;
+                setTimeout(() => {
+                    document.getElementById('btn-conferir').disabled = false;
+                    indiceAtual++; carregarConta();
+                }, 1300);
+            } else {
+                erros++; erroNestaQuestao++;
+                document.getElementById('contador-erros').innerText = erros;
+                setTimeout(() => {
+                    document.getElementById('btn-conferir').disabled = false;
+                    jaConferido = false;
+                    document.querySelectorAll('.digito-resultado, .divisao-campo input').forEach(inp => {
+                        inp.classList.remove('errado', 'correto');
+                        inp.disabled = false;
+                        inp.value = '';
+                    });
+                }, 1300);
+            }
+        }
+
+        function salvarConta(acertouSemErro) {
+            const tempo = (Date.now() - tempoInicioQuestao) / 1000;
+            fetch("{% url 'salvar_jogada' %}", {
+                method: 'POST',
+                keepalive: true,
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    operacao: 'matematica_arme_efetua',
+                    nivel: 'arme_efetua_questao',
+                    resposta_aluno: String(indiceAtual),
+                    acertou: acertouSemErro,
+                    tempo_segundos: tempo
+                })
+            }).catch(err => console.error('Erro ao salvar jogada:', err));
+        }
+
+        function finalizarJogo() {
+            document.getElementById('tela-quiz').style.display = 'none';
+            document.getElementById('tela-fim').style.display = 'block';
+            document.getElementById('resumo-acertos').innerText = acertosPerfeitos;
+        }
+
+        document.getElementById('btn-conferir').addEventListener('click', conferir);
+        carregarConta();
+    </script>
+</body>
+</html>
