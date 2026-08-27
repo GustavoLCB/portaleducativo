@@ -64,7 +64,7 @@ print("\n✏️  Populando: Português › Ortografia...")
 ortografia = [
     ('E___ELENTE (a prova foi e___elente)', 'XC', ['C', 'SS', 'XC', 'S']),
     ('NA___ER (toda criança precisa na___er)', 'SC', ['SC', 'SS', 'C', 'X']),
-    ('CRE___A (é importante cre___er sempre)', 'SC', ['SC', 'SS', 'C', 'Ç']),
+    ('CRE___ER (é importante cre___er sempre)', 'SC', ['SC', 'SS', 'C', 'Ç']),
     ('PROFE___OR (o profe___or da turma é gentil)', 'SS', ['SS', 'S', 'C', 'Ç']),
     ('PEI___E ( o pei__e nada muito rápido no rio)', 'X', ['S','X','SC','C']),
     ('CORA___ÃO ( Eu sinto muito amor no meu cora__ão)', 'Ç', ['S','X','SC','Ç']),
