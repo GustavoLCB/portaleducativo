@@ -510,6 +510,53 @@ def desafios_calculo_quiz(request):
 
 
 @login_required(login_url='/')
+def expressoes_numericas_quiz(request):
+    """
+    Quiz de Expressões Numéricas: expressões com mais de uma operação e
+    parênteses (ordem das operações), fator/divisor desconhecido
+    (ex: '__ x 6 = 48') e cálculo direto de multiplicação/divisão —
+    banco dedicado ao conteúdo cobrado na Avaliação de Matemática
+    (folha "MATEMÁTICA.docx"). Mesmo padrão do desafios_calculo_quiz.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='expressoes_numericas', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'expressoes_numericas_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
+def fracoes_numeros_quiz(request):
+    """
+    Quiz de Frações de um Número: metade, terça parte, quarta parte,
+    quinta parte e sexta parte de uma quantidade (incluindo dúzia,
+    dezena e centena) e o problema inverso ("um número cuja metade é
+    15, qual é esse número?") — banco dedicado ao conteúdo cobrado na
+    Avaliação de Matemática (folha "MATEMÁTICA.docx"). Mesmo padrão do
+    desafios_calculo_quiz.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='fracoes_numeros', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'fracoes_numeros_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
 def ordinais_valor_abs_pos_quiz(request):
     """
     Quiz de Números Ordinais, Valor Absoluto e Posicional — banco
@@ -774,6 +821,10 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_numeracao', nivel='numeracao_questao'))
     _adicionar('Matemática', 'Desafios de Cálculo', '🧠',
                jogadas_todas.filter(operacao='matematica_desafios_calculo', nivel='desafios_calculo_questao'))
+    _adicionar('Matemática', 'Expressões Numéricas', '🧩',
+               jogadas_todas.filter(operacao='matematica_expressoes_numericas', nivel='expressoes_numericas_questao'))
+    _adicionar('Matemática', 'Frações de um Número', '🍰',
+               jogadas_todas.filter(operacao='matematica_fracoes_numeros', nivel='fracoes_numeros_questao'))
     _adicionar('Matemática', 'Números Ordinais, Valor Absoluto e Posicional', '#️⃣',
                jogadas_todas.filter(operacao='matematica_ordinais_valor_abs_pos', nivel='ordinais_valor_abs_pos_questao'))
     _adicionar('Matemática', 'Multiplicação por Dezenas, Centenas e Milhares', '🔟',
@@ -914,6 +965,8 @@ def ranking_view(request):
 MODULOS_MATEMATICA_BANCO = {
     'sistema_numeracao': ('Sistema de Numeração', '🔢'),
     'desafios_calculo': ('Desafios de Cálculo', '🧠'),
+    'expressoes_numericas': ('Expressões Numéricas', '🧩'),
+    'fracoes_numeros': ('Frações de um Número', '🍰'),
     'ordinais_valor_abs_pos': ('Números Ordinais, Valor Absoluto e Posicional', '#️⃣'),
     'multiplos_de_10': ('Multiplicação por Dezenas, Centenas e Milhares', '🔟'),
     'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
