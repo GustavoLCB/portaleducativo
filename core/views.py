@@ -6,6 +6,7 @@ import string
 from collections import OrderedDict
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
@@ -114,6 +115,20 @@ def em_breve_view(request):
     return render(request, 'em_breve.html', {'materia': materia})
 
 
+def _exigir_ano_pronto(request, materia, anos_prontos=('3',)):
+    """
+    Algumas matérias (por enquanto: Português, Geografia, Inglês,
+    Ciências e História) só têm conteúdo pronto para o 3º ano. Se o
+    aluno estiver em outro ano, manda pra tela 'Em breve' em vez de
+    mostrar o conteúdo errado (do 3º ano) pra ele.
+
+    Retorna um redirect se o ano NÃO estiver pronto, ou None se pode seguir.
+    """
+    if request.session.get('ano_selecionado') not in anos_prontos:
+        return redirect(f"{reverse('em_breve')}?materia={materia}")
+    return None
+
+
 # ─────────────────────────────────────────────
 # PORTUGUÊS — 5 módulos (quiz genérico reaproveitado)
 # ─────────────────────────────────────────────
@@ -137,6 +152,9 @@ MODULOS_PORTUGUES = {
 @login_required(login_url='/')
 def menu_portugues(request):
     """Tela com os 5 módulos de Português."""
+    bloqueio = _exigir_ano_pronto(request, 'Português')
+    if bloqueio:
+        return bloqueio
     return render(request, 'menu_portugues.html')
 
 
@@ -147,6 +165,9 @@ def portugues_quiz(request, modulo):
     usam o mesmo formato {pergunta, resposta, opcoes} no BancoQuestao,
     então uma view só resolve todos.
     """
+    bloqueio = _exigir_ano_pronto(request, 'Português')
+    if bloqueio:
+        return bloqueio
     nome_modulo, icone_modulo = MODULOS_PORTUGUES.get(modulo, (modulo.title(), '📚'))
 
     todas = list(
@@ -186,12 +207,18 @@ MODULOS_GEOGRAFIA = {
 @login_required(login_url='/')
 def menu_geografia(request):
     """Tela com os 5 módulos de Geografia."""
+    bloqueio = _exigir_ano_pronto(request, 'Geografia')
+    if bloqueio:
+        return bloqueio
     return render(request, 'menu_geografia.html')
 
 
 @login_required(login_url='/')
 def geografia_quiz(request, modulo):
     """Quiz genérico, reaproveitado pelos 5 módulos de Geografia."""
+    bloqueio = _exigir_ano_pronto(request, 'Geografia')
+    if bloqueio:
+        return bloqueio
     nome_modulo, icone_modulo = MODULOS_GEOGRAFIA.get(modulo, (modulo.title(), '🌎'))
 
     todas = list(
@@ -235,12 +262,18 @@ MODULOS_INGLES = {
 @login_required(login_url='/')
 def menu_ingles(request):
     """Tela com os 4 módulos de Inglês."""
+    bloqueio = _exigir_ano_pronto(request, 'Inglês')
+    if bloqueio:
+        return bloqueio
     return render(request, 'menu_ingles.html')
 
 
 @login_required(login_url='/')
 def ingles_quiz(request, modulo):
     """Quiz genérico, reaproveitado pelos 4 módulos de Inglês."""
+    bloqueio = _exigir_ano_pronto(request, 'Inglês')
+    if bloqueio:
+        return bloqueio
     nome_modulo, icone_modulo = MODULOS_INGLES.get(modulo, (modulo.title(), '🇬🇧'))
 
     todas = list(
@@ -270,6 +303,9 @@ def menu_ingles_science(request):
     sem view própria) + 4 jogos de colmeia temáticos (usam a view
     ingles_science_hive_view abaixo).
     """
+    bloqueio = _exigir_ano_pronto(request, 'Inglês')
+    if bloqueio:
+        return bloqueio
     return render(request, 'menu_ingles_science.html')
 
 
@@ -328,6 +364,9 @@ def ingles_science_hive_view(request, tema):
     Inglês (mesma mecânica da Colmeia da Multiplicação: clica no bicho,
     depois no rótulo certo, os dois ficam da mesma cor).
     """
+    bloqueio = _exigir_ano_pronto(request, 'Inglês')
+    if bloqueio:
+        return bloqueio
     config = TEMAS_SCIENCE_HIVE.get(tema)
     if config is None:
         return redirect('menu_ingles_science')
@@ -362,12 +401,18 @@ MODULOS_CIENCIAS = {
 @login_required(login_url='/')
 def menu_ciencias(request):
     """Tela com os 5 módulos de Ciências."""
+    bloqueio = _exigir_ano_pronto(request, 'Ciências')
+    if bloqueio:
+        return bloqueio
     return render(request, 'menu_ciencias.html')
 
 
 @login_required(login_url='/')
 def ciencias_quiz(request, modulo):
     """Quiz genérico, reaproveitado pelos 5 módulos de Ciências."""
+    bloqueio = _exigir_ano_pronto(request, 'Ciências')
+    if bloqueio:
+        return bloqueio
     nome_modulo, icone_modulo = MODULOS_CIENCIAS.get(modulo, (modulo.title(), '🔬'))
 
     todas = list(
@@ -407,12 +452,18 @@ MODULOS_HISTORIA = {
 @login_required(login_url='/')
 def menu_historia(request):
     """Tela com os 5 módulos de História."""
+    bloqueio = _exigir_ano_pronto(request, 'História')
+    if bloqueio:
+        return bloqueio
     return render(request, 'menu_historia.html')
 
 
 @login_required(login_url='/')
 def historia_quiz(request, modulo):
     """Quiz genérico, reaproveitado pelos 5 módulos de História."""
+    bloqueio = _exigir_ano_pronto(request, 'História')
+    if bloqueio:
+        return bloqueio
     nome_modulo, icone_modulo = MODULOS_HISTORIA.get(modulo, (modulo.title(), '🏛️'))
 
     todas = list(
