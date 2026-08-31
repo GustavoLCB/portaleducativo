@@ -51,6 +51,28 @@
     <div class="caixa">
         <h1>🧮 Matemática</h1>
         <div class="grade-frentes">
+            {% if ano_selecionado == '2' %}
+            <a class="frente" href="{% url 'os_numeros_2ano_quiz' %}">
+                <span class="icone">🔢</span>
+                Os Números
+            </a>
+            <a class="frente" href="{% url 'adicao_2ano_quiz' %}">
+                <span class="icone">➕</span>
+                Adição
+            </a>
+            <a class="frente" href="{% url 'em_breve' %}?materia=Subtração (2º ano)">
+                <span class="icone">➖</span>
+                Subtração e Operações Inversas
+            </a>
+            <a class="frente" href="{% url 'em_breve' %}?materia=Figuras Geométricas (2º ano)">
+                <span class="icone">🔺</span>
+                Figuras Geométricas
+            </a>
+            <a class="frente" href="{% url 'em_breve' %}?materia=Mais Números (2º ano)">
+                <span class="icone">🔟</span>
+                Mais Números
+            </a>
+            {% elif ano_selecionado == '3' %}
             <a class="frente" href="{% url 'menu_operacoes' %}">
                 <span class="icone">
                     <svg viewBox="0 0 100 80" style="width:1em; height:1em; display:inline-block; vertical-align:middle;">
@@ -106,6 +128,12 @@
                 <span class="icone">🧮</span>
                 Arme e Efetue
             </a>
+            {% else %}
+            <a class="frente" href="{% url 'em_breve' %}?materia=Matemática">
+                <span class="icone">🚧</span>
+                Em breve para o seu ano
+            </a>
+            {% endif %}
         </div>
         <a class="voltar" href="{% url 'home' %}">⬅ Voltar ao início</a>
     </div>

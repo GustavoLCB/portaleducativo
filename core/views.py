@@ -452,11 +452,13 @@ NOMES_OPERACOES_MATEMATICA = {
 @login_required(login_url='/')
 def menu_matematica(request):
     """
-    Hub de Matemática: por enquanto tem 2 frentes — Operações (as 4
-    operações + potenciação/radiciação) e Sistema de Numeração (quiz
-    baseado nas provas). Cada uma pode crescer de forma independente.
+    Hub de Matemática: o conteúdo mostrado muda de acordo com o ano
+    selecionado na sessão (1º ao 5º ano). Cada ano tem seu próprio
+    conjunto de frentes/cards, pois o currículo é bem diferente entre eles.
     """
-    return render(request, 'menu_matematica.html')
+    return render(request, 'menu_matematica.html', {
+        'ano_selecionado': request.session.get('ano_selecionado'),
+    })
 
 
 @login_required(login_url='/')
@@ -473,7 +475,7 @@ def numeracao_quiz(request):
     de questões (BancoQuestao) populado a partir da prova real.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='sistema_numeracao', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='sistema_numeracao', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -496,7 +498,7 @@ def desafios_calculo_quiz(request):
     numa rota própria — sem mexer no que já existia.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='desafios_calculo', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='desafios_calculo', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -519,7 +521,7 @@ def expressoes_numericas_quiz(request):
     (folha "MATEMÁTICA.docx"). Mesmo padrão do desafios_calculo_quiz.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='expressoes_numericas', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='expressoes_numericas', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -543,7 +545,7 @@ def fracoes_numeros_quiz(request):
     desafios_calculo_quiz.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='fracoes_numeros', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='fracoes_numeros', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -568,7 +570,7 @@ def ordinais_valor_abs_pos_quiz(request):
     específico antes da prova.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='ordinais_valor_abs_pos', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='ordinais_valor_abs_pos', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -590,7 +592,7 @@ def multiplos_de_10_quiz(request):
     no banco, o que permite entrarem na Prova Multidisciplinar.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='multiplos_de_10', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='multiplos_de_10', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -611,7 +613,7 @@ def tabuada_2_a_5_quiz(request):
     entrarem também na Prova Multidisciplinar.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='tabuada_2_a_5', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='tabuada_2_a_5', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -634,7 +636,7 @@ def tabuada_6_a_9_quiz(request):
     também na Prova Multidisciplinar.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='tabuada_6_a_9', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='tabuada_6_a_9', ano='3', ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
     banco = [
@@ -663,7 +665,7 @@ def arme_efetua_quiz(request):
     espera sempre 4 alternativas prontas.
     """
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='arme_efetua', ativo=True)
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='arme_efetua', ano='3', ativo=True)
         .values('resposta_correta', 'dados_extras')
     )
     itens_selecionados = random.sample(todas, min(10, len(todas)))
@@ -673,6 +675,52 @@ def arme_efetua_quiz(request):
     ]
     random.shuffle(contas)
     return render(request, 'arme_efetua_quiz.html', {'contas_json': json.dumps(contas)})
+
+
+# ─────────────────────────────────────────────
+# MATEMÁTICA — 2º ANO (currículo próprio, cards diferentes do 3º ano)
+# ─────────────────────────────────────────────
+
+@login_required(login_url='/')
+def os_numeros_2ano_quiz(request):
+    """
+    2º ano › Os Números: contagem, comparação (=, ≠, <, >), sequências,
+    dúzia/dezena, dobro/metade simples — base na Unidade 1 do material
+    do 2º ano (Colégio Santo Agostinho).
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='os_numeros', ano='2', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'os_numeros_2ano_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
+def adicao_2ano_quiz(request):
+    """
+    2º ano › Adição: somas simples, fator/parcela desconhecida e
+    situações-problema — base na Unidade 2 do material do 2º ano
+    (Colégio Santo Agostinho).
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='adicao', ano='2', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'adicao_2ano_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
 
 
 @login_required(login_url='/')
@@ -825,6 +873,10 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_expressoes_numericas', nivel='expressoes_numericas_questao'))
     _adicionar('Matemática', 'Frações de um Número', '🍰',
                jogadas_todas.filter(operacao='matematica_fracoes_numeros', nivel='fracoes_numeros_questao'))
+    _adicionar('Matemática (2º ano)', 'Os Números', '🔢',
+               jogadas_todas.filter(operacao='matematica_2ano_os_numeros', nivel='os_numeros_2ano_questao'))
+    _adicionar('Matemática (2º ano)', 'Adição', '➕',
+               jogadas_todas.filter(operacao='matematica_2ano_adicao', nivel='adicao_2ano_questao'))
     _adicionar('Matemática', 'Números Ordinais, Valor Absoluto e Posicional', '#️⃣',
                jogadas_todas.filter(operacao='matematica_ordinais_valor_abs_pos', nivel='ordinais_valor_abs_pos_questao'))
     _adicionar('Matemática', 'Multiplicação por Dezenas, Centenas e Milhares', '🔟',

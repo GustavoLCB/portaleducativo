@@ -40,6 +40,10 @@ class BancoQuestao(models.Model):
     cálculo (adição/subtração/multiplicação/divisão) não usam esta tabela,
     eles geram os números direto no JavaScript.
     """
+    ANOS = [
+        ('1', '1º ano'), ('2', '2º ano'), ('3', '3º ano'),
+        ('4', '4º ano'), ('5', '5º ano'),
+    ]
     TIPOS = [
         ('multipla_escolha', 'Múltipla Escolha'),
         ('completar_frase', 'Completar Frase'),
@@ -48,6 +52,7 @@ class BancoQuestao(models.Model):
     ]
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     modulo = models.CharField(max_length=50)
+    ano = models.CharField(max_length=1, choices=ANOS, default='3')
     tipo = models.CharField(max_length=30, choices=TIPOS)
     enunciado = models.TextField()
     resposta_correta = models.CharField(max_length=200)
@@ -55,4 +60,4 @@ class BancoQuestao(models.Model):
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"[{self.disciplina}][{self.modulo}] {self.enunciado[:50]}"
+        return f"[{self.disciplina}][{self.ano}º][{self.modulo}] {self.enunciado[:50]}"
