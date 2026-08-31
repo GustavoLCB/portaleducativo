@@ -775,6 +775,71 @@ def adicao_2ano_quiz(request):
 
 
 @login_required(login_url='/')
+def subtracao_2ano_quiz(request):
+    """
+    2º ano › Subtração e Operações Inversas: subtrações simples, minuendo/
+    subtraendo desconhecido, sinal + ou − e situações-problema — base na
+    Unidade 3 do material do 2º ano (Colégio Santo Agostinho).
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='subtracao', ano='2', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'subtracao_2ano_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
+def figuras_geometricas_2ano_quiz(request):
+    """
+    2º ano › Figuras Geométricas: vértices, faces e arestas de cubo,
+    pirâmide, cone, cilindro e esfera, e associação com objetos do
+    dia a dia — base na Unidade 4 do material do 2º ano (Colégio Santo
+    Agostinho).
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='figuras_geometricas', ano='2', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'figuras_geometricas_2ano_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
+def mais_numeros_2ano_quiz(request):
+    """
+    2º ano › Mais Números: dezenas/unidades, sequências crescentes e
+    decrescentes, números pares e ímpares, forma ordinal e escrita por
+    extenso — base na Unidade 5 do material do 2º ano (Colégio Santo
+    Agostinho).
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='mais_numeros', ano='2', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'mais_numeros_2ano_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
 def colmeia_multiplicacao_view(request):
     """
     Jogo 'Colmeia da Multiplicação': o aluno associa cada conta de
@@ -928,6 +993,12 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_2ano_os_numeros', nivel='os_numeros_2ano_questao'))
     _adicionar('Matemática (2º ano)', 'Adição', '➕',
                jogadas_todas.filter(operacao='matematica_2ano_adicao', nivel='adicao_2ano_questao'))
+    _adicionar('Matemática (2º ano)', 'Subtração e Operações Inversas', '➖',
+               jogadas_todas.filter(operacao='matematica_2ano_subtracao', nivel='subtracao_2ano_questao'))
+    _adicionar('Matemática (2º ano)', 'Figuras Geométricas', '🔺',
+               jogadas_todas.filter(operacao='matematica_2ano_figuras_geometricas', nivel='figuras_geometricas_2ano_questao'))
+    _adicionar('Matemática (2º ano)', 'Mais Números', '🔟',
+               jogadas_todas.filter(operacao='matematica_2ano_mais_numeros', nivel='mais_numeros_2ano_questao'))
     _adicionar('Matemática', 'Números Ordinais, Valor Absoluto e Posicional', '#️⃣',
                jogadas_todas.filter(operacao='matematica_ordinais_valor_abs_pos', nivel='ordinais_valor_abs_pos_questao'))
     _adicionar('Matemática', 'Multiplicação por Dezenas, Centenas e Milhares', '🔟',
