@@ -44,9 +44,10 @@ def registro_view(request):
 
 def login_view(request):
     """
-    Tela de login. Depois de logar:
-    - se o aluno ainda não escolheu o ano nesta sessão -> tela de seleção de ano
-    - se já escolheu -> vai direto pra Home
+    Tela de login. Depois de logar, SEMPRE vai para a tela de seleção
+    de ano — mesmo que o aluno já tenha escolhido antes (em outro
+    login). Isso é proposital: a cada ano letivo o aluno muda de série,
+    então não faz sentido o sistema 'lembrar' um ano antigo.
     """
     if request.method == 'POST':
         email = request.POST.get('usuario', '').strip().lower()
@@ -55,8 +56,7 @@ def login_view(request):
         usuario = authenticate(request, username=email, password=senha)
         if usuario is not None:
             login(request, usuario)
-            if request.session.get('ano_selecionado'):
-                return redirect('home')
+            request.session.pop('ano_selecionado', None)
             return redirect('selecionar_ano')
 
         return render(request, 'login.html', {
