@@ -252,6 +252,7 @@ MODULOS_INGLES = {
     'esportes_convites': ('Esportes e Convites', '⚽'),
     'vocabulario_visual': ('Vocabulário Visual', '🖼️'),
     'casa_comodos': ('Rooms in the House', '🏠'),
+    'prepositions_of_place': ('Prepositions of Place', '📍'),
     'science_vertebrates_invertebrates': ('Vertebrates x Invertebrates', '🦴'),
     'science_oviparous_viviparous': ('Oviparous x Viviparous', '🥚'),
     'science_habitats': ('Animal Habitats', '🌍'),
