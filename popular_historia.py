@@ -4,12 +4,16 @@ popular_historia.py
 Execute na raiz do projeto:
     python popular_historia.py
 
-Popula o banco com questões de História em 5 módulos:
+Popula o banco com questões de História em módulos:
   - primeiras_vilas (São Vicente, São Paulo de Piratininga, Olinda)
   - ciclo_do_ouro (mineração, tropeiros, escravizados)
   - capitais_brasil (Salvador, Rio de Janeiro, Brasília)
   - crescimento_cidades (industrialização, cortiços, transportes)
   - cidadania (direitos, deveres, Constituição, município)
+  - cultura_brasileira (formação da cultura, indígenas/africanos/europeus)
+  - revisao_3periodo (revisão do 3º período: Unidade 7 - Nossas origens
+    culturais, Unidade 8 - A diversidade dos povos indígenas, Unidade 9 -
+    O grande encontro)
 
 Baseado no material real de História do 3º ano (Colégio Santo Agostinho).
 Pode rodar de novo sem problema — não duplica questões existentes.
@@ -230,6 +234,70 @@ for enunciado, resposta, opcoes in cultura_brasileira:
     criar_questao(historia, 'cultura_brasileira', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — REVISÃO 3º PERÍODO
+# Baseado no material "HIST Revisão 3º período.pdf": Unidade 7 (Nossas
+# origens culturais), Unidade 8 (A diversidade dos povos indígenas) e
+# Unidade 9 (O grande encontro).
+# ══════════════════════════════════════════════════════════════════
+print("\n📝 Populando: História › Revisão 3º Período...")
+
+revisao_3periodo_hist = [
+    ('O que é cultura?', 'Tudo o que aprendemos e dividimos: costumes, tradições, festas e conhecimentos',
+     ['Tudo o que aprendemos e dividimos: costumes, tradições, festas e conhecimentos', 'Apenas as roupas que usamos', 'Apenas os brinquedos das crianças', 'Apenas a comida que comemos']),
+    ('Quais são os 3 povos que formaram a "nossa mistura especial", a cultura brasileira?', 'Indígenas, portugueses e africanos',
+     ['Indígenas, portugueses e africanos', 'Apenas europeus', 'Apenas indígenas e europeus', 'Espanhóis, portugueses e franceses']),
+    ('Quando os portugueses chegaram ao Brasil, o que aconteceu com as terras onde os indígenas já moravam?', 'Os portugueses ocuparam essas terras',
+     ['Os portugueses ocuparam essas terras', 'Os portugueses pediram permissão e nunca ocuparam nada', 'As terras ficaram vazias, sem ninguém', 'Os indígenas venderam as terras']),
+    ('O que os portugueses aprenderam com os saberes dos indígenas?', 'Os melhores caminhos nas matas, remédios da natureza e novos alimentos',
+     ['Os melhores caminhos nas matas, remédios da natureza e novos alimentos', 'Como construir navios', 'Como fabricar armas de fogo', 'Como plantar trigo na Europa']),
+    ('Por que dizemos que "nosso português é único no mundo"?', 'Porque usamos até hoje muitas palavras de origem tupi-guarani',
+     ['Porque usamos até hoje muitas palavras de origem tupi-guarani', 'Porque não recebeu nenhuma influência de outros povos', 'Porque é idêntico ao português de Portugal', 'Porque foi inventado no Brasil, sem nenhuma origem']),
+    ('Qual é uma herança dos povos africanos presente na música brasileira?', 'Novos ritmos e instrumentos musicais, cheios de alegria',
+     ['Novos ritmos e instrumentos musicais, cheios de alegria', 'Apenas danças europeias', 'Nenhuma influência na música', 'Apenas instrumentos indígenas']),
+    ('Além da música, quais outras heranças dos povos africanos fazem parte da nossa cultura?', 'Palavras do nosso português e pratos da nossa culinária',
+     ['Palavras do nosso português e pratos da nossa culinária', 'Apenas roupas típicas', 'Apenas festas religiosas europeias', 'Nenhuma, só a música']),
+    ('Aproximadamente quantos povos indígenas diferentes existem hoje no Brasil?', 'Mais de 260 povos',
+     ['Mais de 260 povos', 'Apenas 10 povos', 'Exatamente 5 povos', 'Mais de 1.000 povos']),
+    ('Aproximadamente quantas pessoas indígenas vivem no Brasil hoje?', 'Cerca de 1,7 milhão',
+     ['Cerca de 1,7 milhão', 'Cerca de 100 mil', 'Cerca de 50 milhões', 'Cerca de 500 mil']),
+    ('Onde vivem os povos indígenas atualmente?', 'Em aldeias nas Terras Indígenas e também em cidades',
+     ['Em aldeias nas Terras Indígenas e também em cidades', 'Somente em aldeias na floresta', 'Somente em grandes cidades', 'Somente fora do Brasil']),
+    ('As Terras Indígenas são áreas protegidas por qual documento?', 'A Constituição',
+     ['A Constituição', 'Um decreto municipal', 'Um tratado internacional', 'Nenhum documento, é apenas um costume']),
+    ('Por que a palavra "índios" não é considerada a forma correta de chamar os povos originários do Brasil?', 'Porque foi inventada por engano pelos colonizadores e faz parecer que todos os povos são iguais',
+     ['Porque foi inventada por engano pelos colonizadores e faz parecer que todos os povos são iguais', 'Porque é uma palavra ofensiva inventada recentemente', 'Porque essa palavra não existe em português', 'Porque só pode ser usada por adultos']),
+    ('Qual é o termo correto para se referir a esses povos?', 'Povos Indígenas',
+     ['Povos Indígenas', 'Nativos americanos', 'Colonizadores', 'Bandeirantes']),
+    ('O que significa a palavra "indígena"?', '"Nascidos da terra" ou "povos originários"',
+     ['"Nascidos da terra" ou "povos originários"', '"Vindos de outro país"', '"Sem nenhuma cultura"', '"Moradores da cidade"']),
+    ('É correto dizer que todos os povos indígenas são iguais entre si?', 'Não, cada povo tem sua própria língua, arte e jeito de viver',
+     ['Não, cada povo tem sua própria língua, arte e jeito de viver', 'Sim, todos são exatamente iguais', 'Sim, todos falam a mesma língua', 'Não existe nenhuma diferença entre eles']),
+    ('Como funcionam muitas escolas dentro das aldeias indígenas?', 'São bilíngues: ensinam a língua do próprio povo e também o português',
+     ['São bilíngues: ensinam a língua do próprio povo e também o português', 'Só ensinam português', 'Não existem escolas nas aldeias', 'Só ensinam a língua indígena, nunca o português']),
+    ('Com que materiais são feitos muitos dos brinquedos das crianças indígenas?', 'Com materiais da própria natureza, como sementes, palha e madeira',
+     ['Com materiais da própria natureza, como sementes, palha e madeira', 'Apenas com plástico', 'Apenas com pilhas e eletrônicos', 'Não existem brinquedos nas aldeias']),
+    ('No "Grande Encontro" entre portugueses e indígenas, o que os portugueses trouxeram que era novidade para os indígenas?', 'Cavalos, ferramentas de metal e armas',
+     ['Cavalos, ferramentas de metal e armas', 'Milho e mandioca', 'Redes para dormir', 'Remédios feitos de ervas']),
+    ('Logo no início do encontro entre indígenas e portugueses, como foi a relação entre os dois povos?', 'De paz e trocas (tempos amistosos)',
+     ['De paz e trocas (tempos amistosos)', 'De guerra imediata', 'Não houve nenhum tipo de contato', 'De comércio internacional por navios']),
+    ('Durante os "tempos amistosos", o que os indígenas ajudavam os portugueses a fazer?', 'A conhecer a mata e a coletar o pau-brasil',
+     ['A conhecer a mata e a coletar o pau-brasil', 'A construir grandes cidades', 'A plantar trigo europeu', 'A navegar até Portugal']),
+    ('O que causou o fim da paz entre portugueses e indígenas, com o passar do tempo?', 'Os portugueses quiseram impor seus costumes e escravizar os indígenas',
+     ['Os portugueses quiseram impor seus costumes e escravizar os indígenas', 'Os indígenas atacaram Portugal', 'Faltou comida para os portugueses', 'Os indígenas foram embora do Brasil']),
+    ('Além da violência, o que mais causou tristeza e o desaparecimento de vários povos indígenas?', 'As doenças trazidas pelos europeus',
+     ['As doenças trazidas pelos europeus', 'A falta de água no litoral', 'O excesso de festas', 'A chegada dos povos africanos']),
+    ('Os povos indígenas desistiram de lutar pelas suas terras e sua cultura?', 'Não, eles resistiram e lutaram muito',
+     ['Não, eles resistiram e lutaram muito', 'Sim, desistiram completamente', 'Eles nunca precisaram lutar', 'Sim, foram embora do Brasil']),
+    ('Em que ano a Constituição garantiu aos povos indígenas o direito às suas terras?', '1988',
+     ['1988', '1822', '1500', '1960']),
+    ('É correto dizer que a luta dos povos indígenas terminou em 1988?', 'Não, a jornada continua até hoje',
+     ['Não, a jornada continua até hoje', 'Sim, terminou totalmente', 'Não, porque a Constituição de 1988 não existe', 'Sim, porque não há mais indígenas no Brasil']),
+]
+for enunciado, resposta, opcoes in revisao_3periodo_hist:
+    criar_questao(historia, 'revisao_3periodo', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE HISTÓRIA CONCLUÍDA!")
@@ -241,6 +309,7 @@ for modulo, nome in [
     ('crescimento_cidades', 'Crescimento das Cidades'),
     ('cidadania', 'Cidadania'),
     ('cultura_brasileira', 'Cultura Brasileira'),
+    ('revisao_3periodo', 'Revisão 3º Período'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=historia, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

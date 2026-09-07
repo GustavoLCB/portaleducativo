@@ -40,6 +40,7 @@
         }
         a.modulo:hover { transform: translateY(-4px); border-color: #f4b400; }
         a.modulo .icone { display: block; font-size: 2.2em; margin-bottom: 8px; }
+        a.modulo.destaque { border-color: #f4b400; background-color: #fff3cd; }
         a.voltar { display: inline-block; margin-top: 26px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
         a.voltar:hover { text-decoration: underline; }
         @media (max-width: 480px) {
@@ -51,6 +52,9 @@
     <div class="caixa">
         <h1>🏛️ História — Escolha o Módulo</h1>
         <div class="grade-modulos">
+            <a class="modulo destaque" href="{% url 'historia_quiz' 'revisao_3periodo' %}">
+                <span class="icone">📝</span>HIST - Revisão 3º Período
+            </a>
             <a class="modulo" href="{% url 'historia_quiz' 'primeiras_vilas' %}">
                 <span class="icone">🏘️</span>Primeiras Vilas
             </a>

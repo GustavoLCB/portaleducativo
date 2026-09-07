@@ -4,12 +4,16 @@ popular_geografia.py
 Execute na raiz do projeto:
     python popular_geografia.py
 
-Popula o banco com questões de Geografia em 5 módulos:
+Popula o banco com questões de Geografia em módulos:
   - extrativismo (vegetal, mineral, animal)
   - regioes_brasil (as 5 regiões e os estados)
   - agricultura (familiar, comercial, monocultura)
   - pecuaria (extensiva, intensiva, tipos de rebanho)
   - paisagem (pontos de vista, planos, natural x humanizada)
+  - setores_economia (setor primário, secundário e terciário)
+  - revisao_3periodo (revisão para a Avaliação de 09-09: setores da
+    economia, atividades do campo/cidade, êxodo rural, água, mata ciliar,
+    erosão, assoreamento e extrativismo predatório x sustentável)
 
 Baseado no material real de Geografia do 3º ano (Colégio Santo Agostinho).
 Pode rodar de novo sem problema — não duplica questões existentes.
@@ -252,6 +256,70 @@ for enunciado, resposta, opcoes in setores_economia:
     criar_questao(geografia, 'setores_economia', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — REVISÃO 3º PERÍODO (Avaliação 09-09)
+# Baseado no material "GEO Revisão para Avaliação dia 0909.pdf":
+# setores da economia, atividades do campo/cidade, êxodo rural, água,
+# mata ciliar, erosão, assoreamento e extrativismo predatório x sustentável.
+# As 8 questões do "Desafio da Revisão" do próprio material foram
+# incluídas (transformadas em múltipla escolha) + questões extras.
+# ══════════════════════════════════════════════════════════════════
+print("\n📝 Populando: Geografia › Revisão 3º Período...")
+
+revisao_3periodo_geo = [
+    ('Quantos setores dividem a economia de um país?', '3', ['3', '2', '4', '5']),
+    ('Qual setor da economia fornece matéria-prima?', 'Setor primário',
+     ['Setor primário', 'Setor secundário', 'Setor terciário', 'Setor público']),
+    ('Qual setor transforma a matéria-prima em produtos industrializados?', 'Setor secundário',
+     ['Setor secundário', 'Setor primário', 'Setor terciário', 'Setor privado']),
+    ('Em qual setor encontramos comércio e serviços?', 'Setor terciário',
+     ['Setor terciário', 'Setor primário', 'Setor secundário', 'Setor rural']),
+    ('No campo, quais são as três atividades econômicas mais importantes?', 'Agricultura, pecuária e extrativismo',
+     ['Agricultura, pecuária e extrativismo', 'Indústria, comércio e serviços', 'Turismo, transporte e comunicação', 'Mineração, pesca e construção civil']),
+    ('Na cidade (áreas urbanas), quais são as três atividades econômicas mais importantes?', 'Indústria, comércio e serviços',
+     ['Indústria, comércio e serviços', 'Agricultura, pecuária e extrativismo', 'Extrativismo, pesca e mineração', 'Transporte, turismo e lazer']),
+    ('O que significa êxodo rural?', 'A saída das pessoas do campo para a cidade',
+     ['A saída das pessoas do campo para a cidade', 'A ida das pessoas da cidade para o campo', 'O fim da agricultura no Brasil', 'O crescimento da população no campo']),
+    ('Com a modernização do campo e o uso de máquinas, o que aconteceu com a oferta de empregos em algumas atividades?', 'Diminuiu',
+     ['Diminuiu', 'Aumentou muito', 'Não mudou nada', 'Dobrou de tamanho']),
+    ('Qual é a diferença entre agricultura e extrativismo vegetal?', 'Na agricultura os vegetais são plantados para depois serem colhidos; no extrativismo vegetal os recursos já existem na natureza',
+     ['Na agricultura os vegetais são plantados para depois serem colhidos; no extrativismo vegetal os recursos já existem na natureza',
+      'Na agricultura os recursos já existem na natureza; no extrativismo vegetal eles são plantados',
+      'Agricultura e extrativismo vegetal são exatamente a mesma coisa',
+      'Agricultura só existe na cidade e extrativismo vegetal só existe no campo']),
+    ('O extrativismo pode ser dividido em quais tipos?', 'Vegetal, animal e mineral',
+     ['Vegetal, animal e mineral', 'Agrícola, industrial e comercial', 'Urbano e rural', 'Primário e secundário']),
+    ('De onde vem a água que abastece as nossas casas?', 'De rios, lagos e lagoas',
+     ['De rios, lagos e lagoas', 'Apenas de poços artesianos', 'Apenas da chuva armazenada em caixas-d\'água', 'Direto do mar, sem tratamento']),
+    ('Antes de chegar às nossas casas, a água precisa ser:', 'Tratada',
+     ['Tratada', 'Congelada', 'Fervida por 24 horas', 'Misturada com sal']),
+    ('Água potável é aquela que:', 'Está própria para o consumo',
+     ['Está própria para o consumo', 'Só serve para regar plantas', 'Vem direto do rio, sem tratamento', 'É salgada']),
+    ('O que é a mata ciliar?', 'A vegetação que fica nas margens dos rios',
+     ['A vegetação que fica nas margens dos rios', 'Um tipo de solo do deserto', 'Uma espécie de peixe de rio', 'Uma plantação de milho']),
+    ('Por que a mata ciliar é importante?', 'Porque protege o solo nas margens dos rios, ajudando a evitar a erosão',
+     ['Porque protege o solo nas margens dos rios, ajudando a evitar a erosão', 'Porque produz frutas para venda', 'Porque impede a chuva de cair', 'Porque limpa o ar da cidade']),
+    ('O que acontece quando a mata ciliar é retirada e o solo fica desprotegido?', 'Pode ocorrer erosão',
+     ['Pode ocorrer erosão', 'O rio fica mais limpo', 'A água fica mais potável', 'Nada acontece']),
+    ('O que é assoreamento?', 'É o acúmulo de restos de solo no fundo dos rios, diminuindo sua profundidade',
+     ['É o acúmulo de restos de solo no fundo dos rios, diminuindo sua profundidade', 'É o aumento da profundidade dos rios', 'É a construção de barragens', 'É a limpeza natural dos rios pela chuva']),
+    ('O extrativismo PREDATÓRIO é aquele que:', 'Retira os recursos sem respeitar a recuperação da natureza',
+     ['Retira os recursos sem respeitar a recuperação da natureza', 'Planta novas árvores toda semana', 'Nunca usa nenhum recurso natural', 'Só ocorre dentro das cidades']),
+    ('Qual das opções é um exemplo de extrativismo SUSTENTÁVEL?', 'Colher açaí e castanhas sem derrubar as árvores',
+     ['Colher açaí e castanhas sem derrubar as árvores', 'Derrubar a árvore inteira para colher todos os frutos de uma vez', 'Pescar sem nenhum limite, em qualquer época do ano', 'Poluir os rios durante a retirada de minérios']),
+    ('Qual das opções é um exemplo de extrativismo PREDATÓRIO?', 'Derrubada excessiva de árvores',
+     ['Derrubada excessiva de árvores', 'Retirar o látex da seringueira sem destruir a planta', 'Pescar respeitando a época de reprodução dos peixes', 'Colher frutas maduras sem prejudicar a árvore']),
+    ('Qual é a diferença entre extrativismo predatório e extrativismo sustentável?',
+     'O predatório prejudica a natureza e pode fazer os recursos acabarem; o sustentável respeita a natureza, permitindo sua recuperação',
+     ['O predatório prejudica a natureza e pode fazer os recursos acabarem; o sustentável respeita a natureza, permitindo sua recuperação',
+      'Os dois prejudicam a natureza da mesma forma',
+      'O predatório é sempre proibido por lei e o sustentável nunca é fiscalizado',
+      'Não existe nenhuma diferença entre os dois']),
+]
+for enunciado, resposta, opcoes in revisao_3periodo_geo:
+    criar_questao(geografia, 'revisao_3periodo', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE GEOGRAFIA CONCLUÍDA!")
@@ -263,6 +331,7 @@ for modulo, nome in [
     ('pecuaria', 'Pecuária'),
     ('paisagem', 'Paisagem'),
     ('setores_economia', 'Setores da Economia'),
+    ('revisao_3periodo', 'Revisão 3º Período'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=geografia, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")

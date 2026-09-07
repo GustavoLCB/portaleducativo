@@ -191,7 +191,7 @@ def portugues_quiz(request, modulo):
 
 
 # ─────────────────────────────────────────────
-# GEOGRAFIA — 5 módulos (mesmo padrão genérico de Português)
+# GEOGRAFIA — módulos (mesmo padrão genérico de Português)
 # ─────────────────────────────────────────────
 
 MODULOS_GEOGRAFIA = {
@@ -201,12 +201,13 @@ MODULOS_GEOGRAFIA = {
     'pecuaria': ('Pecuária', '🐄'),
     'paisagem': ('Paisagem', '🏞️'),
     'setores_economia': ('Setores da Economia', '🏙️'),
+    'revisao_3periodo': ('GEO - Revisão 3º Período', '📝'),
 }
 
 
 @login_required(login_url='/')
 def menu_geografia(request):
-    """Tela com os 5 módulos de Geografia."""
+    """Tela com os módulos de Geografia."""
     bloqueio = _exigir_ano_pronto(request, 'Geografia')
     if bloqueio:
         return bloqueio
@@ -215,7 +216,7 @@ def menu_geografia(request):
 
 @login_required(login_url='/')
 def geografia_quiz(request, modulo):
-    """Quiz genérico, reaproveitado pelos 5 módulos de Geografia."""
+    """Quiz genérico, reaproveitado pelos módulos de Geografia."""
     bloqueio = _exigir_ano_pronto(request, 'Geografia')
     if bloqueio:
         return bloqueio
@@ -437,7 +438,7 @@ def ciencias_quiz(request, modulo):
 
 
 # ─────────────────────────────────────────────
-# HISTÓRIA — 5 módulos (mesmo padrão genérico)
+# HISTÓRIA — módulos (mesmo padrão genérico)
 # ─────────────────────────────────────────────
 
 MODULOS_HISTORIA = {
@@ -447,12 +448,13 @@ MODULOS_HISTORIA = {
     'crescimento_cidades': ('Crescimento das Cidades', '🏭'),
     'cidadania': ('Cidadania', '⚖️'),
     'cultura_brasileira': ('Cultura Brasileira', '🎭'),
+    'revisao_3periodo': ('HIST - Revisão 3º Período', '📝'),
 }
 
 
 @login_required(login_url='/')
 def menu_historia(request):
-    """Tela com os 5 módulos de História."""
+    """Tela com os módulos de História."""
     bloqueio = _exigir_ano_pronto(request, 'História')
     if bloqueio:
         return bloqueio
@@ -461,7 +463,7 @@ def menu_historia(request):
 
 @login_required(login_url='/')
 def historia_quiz(request, modulo):
-    """Quiz genérico, reaproveitado pelos 5 módulos de História."""
+    """Quiz genérico, reaproveitado pelos módulos de História."""
     bloqueio = _exigir_ano_pronto(request, 'História')
     if bloqueio:
         return bloqueio
