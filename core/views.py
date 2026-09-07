@@ -146,6 +146,8 @@ MODULOS_PORTUGUES = {
     'substantivos_singular_plural': ('Singular e Plural', '🔢'),
     'artigos': ('Artigos', '🔖'),
     'interpretacao_texto': ('Interpretação de Texto', '📖'),
+    'pronomes': ('Pronomes', '🙋'),
+    'classe_gramatical': ('Classe Gramatical', '🧩'),
 }
 
 

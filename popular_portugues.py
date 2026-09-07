@@ -4,7 +4,7 @@ popular_portugues.py
 Execute na raiz do projeto:
     python popular_portugues.py
 
-Popula o banco com questões de Português em 11 módulos:
+Popula o banco com questões de Português em 13 módulos:
   - ortografia (C, SS, XC, S, SC, G, J...)
   - sinonimos_antonimos
   - encontros_vocalicos (ditongo, hiato, tritongo)
@@ -16,6 +16,9 @@ Popula o banco com questões de Português em 11 módulos:
   - tempos_verbais (presente, pretérito e futuro)
   - substantivos_singular_plural (regras de formação do plural)
   - artigos (definidos e indefinidos)
+  - interpretacao_texto
+  - pronomes (pronomes pessoais em frases)
+  - classe_gramatical (classe gramatical de palavras destacadas)
 
 Baseado nos temas cobrados na Avaliação de Língua Portuguesa do 2º
 Período (Colégio Santo Agostinho, 3º ano) e em conteúdo adicional do
@@ -502,6 +505,114 @@ for enunciado, resposta, opcoes in interpretacao_texto:
     criar_questao(portugues, 'interpretacao_texto', 'multipla_escolha', enunciado, resposta, opcoes)
 
 
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — PRONOMES (pronomes pessoais em frases)
+# ══════════════════════════════════════════════════════════════════
+print("\n🙋 Populando: Português › Pronomes...")
+
+pronomes = [
+    ('Qual é o pronome pessoal na frase: "Eu gosto de brincar no parque."?', 'Eu', ['Eu', 'Gosto', 'Brincar', 'Parque']),
+    ('Qual é o pronome pessoal na frase: "Tu sempre estudas com atenção."?', 'Tu', ['Tu', 'Sempre', 'Estudas', 'Atenção']),
+    ('Qual é o pronome pessoal na frase: "Ele comeu o bolo de chocolate."?', 'Ele', ['Ele', 'Comeu', 'Bolo', 'Chocolate']),
+    ('Qual é o pronome pessoal na frase: "Ela cantou uma música linda."?', 'Ela', ['Ela', 'Cantou', 'Música', 'Linda']),
+    ('Qual é o pronome pessoal na frase: "Nós fomos à praia no domingo."?', 'Nós', ['Nós', 'Fomos', 'Praia', 'Domingo']),
+    ('Qual é o pronome pessoal na frase: "Vós sois muito gentis."?', 'Vós', ['Vós', 'Sois', 'Muito', 'Gentis']),
+    ('Qual é o pronome pessoal na frase: "Eles jogaram futebol no recreio."?', 'Eles', ['Eles', 'Jogaram', 'Futebol', 'Recreio']),
+    ('Qual é o pronome pessoal na frase: "Elas viajaram para a fazenda."?', 'Elas', ['Elas', 'Viajaram', 'Fazenda', 'Para']),
+    ('Qual é o pronome pessoal na frase: "Eu adoro ler livros de aventura."?', 'Eu', ['Eu', 'Adoro', 'Livros', 'Aventura']),
+    ('Qual é o pronome pessoal na frase: "Tu moras perto da escola."?', 'Tu', ['Tu', 'Moras', 'Perto', 'Escola']),
+    ('Qual é o pronome pessoal na frase: "Ele desenhou um dragão colorido."?', 'Ele', ['Ele', 'Desenhou', 'Dragão', 'Colorido']),
+    ('Qual é o pronome pessoal na frase: "Ela ajudou a professora a organizar a sala."?', 'Ela', ['Ela', 'Ajudou', 'Professora', 'Organizar']),
+    ('Qual é o pronome pessoal na frase: "Nós cantamos o hino todos os dias."?', 'Nós', ['Nós', 'Cantamos', 'Hino', 'Dias']),
+    ('Qual é o pronome pessoal na frase: "Eles correram até o portão da escola."?', 'Eles', ['Eles', 'Correram', 'Portão', 'Escola']),
+    ('Qual é o pronome pessoal na frase: "Elas pintaram um quadro muito bonito."?', 'Elas', ['Elas', 'Pintaram', 'Quadro', 'Bonito']),
+    ('Qual é o pronome pessoal na frase: "Eu escrevi uma carta para minha avó."?', 'Eu', ['Eu', 'Escrevi', 'Carta', 'Avó']),
+    ('Qual é o pronome pessoal na frase: "Tu brincas com teus amigos todos os dias."?', 'Tu', ['Tu', 'Brincas', 'Amigos', 'Dias']),
+    ('Qual é o pronome pessoal na frase: "Ele guardou os brinquedos na caixa."?', 'Ele', ['Ele', 'Guardou', 'Brinquedos', 'Caixa']),
+    ('Qual é o pronome pessoal na frase: "Ela chegou atrasada na escola hoje."?', 'Ela', ['Ela', 'Chegou', 'Atrasada', 'Hoje']),
+    ('Qual é o pronome pessoal na frase: "Nós comemos frutas no lanche da tarde."?', 'Nós', ['Nós', 'Comemos', 'Frutas', 'Tarde']),
+    ('Os pronomes pessoais "eu, tu, ele, ela, nós, vós, eles, elas" servem para:', 'Substituir ou indicar as pessoas do discurso',
+     ['Substituir ou indicar as pessoas do discurso', 'Indicar uma ação', 'Descrever uma característica', 'Ligar duas frases']),
+    ('O pronome pessoal que representa a pessoa que fala é:', 'Eu', ['Eu', 'Tu', 'Ele', 'Nós']),
+    ('O pronome pessoal que representa a pessoa com quem se fala é:', 'Tu', ['Tu', 'Eu', 'Ele', 'Eles']),
+]
+for enunciado, resposta, opcoes in pronomes:
+    criar_questao(portugues, 'pronomes', 'multipla_escolha', enunciado, resposta, opcoes)
+
+
+# ══════════════════════════════════════════════════════════════════
+# MÓDULO NOVO — CLASSE GRAMATICAL (identificar a classe de cada
+# palavra destacada em uma frase, uma pergunta por palavra)
+# ══════════════════════════════════════════════════════════════════
+print("\n🏷️  Populando: Português › Classe Gramatical...")
+
+# TOTAL: 60 questões
+classe_gramatical = [
+    ('Na frase "Ele é bonito.", qual é a classe gramatical da palavra "Ele"?', 'Pronome pessoal', ['Verbo', 'Substantivo próprio', 'Adjetivo', 'Pronome pessoal']),
+    ('Na frase "Ele é bonito.", qual é a classe gramatical da palavra "é"?', 'Verbo', ['Pronome pessoal', 'Adjetivo', 'Verbo', 'Substantivo comum']),
+    ('Na frase "Ele é bonito.", qual é a classe gramatical da palavra "bonito"?', 'Adjetivo', ['Substantivo comum', 'Pronome pessoal', 'Verbo', 'Adjetivo']),
+    ('Na frase "Lucas correu rápido.", qual é a classe gramatical da palavra "Lucas"?', 'Substantivo próprio', ['Substantivo comum', 'Adjetivo', 'Substantivo próprio', 'Pronome pessoal']),
+    ('Na frase "Lucas correu rápido.", qual é a classe gramatical da palavra "correu"?', 'Verbo', ['Substantivo comum', 'Adjetivo', 'Pronome pessoal', 'Verbo']),
+    ('Na frase "Lucas correu rápido.", qual é a classe gramatical da palavra "rápido"?', 'Advérbio', ['Adjetivo', 'Substantivo comum', 'Verbo', 'Advérbio']),
+    ('Na frase "A menina sorriu.", qual é a classe gramatical da palavra "A"?', 'Artigo definido', ['Substantivo comum', 'Artigo indefinido', 'Artigo definido', 'Pronome pessoal']),
+    ('Na frase "A menina sorriu.", qual é a classe gramatical da palavra "menina"?', 'Substantivo comum', ['Substantivo próprio', 'Verbo', 'Substantivo comum', 'Adjetivo']),
+    ('Na frase "A menina sorriu.", qual é a classe gramatical da palavra "sorriu"?', 'Verbo', ['Verbo', 'Adjetivo', 'Substantivo comum', 'Pronome pessoal']),
+    ('Na frase "Ana comprou um sorvete.", qual é a classe gramatical da palavra "Ana"?', 'Substantivo próprio', ['Adjetivo', 'Pronome pessoal', 'Substantivo próprio', 'Substantivo comum']),
+    ('Na frase "Ana comprou um sorvete.", qual é a classe gramatical da palavra "comprou"?', 'Verbo', ['Adjetivo', 'Substantivo comum', 'Pronome pessoal', 'Verbo']),
+    ('Na frase "Ana comprou um sorvete.", qual é a classe gramatical da palavra "um"?', 'Artigo indefinido', ['Adjetivo', 'Substantivo comum', 'Artigo definido', 'Artigo indefinido']),
+    ('Na frase "O cachorro é fiel.", qual é a classe gramatical da palavra "O"?', 'Artigo definido', ['Pronome pessoal', 'Artigo indefinido', 'Artigo definido', 'Substantivo comum']),
+    ('Na frase "O cachorro é fiel.", qual é a classe gramatical da palavra "cachorro"?', 'Substantivo comum', ['Adjetivo', 'Verbo', 'Substantivo próprio', 'Substantivo comum']),
+    ('Na frase "O cachorro é fiel.", qual é a classe gramatical da palavra "fiel"?', 'Adjetivo', ['Adjetivo', 'Substantivo comum', 'Pronome pessoal', 'Verbo']),
+    ('Na frase "Nós somos alegres.", qual é a classe gramatical da palavra "Nós"?', 'Pronome pessoal', ['Adjetivo', 'Pronome pessoal', 'Verbo', 'Substantivo próprio']),
+    ('Na frase "Nós somos alegres.", qual é a classe gramatical da palavra "somos"?', 'Verbo', ['Substantivo comum', 'Pronome pessoal', 'Adjetivo', 'Verbo']),
+    ('Na frase "Nós somos alegres.", qual é a classe gramatical da palavra "alegres"?', 'Adjetivo', ['Substantivo comum', 'Pronome pessoal', 'Adjetivo', 'Verbo']),
+    ('Na frase "Pedro tem três bolas.", qual é a classe gramatical da palavra "Pedro"?', 'Substantivo próprio', ['Pronome pessoal', 'Adjetivo', 'Substantivo comum', 'Substantivo próprio']),
+    ('Na frase "Pedro tem três bolas.", qual é a classe gramatical da palavra "tem"?', 'Verbo', ['Verbo', 'Substantivo comum', 'Adjetivo', 'Pronome pessoal']),
+    ('Na frase "Pedro tem três bolas.", qual é a classe gramatical da palavra "três"?', 'Numeral', ['Numeral', 'Adjetivo', 'Artigo definido', 'Substantivo comum']),
+    ('Na frase "Eu gosto de doces.", qual é a classe gramatical da palavra "Eu"?', 'Pronome pessoal', ['Pronome pessoal', 'Adjetivo', 'Verbo', 'Substantivo próprio']),
+    ('Na frase "Eu gosto de doces.", qual é a classe gramatical da palavra "gosto"?', 'Verbo', ['Substantivo comum', 'Pronome pessoal', 'Adjetivo', 'Verbo']),
+    ('Na frase "Eu gosto de doces.", qual é a classe gramatical da palavra "doces"?', 'Substantivo comum', ['Adjetivo', 'Verbo', 'Substantivo comum', 'Substantivo próprio']),
+    ('Na frase "A professora explicou bem.", qual é a classe gramatical da palavra "A"?', 'Artigo definido', ['Substantivo comum', 'Artigo definido', 'Artigo indefinido', 'Pronome pessoal']),
+    ('Na frase "A professora explicou bem.", qual é a classe gramatical da palavra "professora"?', 'Substantivo comum', ['Substantivo próprio', 'Verbo', 'Substantivo comum', 'Adjetivo']),
+    ('Na frase "A professora explicou bem.", qual é a classe gramatical da palavra "bem"?', 'Advérbio', ['Substantivo comum', 'Verbo', 'Adjetivo', 'Advérbio']),
+    ('Na frase "Ela comprou uma boneca nova.", qual é a classe gramatical da palavra "Ela"?', 'Pronome pessoal', ['Substantivo próprio', 'Adjetivo', 'Pronome pessoal', 'Verbo']),
+    ('Na frase "Ela comprou uma boneca nova.", qual é a classe gramatical da palavra "uma"?', 'Artigo indefinido', ['Adjetivo', 'Artigo definido', 'Artigo indefinido', 'Substantivo comum']),
+    ('Na frase "Ela comprou uma boneca nova.", qual é a classe gramatical da palavra "nova"?', 'Adjetivo', ['Adjetivo', 'Substantivo comum', 'Verbo', 'Pronome pessoal']),
+    ('Na frase "Tu és muito esperto.", qual é a classe gramatical da palavra "Tu"?', 'Pronome pessoal', ['Verbo', 'Pronome pessoal', 'Adjetivo', 'Substantivo próprio']),
+    ('Na frase "Tu és muito esperto.", qual é a classe gramatical da palavra "muito"?', 'Advérbio', ['Advérbio', 'Substantivo comum', 'Verbo', 'Adjetivo']),
+    ('Na frase "Tu és muito esperto.", qual é a classe gramatical da palavra "esperto"?', 'Adjetivo', ['Adjetivo', 'Substantivo comum', 'Verbo', 'Pronome pessoal']),
+    ('Na frase "Marcos brincou no parque.", qual é a classe gramatical da palavra "Marcos"?', 'Substantivo próprio', ['Substantivo comum', 'Pronome pessoal', 'Substantivo próprio', 'Adjetivo']),
+    ('Na frase "Marcos brincou no parque.", qual é a classe gramatical da palavra "brincou"?', 'Verbo', ['Substantivo comum', 'Adjetivo', 'Verbo', 'Pronome pessoal']),
+    ('Na frase "Marcos brincou no parque.", qual é a classe gramatical da palavra "parque"?', 'Substantivo comum', ['Substantivo próprio', 'Adjetivo', 'Verbo', 'Substantivo comum']),
+    ('Na frase "Eles cantaram uma música alegre.", qual é a classe gramatical da palavra "Eles"?', 'Pronome pessoal', ['Substantivo próprio', 'Pronome pessoal', 'Verbo', 'Adjetivo']),
+    ('Na frase "Eles cantaram uma música alegre.", qual é a classe gramatical da palavra "uma"?', 'Artigo indefinido', ['Artigo indefinido', 'Substantivo comum', 'Artigo definido', 'Adjetivo']),
+    ('Na frase "Eles cantaram uma música alegre.", qual é a classe gramatical da palavra "alegre"?', 'Adjetivo', ['Substantivo comum', 'Adjetivo', 'Pronome pessoal', 'Verbo']),
+    ('Na frase "O menino é gentil.", qual é a classe gramatical da palavra "O"?', 'Artigo definido', ['Pronome pessoal', 'Artigo indefinido', 'Substantivo comum', 'Artigo definido']),
+    ('Na frase "O menino é gentil.", qual é a classe gramatical da palavra "menino"?', 'Substantivo comum', ['Verbo', 'Substantivo próprio', 'Substantivo comum', 'Adjetivo']),
+    ('Na frase "O menino é gentil.", qual é a classe gramatical da palavra "gentil"?', 'Adjetivo', ['Verbo', 'Substantivo comum', 'Adjetivo', 'Pronome pessoal']),
+    ('Na frase "Juliana escreveu duas cartas.", qual é a classe gramatical da palavra "Juliana"?', 'Substantivo próprio', ['Pronome pessoal', 'Substantivo comum', 'Adjetivo', 'Substantivo próprio']),
+    ('Na frase "Juliana escreveu duas cartas.", qual é a classe gramatical da palavra "escreveu"?', 'Verbo', ['Pronome pessoal', 'Verbo', 'Adjetivo', 'Substantivo comum']),
+    ('Na frase "Juliana escreveu duas cartas.", qual é a classe gramatical da palavra "duas"?', 'Numeral', ['Substantivo comum', 'Numeral', 'Artigo definido', 'Adjetivo']),
+    ('Na frase "Elas moram perto da escola.", qual é a classe gramatical da palavra "Elas"?', 'Pronome pessoal', ['Verbo', 'Pronome pessoal', 'Adjetivo', 'Substantivo próprio']),
+    ('Na frase "Elas moram perto da escola.", qual é a classe gramatical da palavra "moram"?', 'Verbo', ['Pronome pessoal', 'Substantivo comum', 'Adjetivo', 'Verbo']),
+    ('Na frase "Elas moram perto da escola.", qual é a classe gramatical da palavra "escola"?', 'Substantivo comum', ['Substantivo próprio', 'Adjetivo', 'Substantivo comum', 'Verbo']),
+    ('Na frase "O céu está azul.", qual é a classe gramatical da palavra "O"?', 'Artigo definido', ['Pronome pessoal', 'Artigo definido', 'Artigo indefinido', 'Substantivo comum']),
+    ('Na frase "O céu está azul.", qual é a classe gramatical da palavra "céu"?', 'Substantivo comum', ['Substantivo próprio', 'Adjetivo', 'Verbo', 'Substantivo comum']),
+    ('Na frase "O céu está azul.", qual é a classe gramatical da palavra "azul"?', 'Adjetivo', ['Pronome pessoal', 'Substantivo comum', 'Verbo', 'Adjetivo']),
+    ('Na frase "Rafael pintou o muro.", qual é a classe gramatical da palavra "Rafael"?', 'Substantivo próprio', ['Substantivo comum', 'Pronome pessoal', 'Adjetivo', 'Substantivo próprio']),
+    ('Na frase "Rafael pintou o muro.", qual é a classe gramatical da palavra "pintou"?', 'Verbo', ['Verbo', 'Pronome pessoal', 'Adjetivo', 'Substantivo comum']),
+    ('Na frase "Rafael pintou o muro.", qual é a classe gramatical da palavra "muro"?', 'Substantivo comum', ['Substantivo comum', 'Adjetivo', 'Verbo', 'Substantivo próprio']),
+    ('Na frase "Nós estudamos hoje.", qual é a classe gramatical da palavra "Nós"?', 'Pronome pessoal', ['Adjetivo', 'Pronome pessoal', 'Verbo', 'Substantivo próprio']),
+    ('Na frase "Nós estudamos hoje.", qual é a classe gramatical da palavra "estudamos"?', 'Verbo', ['Verbo', 'Pronome pessoal', 'Substantivo comum', 'Adjetivo']),
+    ('Na frase "Nós estudamos hoje.", qual é a classe gramatical da palavra "hoje"?', 'Advérbio', ['Advérbio', 'Adjetivo', 'Verbo', 'Substantivo comum']),
+    ('Na frase "Uma menina chorou baixinho.", qual é a classe gramatical da palavra "Uma"?', 'Artigo indefinido', ['Artigo definido', 'Substantivo comum', 'Adjetivo', 'Artigo indefinido']),
+    ('Na frase "Uma menina chorou baixinho.", qual é a classe gramatical da palavra "menina"?', 'Substantivo comum', ['Adjetivo', 'Verbo', 'Substantivo próprio', 'Substantivo comum']),
+    ('Na frase "Uma menina chorou baixinho.", qual é a classe gramatical da palavra "baixinho"?', 'Advérbio', ['Substantivo comum', 'Advérbio', 'Verbo', 'Adjetivo']),
+]
+for enunciado, resposta, opcoes in classe_gramatical:
+    criar_questao(portugues, 'classe_gramatical', 'multipla_escolha', enunciado, resposta, opcoes)
+
+
 # ── RESUMO ──────────────────────────────────────────────────────────
 print("\n" + "=" * 55)
 print("✅ POPULAÇÃO DE PORTUGUÊS CONCLUÍDA!")
@@ -519,6 +630,8 @@ for modulo, nome in [
     ('substantivos_singular_plural', 'Substantivo Singular e Plural'),
     ('artigos', 'Artigos'),
     ('interpretacao_texto', 'Interpretação de Texto'),
+    ('pronomes', 'Pronomes'),
+    ('classe_gramatical', 'Classe Gramatical'),
 ]:
     total = BancoQuestao.objects.filter(disciplina=portugues, modulo=modulo).count()
     print(f"   {nome:.<32} {total}")
