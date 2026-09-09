@@ -399,6 +399,7 @@ MODULOS_CIENCIAS = {
     'sistema_solar': ('Sistema Solar', '🪐'),
     'diversidade_modos_vida': ('Diversidade de Modos de Vida', '🐾'),
     'vertebrados_invertebrados': ('Vertebrados e Invertebrados', '🦴'),
+    'revisao_3periodo': ('CIEN - Revisão 3º Período', '📝'),
 }
 
 
