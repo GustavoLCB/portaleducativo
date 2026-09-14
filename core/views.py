@@ -260,6 +260,7 @@ MODULOS_INGLES = {
     'science_oviparous_viviparous': ('Oviparous x Viviparous', '🥚'),
     'science_habitats': ('Animal Habitats', '🌍'),
     'science_eating_habits': ('Eating Habits', '🍽️'),
+    'revisao_3periodo': ('ING - Revisão 3º Período', '📝'),
 }
 
 
