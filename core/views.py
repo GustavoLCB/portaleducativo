@@ -617,6 +617,29 @@ def fracoes_numeros_quiz(request):
 
 
 @login_required(login_url='/')
+def matematica_revisao_3periodo_quiz(request):
+    """
+    Quiz de Matemática — MAT - Revisão 3º Período: frações de um número
+    (terça e quarta parte), subtração e divisão com prova real, dezenas
+    e números romanos (conversão, antecessor e sucessor) — banco
+    dedicado ao conteúdo da folha "Matematica PROVA REVISAO 15-09-2026.docx"
+    (Colégio Santo Agostinho). Mesmo padrão do expressoes_numericas_quiz.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='revisao_3periodo', ano='3', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'matematica_revisao_3periodo_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
 def ordinais_valor_abs_pos_quiz(request):
     """
     Quiz de Números Ordinais, Valor Absoluto e Posicional — banco
@@ -707,13 +730,30 @@ def tabuada_6_a_9_quiz(request):
     return render(request, 'tabuada_6_a_9_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
 
 
+# Catálogo das 4 operações do Arme e Efetue — usado tanto pela tela
+# de escolha (menu_arme_efetua) quanto pelo quiz filtrado por operação.
+OPERACOES_ARME_EFETUA = {
+    'adicao': {'simbolo': '+', 'nome': 'Adição', 'icone': '➕'},
+    'subtracao': {'simbolo': '-', 'nome': 'Subtração', 'icone': '➖'},
+    'multiplicacao': {'simbolo': '×', 'nome': 'Multiplicação', 'icone': '✖️'},
+    'divisao': {'simbolo': '÷', 'nome': 'Divisão', 'icone': '➗'},
+}
+
+
 @login_required(login_url='/')
-def arme_efetua_quiz(request):
+def menu_arme_efetua(request):
+    """Tela onde o aluno escolhe QUAL das 4 operações quer treinar no Arme e Efetue."""
+    return render(request, 'menu_arme_efetua.html', {'operacoes': OPERACOES_ARME_EFETUA})
+
+
+@login_required(login_url='/')
+def arme_efetua_quiz(request, operacao):
     """
     Quiz 'Arme e Efetue': em vez de escolher entre alternativas prontas,
     o aluno digita o resultado casa por casa (unidade, dezena, centena),
-    igual faria armando a conta no caderno — cobre as 4 operações
-    (adição, subtração, multiplicação e divisão).
+    igual faria armando a conta no caderno — agora filtrado por UMA
+    das 4 operações (adição, subtração, multiplicação ou divisão),
+    escolhida na tela anterior (menu_arme_efetua).
 
     Como o formato de resposta aqui é diferente (dígitos digitados,
     não múltipla escolha), este módulo usa seu próprio 'dados_extras'
@@ -722,9 +762,15 @@ def arme_efetua_quiz(request):
     isso ele NÃO entra no catálogo da Prova Multidisciplinar, que
     espera sempre 4 alternativas prontas.
     """
+    config = OPERACOES_ARME_EFETUA.get(operacao)
+    if not config:
+        return redirect('menu_arme_efetua')
+
     todas = list(
-        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='arme_efetua', ano='3', ativo=True)
-        .values('resposta_correta', 'dados_extras')
+        BancoQuestao.objects.filter(
+            disciplina__nome='matematica', modulo='arme_efetua', ano='3', ativo=True,
+            dados_extras__operador=config['simbolo'],
+        ).values('resposta_correta', 'dados_extras')
     )
     itens_selecionados = random.sample(todas, min(10, len(todas)))
     contas = [
@@ -732,7 +778,11 @@ def arme_efetua_quiz(request):
         for item in itens_selecionados
     ]
     random.shuffle(contas)
-    return render(request, 'arme_efetua_quiz.html', {'contas_json': json.dumps(contas)})
+    return render(request, 'arme_efetua_quiz.html', {
+        'contas_json': json.dumps(contas),
+        'nome_operacao': config['nome'],
+        'icone_operacao': config['icone'],
+    })
 
 
 # ─────────────────────────────────────────────
@@ -996,6 +1046,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_expressoes_numericas', nivel='expressoes_numericas_questao'))
     _adicionar('Matemática', 'Frações de um Número', '🍰',
                jogadas_todas.filter(operacao='matematica_fracoes_numeros', nivel='fracoes_numeros_questao'))
+    _adicionar('Matemática', 'MAT - Revisão 3º Período', '📝',
+               jogadas_todas.filter(operacao='matematica_revisao_3periodo', nivel='revisao_3periodo_questao'))
     _adicionar('Matemática (2º ano)', 'Os Números', '🔢',
                jogadas_todas.filter(operacao='matematica_2ano_os_numeros', nivel='os_numeros_2ano_questao'))
     _adicionar('Matemática (2º ano)', 'Adição', '➕',
@@ -1152,6 +1204,7 @@ MODULOS_MATEMATICA_BANCO = {
     'multiplos_de_10': ('Multiplicação por Dezenas, Centenas e Milhares', '🔟'),
     'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
     'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
+    'revisao_3periodo': ('MAT - Revisão 3º Período', '📝'),
     # 'arme_efetua' fica de fora de propósito: seu 'dados_extras' guarda
     # num1/num2/resultado (ou dividendo/divisor/quociente/resto), não o
     # formato {'opcoes': [...]} que a Prova Multidisciplinar espera.

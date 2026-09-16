@@ -124,9 +124,13 @@
                 <span class="icone">🐝</span>
                 Colmeia da Multiplicação
             </a>
-            <a class="frente" href="{% url 'arme_efetua_quiz' %}">
+            <a class="frente" href="{% url 'menu_arme_efetua' %}">
                 <span class="icone">🧮</span>
                 Arme e Efetue
+            </a>
+            <a class="frente" href="{% url 'matematica_revisao_3periodo_quiz' %}">
+                <span class="icone">📝</span>
+                MAT - Revisão 3º Período
             </a>
             {% else %}
             <a class="frente" href="{% url 'em_breve' %}?materia=Matemática">
