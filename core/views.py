@@ -1070,6 +1070,10 @@ def montar_estatisticas_aluno(usuario):
 
     def _adicionar(materia, nome, icone, jogadas_filtradas):
         if jogadas_filtradas.count() > 0:
+            # Seções extras (ex.: 'Matemática (2º ano)') só aparecem no
+            # relatório quando o aluno tem jogadas nelas. Antes, uma jogada
+            # do 2º ano derrubava a página com erro 500 (KeyError).
+            materias.setdefault(materia, [])
             acertos = jogadas_filtradas.filter(acertou=True).count()
             tempo_medio = jogadas_filtradas.aggregate(Avg('tempo_segundos'))['tempo_segundos__avg']
             materias[materia].append({
@@ -1138,6 +1142,14 @@ def montar_estatisticas_aluno(usuario):
     # entra como uma frente própria no relatório, sem detalhar por matéria.
     _adicionar('Prova Multidisciplinar', 'Provas Realizadas', '📝',
                jogadas_todas.filter(operacao='prova_multidisciplinar', nivel='prova_questao'))
+
+    # Deixa 'Matemática (2º ano)' logo depois de 'Matemática', quando existir.
+    ordem = ['Matemática', 'Matemática (2º ano)', 'Português', 'Inglês', 'Ciências',
+             'Geografia', 'História', 'Prova Multidisciplinar']
+    materias = OrderedDict(
+        [(m, materias[m]) for m in ordem if m in materias] +
+        [(m, v) for m, v in materias.items() if m not in ordem]
+    )
 
     return materias, total_geral
 
