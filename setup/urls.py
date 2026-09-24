@@ -21,6 +21,7 @@ urlpatterns = [
     path('matematica/expressoes-numericas/', views.expressoes_numericas_quiz, name='expressoes_numericas_quiz'),
     path('matematica/fracoes-de-um-numero/', views.fracoes_numeros_quiz, name='fracoes_numeros_quiz'),
     path('matematica/revisao-3periodo/', views.matematica_revisao_3periodo_quiz, name='matematica_revisao_3periodo_quiz'),
+    path('matematica/prova-3periodo/', views.matematica_prova_3periodo_quiz, name='matematica_prova_3periodo_quiz'),
     path('matematica/ordinais-valor-absoluto-posicional/', views.ordinais_valor_abs_pos_quiz, name='ordinais_valor_abs_pos_quiz'),
     path('matematica/multiplos-de-10/', views.multiplos_de_10_quiz, name='multiplos_de_10_quiz'),
     path('matematica/tabuada-2-a-5/', views.tabuada_2_a_5_quiz, name='tabuada_2_a_5_quiz'),

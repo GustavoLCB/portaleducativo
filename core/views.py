@@ -148,6 +148,7 @@ MODULOS_PORTUGUES = {
     'interpretacao_texto': ('Interpretação de Texto', '📖'),
     'pronomes': ('Pronomes', '🙋'),
     'classe_gramatical': ('Classe Gramatical', '🧩'),
+    'prova_3periodo': ('PORT - Prova 3º Período', '🏆'),
 }
 
 
@@ -204,6 +205,7 @@ MODULOS_GEOGRAFIA = {
     'paisagem': ('Paisagem', '🏞️'),
     'setores_economia': ('Setores da Economia', '🏙️'),
     'revisao_3periodo': ('GEO - Revisão 3º Período', '📝'),
+    'prova_3periodo': ('GEO - Prova 3º Período', '🏆'),
 }
 
 
@@ -446,6 +448,7 @@ MODULOS_CIENCIAS = {
     'diversidade_modos_vida': ('Diversidade de Modos de Vida', '🐾'),
     'vertebrados_invertebrados': ('Vertebrados e Invertebrados', '🦴'),
     'revisao_3periodo': ('CIEN - Revisão 3º Período', '📝'),
+    'prova_3periodo': ('CIEN - Prova 3º Período', '🏆'),
 }
 
 
@@ -498,6 +501,7 @@ MODULOS_HISTORIA = {
     'cidadania': ('Cidadania', '⚖️'),
     'cultura_brasileira': ('Cultura Brasileira', '🎭'),
     'revisao_3periodo': ('HIST - Revisão 3º Período', '📝'),
+    'prova_3periodo': ('HIST - Prova 3º Período', '🏆'),
 }
 
 
@@ -682,6 +686,28 @@ def matematica_revisao_3periodo_quiz(request):
     for item in itens_jogo:
         random.shuffle(item['opcoes'])
     return render(request, 'matematica_revisao_3periodo_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
+def matematica_prova_3periodo_quiz(request):
+    """
+    Quiz de Matemática — MAT - Prova 3º Período: conteúdo da Prova de
+    Matemática do 3º Período (17/09/2026, tema "A fauna da Mata
+    Atlântica") — ordens, frações, tabela, arme e efetue, hexágono e
+    expressões numéricas. Mesmo padrão do matematica_revisao_3periodo_quiz.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='prova_3periodo', ano='3', ativo=True)
+        .values('enunciado', 'resposta_correta', 'dados_extras')
+    )
+    banco = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
+        for q in todas
+    ]
+    itens_jogo = random.sample(banco, min(10, len(banco)))
+    for item in itens_jogo:
+        random.shuffle(item['opcoes'])
+    return render(request, 'matematica_prova_3periodo_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
 
 
 @login_required(login_url='/')
@@ -1097,6 +1123,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_fracoes_numeros', nivel='fracoes_numeros_questao'))
     _adicionar('Matemática', 'MAT - Revisão 3º Período', '📝',
                jogadas_todas.filter(operacao='matematica_revisao_3periodo', nivel='revisao_3periodo_questao'))
+    _adicionar('Matemática', 'MAT - Prova 3º Período', '🏆',
+               jogadas_todas.filter(operacao='matematica_prova_3periodo', nivel='prova_3periodo_questao'))
     _adicionar('Matemática (2º ano)', 'Os Números', '🔢',
                jogadas_todas.filter(operacao='matematica_2ano_os_numeros', nivel='os_numeros_2ano_questao'))
     _adicionar('Matemática (2º ano)', 'Adição', '➕',
@@ -1262,6 +1290,7 @@ MODULOS_MATEMATICA_BANCO = {
     'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
     'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
     'revisao_3periodo': ('MAT - Revisão 3º Período', '📝'),
+    'prova_3periodo': ('MAT - Prova 3º Período', '🏆'),
     # 'arme_efetua' fica de fora de propósito: seu 'dados_extras' guarda
     # num1/num2/resultado (ou dividendo/divisor/quociente/resto), não o
     # formato {'opcoes': [...]} que a Prova Multidisciplinar espera.
