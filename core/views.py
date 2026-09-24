@@ -261,6 +261,14 @@ MODULOS_INGLES = {
     'science_habitats': ('Animal Habitats', '🌍'),
     'science_eating_habits': ('Eating Habits', '🍽️'),
     'revisao_3periodo': ('ING - Revisão 3º Período', '📝'),
+    'feelings_grammar': ('ING - Feelings (Grammar)', '😊'),
+    'prova_3periodo': ('ING - Prova 3º Período', '🏆'),
+}
+
+# Quantas questões cada partida de Inglês sorteia (padrão: 10).
+QTD_QUESTOES_INGLES = {
+    'feelings_grammar': 12,
+    'prova_3periodo': 12,
 }
 
 
@@ -285,13 +293,28 @@ def ingles_quiz(request, modulo):
         BancoQuestao.objects.filter(disciplina__nome='ingles', modulo=modulo, ativo=True)
         .values('enunciado', 'resposta_correta', 'dados_extras')
     )
-    banco = [
-        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta'], 'opcoes': list(q['dados_extras'].get('opcoes', []))}
-        for q in todas
-    ]
-    itens_jogo = random.sample(banco, min(10, len(banco)))
+    # Campos extras (todos opcionais, guardados em dados_extras):
+    #   'modo': 'digitar'  → o aluno DIGITA a resposta em vez de clicar
+    #   'banco': [...]     → palavras mostradas como "word bank" (só para ler)
+    #   'aceitas': [...]   → outras formas de escrever que também valem
+    #   'svg': 'rosto:happy' / 'cena:brush_teeth' / 'relogio:9:00' / 'digital:11:00'
+    banco = []
+    for q in todas:
+        extras = q['dados_extras'] or {}
+        banco.append({
+            'pergunta': q['enunciado'],
+            'resposta': q['resposta_correta'],
+            'opcoes': list(extras.get('opcoes', [])),
+            'modo': extras.get('modo', 'multipla_escolha'),
+            'banco': list(extras.get('banco', [])),
+            'aceitas': list(extras.get('aceitas', [])),
+            'svg': extras.get('svg', ''),
+        })
+    quantidade = QTD_QUESTOES_INGLES.get(modulo, 10)
+    itens_jogo = random.sample(banco, min(quantidade, len(banco)))
     for item in itens_jogo:
         random.shuffle(item['opcoes'])
+        random.shuffle(item['banco'])
 
     return render(request, 'ingles_quiz.html', {
         'questoes_json': json.dumps(itens_jogo),
@@ -1223,6 +1246,16 @@ PROVA_CATALOGO = {
 }
 
 
+def _serve_para_prova(dados_extras):
+    """
+    Questões que dependem de uma FIGURA (rostinho, cena, relógio em SVG)
+    ficam de fora da Prova Multidisciplinar, porque a prova mostra só o
+    texto da pergunta. As questões de digitar entram normalmente: na prova
+    elas viram múltipla escolha (as 'opcoes' continuam guardadas).
+    """
+    return not (dados_extras or {}).get('svg')
+
+
 def _montar_catalogo_com_contagem():
     """
     Monta o catálogo da Prova Multidisciplinar já com a quantidade de
@@ -1233,9 +1266,12 @@ def _montar_catalogo_com_contagem():
     for materia_id, config in PROVA_CATALOGO.items():
         modulos_lista = []
         for modulo_id, (nome_modulo, icone_modulo) in config['modulos'].items():
-            total = BancoQuestao.objects.filter(
-                disciplina__nome=config['disciplina_bd'], modulo=modulo_id, ativo=True
-            ).count()
+            total = sum(
+                1 for extras in BancoQuestao.objects.filter(
+                    disciplina__nome=config['disciplina_bd'], modulo=modulo_id, ativo=True
+                ).values_list('dados_extras', flat=True)
+                if _serve_para_prova(extras)
+            )
             modulos_lista.append({
                 'id': modulo_id, 'nome': nome_modulo, 'icone': icone_modulo, 'total_disponivel': total,
             })
@@ -1277,9 +1313,12 @@ def prova_gerar_view(request):
         if not config_materia or modulo_id not in config_materia['modulos']:
             continue  # ignora valores inesperados (ex: formulário adulterado)
 
-        questoes = list(BancoQuestao.objects.filter(
-            disciplina__nome=config_materia['disciplina_bd'], modulo=modulo_id, ativo=True
-        ).values('enunciado', 'resposta_correta', 'dados_extras'))
+        questoes = [
+            q for q in BancoQuestao.objects.filter(
+                disciplina__nome=config_materia['disciplina_bd'], modulo=modulo_id, ativo=True
+            ).values('enunciado', 'resposta_correta', 'dados_extras')
+            if _serve_para_prova(q['dados_extras'])
+        ]
 
         quantidade_final = min(quantidade_pedida, len(questoes))
         selecionadas = random.sample(questoes, quantidade_final)
