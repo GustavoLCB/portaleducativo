@@ -230,5 +230,42 @@ for enunciado, resposta, banco, aceitas in frases_digitar:
     )
     print(f"  ✅ ⌨️  {enunciado.splitlines()[-1][:60]}")
 
+
+# ══════════════════════════════════════════════════════════════════
+# 5) DIGITAR — traduzir o sentimento (português → inglês)
+# ══════════════════════════════════════════════════════════════════
+print("\n⌨️  Digitar (traduzir sentimentos)...")
+traduzir = [
+    ('com fome', 'hungry', ['hungry', 'thirsty', 'happy', 'tired']),
+    ('com sede', 'thirsty', ['thirsty', 'hungry', 'silly', 'scared']),
+    ('cansado', 'tired', ['tired', 'bored', 'angry', 'excited']),
+    ('entediado', 'bored', ['bored', 'tired', 'worried', 'happy']),
+    ('bravo / zangado', 'angry', ['angry', 'scared', 'hungry', 'silly']),
+    ('com medo', 'scared', ['scared', 'surprised', 'angry', 'fine']),
+    ('surpreso', 'surprised', ['surprised', 'scared', 'excited', 'bored']),
+    ('animado / empolgado', 'excited', ['excited', 'happy', 'worried', 'tired']),
+    ('preocupado', 'worried', ['worried', 'angry', 'thirsty', 'silly']),
+    ('bobo / brincalhão', 'silly', ['silly', 'scared', 'bored', 'hungry']),
+    ('feliz', 'happy', ['happy', 'hungry', 'tired', 'angry']),
+    ('bem', 'fine', ['fine', 'tired', 'scared', 'thirsty']),
+]
+for portugues, resposta, opcoes in traduzir:
+    criar_questao(ingles, f'Type the feeling in English:\n"{portugues}"', resposta, opcoes, modo='digitar')
+
+# DIGITAR — responder "How are you?" com uma frase completa
+print("\n⌨️  Digitar (How are you?)...")
+como_voce_esta = [
+    ('Anna is very well today.\n"How are you, Anna?" — Type her answer (use I\'m + great).', "I'm great.",
+     ["I'm great.", "I'm tired.", "I'm hungry."], ["I am great", "I'm great!"]),
+    ('Pedro wants to sleep.\n"How are you, Pedro?" — Type his answer (use I\'m).', "I'm tired.",
+     ["I'm tired.", "I'm great.", "I'm hungry."], ["I am tired"]),
+    ('Tom and Sue want to eat pizza.\n"How are you?" — Type their answer (use We\'re).', "We're hungry.",
+     ["We're hungry.", "We're thirsty.", "We're tired."], ["We are hungry"]),
+    ('Carla is OK.\n"How are you, Carla?" — Type her answer (use I\'m + fine).', "I'm fine.",
+     ["I'm fine.", "I'm scared.", "I'm bored."], ["I am fine", "I'm fine, thanks", "I'm fine, thank you"]),
+]
+for enunciado, resposta, opcoes, aceitas in como_voce_esta:
+    criar_questao(ingles, enunciado, resposta, opcoes, modo='digitar', aceitas=aceitas)
+
 total = BancoQuestao.objects.filter(disciplina=ingles, modulo=MODULO).count()
 print(f"\n🎉 Pronto! O card 'ING - Feelings (Grammar)' tem {total} questões.")

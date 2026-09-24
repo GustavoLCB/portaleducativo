@@ -263,13 +263,26 @@ MODULOS_INGLES = {
     'revisao_3periodo': ('ING - Revisão 3º Período', '📝'),
     'feelings_grammar': ('ING - Feelings (Grammar)', '😊'),
     'prova_3periodo': ('ING - Prova 3º Período', '🏆'),
+    'story_busy_saturday': ('ING - Story: A Busy Saturday', '📖'),
 }
 
 # Quantas questões cada partida de Inglês sorteia (padrão: 10).
 QTD_QUESTOES_INGLES = {
     'feelings_grammar': 12,
     'prova_3periodo': 12,
+    'story_busy_saturday': 12,
 }
+
+# Quantas dessas questões, NO MÍNIMO, são de DIGITAR (se houver no banco).
+MIN_DIGITAR_INGLES = {
+    'feelings_grammar': 7,
+    'prova_3periodo': 7,
+    'story_busy_saturday': 9,
+}
+
+# Cards que abrem com um quadro/texto antes das questões
+# (o conteúdo fica no template ingles_quiz.html).
+MODULOS_INGLES_COM_QUADRO = {'feelings_grammar', 'story_busy_saturday'}
 
 
 @login_required(login_url='/')
@@ -310,8 +323,16 @@ def ingles_quiz(request, modulo):
             'aceitas': list(extras.get('aceitas', [])),
             'svg': extras.get('svg', ''),
         })
-    quantidade = QTD_QUESTOES_INGLES.get(modulo, 10)
-    itens_jogo = random.sample(banco, min(quantidade, len(banco)))
+    quantidade = min(QTD_QUESTOES_INGLES.get(modulo, 10), len(banco))
+    de_digitar = [q for q in banco if q['modo'] == 'digitar']
+    de_clicar = [q for q in banco if q['modo'] != 'digitar']
+    # Garante um mínimo de questões de digitar (sem passar do que existe no banco);
+    # o resto da partida é sorteado entre todas as outras questões.
+    qtd_digitar = min(len(de_digitar), MIN_DIGITAR_INGLES.get(modulo, 0), quantidade)
+    sorteadas = random.sample(de_digitar, qtd_digitar)
+    restante = [q for q in de_clicar + de_digitar if not any(q is x for x in sorteadas)]
+    itens_jogo = sorteadas + random.sample(restante, quantidade - qtd_digitar)
+    random.shuffle(itens_jogo)
     for item in itens_jogo:
         random.shuffle(item['opcoes'])
         random.shuffle(item['banco'])
@@ -321,6 +342,7 @@ def ingles_quiz(request, modulo):
         'modulo': modulo,
         'nome_modulo': nome_modulo,
         'icone_modulo': icone_modulo,
+        'tem_quadro': modulo in MODULOS_INGLES_COM_QUADRO,
     })
 
 

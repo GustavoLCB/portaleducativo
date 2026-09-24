@@ -86,6 +86,9 @@
         .quadro th { background: #0d3b66; color: #fff; padding: 8px; }
         .quadro td { border: 2px solid #b0bec5; padding: 8px; text-align: center; }
         .quadro .nota { background: #fff3c4; border-radius: 10px; padding: 8px 12px; font-weight: bold; }
+        .texto-historia { font-size: 1.12em; line-height: 1.75; margin: 0; padding-left: 28px; }
+        .texto-historia li::marker { color: #90a4ae; font-size: 0.85em; }
+        .texto-historia b { color: #0d3b66; background: #fff3c4; padding: 0 3px; border-radius: 4px; }
         .grade-sentimentos { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 10px; }
         .sentimento { background: #fff; border: 2px solid #e0e0e0; border-radius: 12px; padding: 6px; text-align: center; font-weight: bold; }
         .sentimento svg { width: 64px; height: 64px; }
@@ -118,9 +121,10 @@
     <a class="btn-voltar" href="{% url 'menu_ingles' %}">⬅ Voltar</a>
     <h1>{{ icone_modulo }} {{ nome_modulo }}</h1>
 
-    {% if modulo == 'feelings_grammar' %}
-    <!-- Quadro explicativo: aparece ANTES das questões (e pode ser revisto a qualquer momento) -->
+    {% if tem_quadro %}
+    <!-- Quadro explicativo / texto: aparece ANTES das questões (e pode ser revisto a qualquer momento) -->
     <div id="conteudo-quadro" style="display:none">
+        {% if modulo == 'feelings_grammar' %}
         <div class="quadro">
             <h2>1️⃣ How are you? — I'm + adjective</h2>
             <table>
@@ -151,28 +155,50 @@
             <h2>😊 Feelings</h2>
             <div class="grade-sentimentos" id="grade-sentimentos"></div>
         </div>
+        {% elif modulo == 'story_busy_saturday' %}
+        <div class="quadro historia">
+            <h2>📖 A Busy Saturday</h2>
+            <ol class="texto-historia">
+                <li>It's Saturday. Tom and his sister Lily get up at <b>8:00 a.m.</b></li>
+                <li>Tom is hungry, so he eats cereal and milk. Lily is thirsty. She drinks orange juice.</li>
+                <li>At <b>10:00 a.m.</b>, they go to the park with Dad. They're very excited!</li>
+                <li>Lily sees a big dog and she's scared. "Don't worry, Lily. He's friendly!" says Dad.</li>
+                <li>At <b>12:00 p.m.</b>, they eat sandwiches under a tree. They're happy.</li>
+                <li>At <b>3:00 p.m.</b>, Tom's friend Ben arrives. "How are you, Ben?" "I'm great, thanks!"</li>
+                <li>Ben makes funny faces. He's silly! Everybody laughs.</li>
+                <li>At <b>5:00 p.m.</b>, Dad looks at his watch. "You're tired, kids. Let's go home!"</li>
+                <li>At <b>9:00 p.m.</b>, Tom and Lily go to bed. What a great day!</li>
+            </ol>
+            <p class="nota">💡 Leia com atenção: as perguntas falam dos <u>horários</u>, dos <u>sentimentos</u> e de quem é quem (He's, She's, They're, You're, I'm).</p>
+        </div>
+        {% endif %}
     </div>
 
     <div class="area-jogo" id="tela-intro">
         <div id="quadro-intro"></div>
-        <button class="btn-novo-jogo" onclick="comecarQuiz()">▶ Começar as questões</button>
+        <button class="btn-novo-jogo" onclick="comecarQuiz()">▶ {% if modulo == 'story_busy_saturday' %}Já li! Começar as questões{% else %}Começar as questões{% endif %}</button>
     </div>
 
     <div class="sobreposicao" id="sobreposicao" onclick="if (event.target === this) fecharQuadro()">
         <div class="janela">
             <div id="quadro-modal"></div>
-            <button class="btn-novo-jogo" onclick="fecharQuadro()">✖ Fechar o quadro</button>
+            <button class="btn-novo-jogo" onclick="fecharQuadro()">✖ Fechar</button>
         </div>
     </div>
     {% endif %}
 
-    <div class="area-jogo" id="tela-quiz" {% if modulo == 'feelings_grammar' %}style="display:none"{% endif %}>
-        {% if modulo == 'feelings_grammar' %}
-        <button class="btn-quadro" onclick="abrirQuadro()">📋 Ver o quadro de novo</button>
+    <div class="area-jogo" id="tela-quiz" {% if tem_quadro %}style="display:none"{% endif %}>
+        {% if tem_quadro %}
+        <button class="btn-quadro" onclick="abrirQuadro()">{% if modulo == 'story_busy_saturday' %}📖 Ler o texto de novo{% else %}📋 Ver o quadro de novo{% endif %}</button>
         {% endif %}
         <div class="pergunta {% if modulo == 'vocabulario_visual' or modulo == 'casa_comodos' %}emoji-grande{% endif %}" id="pergunta-display"></div>
         <div class="grade-opcoes" id="opcoes-display"></div>
         <div id="digitar-display"></div>
+    </div>
+
+    <div class="area-jogo tela-fim" id="tela-vazio">
+        <h2>🚧 Este card ainda não tem questões</h2>
+        <p>As questões deste módulo ainda não foram cadastradas. Avise o professor! 😉</p>
     </div>
 
     <div class="area-jogo tela-fim" id="tela-fim">
@@ -181,7 +207,7 @@
         <button class="btn-novo-jogo" onclick="location.reload()">Jogar Novamente</button>
     </div>
 
-    <div class="placar" id="placar" {% if modulo == 'feelings_grammar' %}style="display:none"{% endif %}>
+    <div class="placar" id="placar" {% if tem_quadro %}style="display:none"{% endif %}>
         Questão <span id="contador-atual">1</span>/<span id="total-questoes"></span> —
         Erros: <span id="contador-erros">0</span>
     </div>
@@ -708,7 +734,7 @@
             const conteudo = document.getElementById('conteudo-quadro');
             if (!conteudo) return;
             const grade = document.getElementById('grade-sentimentos');
-            grade.innerHTML = SENTIMENTOS.map(([en, pt]) =>
+            if (grade) grade.innerHTML = SENTIMENTOS.map(([en, pt]) =>
                 '<div class="sentimento">' + rosto(en) + en + '<small>' + pt + '</small></div>').join('');
             document.getElementById('quadro-intro').innerHTML = conteudo.innerHTML;
             document.getElementById('quadro-modal').innerHTML = conteudo.innerHTML;
@@ -727,7 +753,15 @@
             if (campo && !campo.disabled) campo.focus();
         }
 
-        if (modulo === 'feelings_grammar') {
+        const TEM_QUADRO = {{ tem_quadro|yesno:"true,false" }};
+        if (totalQuestoes === 0) {
+            // Card sem questões no banco: mostra um aviso em vez de pular direto para o fim
+            ['tela-quiz', 'tela-intro', 'placar'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            document.getElementById('tela-vazio').style.display = 'block';
+        } else if (TEM_QUADRO) {
             montarQuadro();
         } else {
             carregarQuestao();
