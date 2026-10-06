@@ -26,6 +26,7 @@ urlpatterns = [
     path('matematica/multiplos-de-10/', views.multiplos_de_10_quiz, name='multiplos_de_10_quiz'),
     path('matematica/tabuada-2-a-5/', views.tabuada_2_a_5_quiz, name='tabuada_2_a_5_quiz'),
     path('matematica/tabuada-6-a-9/', views.tabuada_6_a_9_quiz, name='tabuada_6_a_9_quiz'),
+    path('matematica/trilha-da-tabuada/', views.tabuada_trilha_quiz, name='tabuada_trilha_quiz'),
     path('matematica/arme-e-efetue/', views.menu_arme_efetua, name='menu_arme_efetua'),
     path('matematica/arme-e-efetue/<str:operacao>/', views.arme_efetua_quiz, name='arme_efetua_quiz'),
     path('matematica/2ano/os-numeros/', views.os_numeros_2ano_quiz, name='os_numeros_2ano_quiz'),

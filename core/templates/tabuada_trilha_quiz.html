@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilha da Tabuada</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; text-align: center; position: relative;
+            background-color: #026873; padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(2, 104, 115, 0.45), rgba(2, 104, 115, 0.45)),
+                url('{% static "img/imagemfundo1.png" %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .btn-voltar {
+            position: relative; z-index: 3; display: inline-block; margin-bottom: 15px;
+            text-decoration: none; color: white; font-weight: bold;
+            background: rgba(1,45,50,0.8); padding: 10px 18px; border-radius: 8px;
+        }
+        h1 { position: relative; z-index: 2; color: #ffd54f; font-size: 1.8em; margin: 10px 0 8px; }
+        .subtitulo { position: relative; z-index: 2; margin: 0 0 18px; font-size: 1.05em; }
+        .area-jogo {
+            position: relative; z-index: 2; max-width: 700px; margin: 0 auto;
+            background: rgba(1, 45, 50, 0.6); border: 2px solid rgba(255,255,255,0.35);
+            padding: 26px 22px 30px; border-radius: 20px;
+        }
+
+        /* ── Trilha de vitórias-régias: o sapinho pula a cada acerto ── */
+        .trilha {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            background: linear-gradient(#4fc3f7, #0288d1); border-radius: 16px;
+            padding: 12px 8px; margin-bottom: 22px;
+        }
+        .folha {
+            width: 36px; height: 36px; border-radius: 50%; position: relative;
+            background: #66bb6a; border: 2px solid #2e7d32; display: flex;
+            align-items: center; justify-content: center; font-size: 0.75em; font-weight: bold; color: #1b5e20;
+        }
+        .folha.feita { background: #ffd54f; border-color: #f9a825; color: #6d4c00; }
+        .folha.final { background: #f48fb1; border-color: #c2185b; }
+        .sapo { font-size: 1.7em; line-height: 1; transition: transform 0.25s; }
+        .sapo.pulo { animation: pular 0.45s; }
+        @keyframes pular { 0% { transform: translateY(0); } 50% { transform: translateY(-14px) scale(1.15); } 100% { transform: translateY(0); } }
+
+        .pergunta {
+            font-size: 3em; font-weight: 800; margin-bottom: 20px; letter-spacing: 2px;
+            background: rgba(255,255,255,0.08); padding: 14px; border-radius: 14px;
+        }
+        .linha-digitar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .campo-resposta {
+            width: 180px; font-size: 2em; text-align: center; padding: 10px 12px; font-weight: bold;
+            border-radius: 12px; border: 3px solid #e8e8e0; outline: none; color: #0d2035;
+        }
+        .campo-resposta:focus { border-color: #f4b400; }
+        .campo-resposta.correto { border-color: #27ae60; background: #e8f8ec; }
+        .campo-resposta.errado { border-color: #c0392b; background: #ffecea; animation: tremer 0.3s; }
+        @keyframes tremer {
+            0% { transform: translateX(0); } 25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); } 75% { transform: translateX(-8px); } 100% { transform: translateX(0); }
+        }
+        .btn-conferir {
+            background: #f4b400; color: #2c1e00; border: none; border-radius: 12px;
+            padding: 12px 24px; font-size: 1.3em; font-weight: bold; cursor: pointer;
+        }
+        .feedback { min-height: 30px; margin-top: 14px; font-size: 1.15em; font-weight: bold; }
+        .feedback.ok { color: #9cffb5; }
+        .feedback.erro { color: #ffcdd2; }
+        .feedback .resposta-certa { color: #ffd54f; font-size: 1.2em; }
+        .placar { position: relative; z-index: 2; margin-top: 18px; font-size: 1.1em; font-weight: bold; }
+        .tela-fim { display: none; }
+        .btn-novo-jogo {
+            background: #f4b400; color: #2c1e00; padding: 14px 28px; font-size: 1.2em;
+            border: none; border-radius: 10px; cursor: pointer; margin-top: 18px; font-weight: bold;
+        }
+        @media (max-width: 500px) {
+            .pergunta { font-size: 2.3em; }
+            .folha { width: 30px; height: 30px; }
+            .area-jogo { padding: 20px 12px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <a class="btn-voltar" href="{% url 'menu_matematica' %}">⬅ Voltar</a>
+    <h1>🐸 Trilha da Tabuada</h1>
+    <p class="subtitulo">Digite o resultado e ajude o sapinho a chegar ao fim da lagoa!</p>
+
+    <div class="area-jogo" id="tela-quiz">
+        <div class="trilha" id="trilha"></div>
+        <div class="pergunta" id="pergunta-display"></div>
+        <div class="linha-digitar">
+            <input type="text" inputmode="numeric" pattern="[0-9]*" class="campo-resposta" id="campo-resposta"
+                   placeholder="?" autocomplete="off" maxlength="3">
+            <button class="btn-conferir" id="btn-conferir">✔ Conferir</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="area-jogo tela-fim" id="tela-vazio">
+        <h2>🚧 Este card ainda não tem questões</h2>
+        <p>As contas deste módulo ainda não foram cadastradas. Avise o professor! 😉</p>
+    </div>
+
+    <div class="area-jogo tela-fim" id="tela-fim">
+        <h2>🎉 O sapinho chegou ao fim da lagoa!</h2>
+        <p>Você acertou de primeira <strong id="resumo-acertos"></strong> de <span id="resumo-total"></span> contas.</p>
+        <button class="btn-novo-jogo" onclick="location.reload()">Jogar Novamente</button>
+    </div>
+
+    <div class="placar" id="placar">
+        Conta <span id="contador-atual">1</span>/<span id="total-questoes"></span> —
+        Erros: <span id="contador-erros">0</span>
+    </div>
+
+    <script>
+        const questoesData = {{ questoes_json|safe }};
+        let indiceAtual = 0;
+        let erros = 0;
+        let erroNestaQuestao = 0;
+        let acertosPerfeitos = 0;
+        const totalQuestoes = questoesData.length;
+        let tempoInicioQuestao = Date.now();
+
+        const campo = document.getElementById('campo-resposta');
+        const feedback = document.getElementById('feedback');
+        const botao = document.getElementById('btn-conferir');
+
+        document.getElementById('total-questoes').innerText = totalQuestoes;
+        document.getElementById('resumo-total').innerText = totalQuestoes;
+
+        function desenharTrilha() {
+            let html = '';
+            for (let i = 0; i < totalQuestoes; i++) {
+                const classes = 'folha' + (i < indiceAtual ? ' feita' : '') + (i === totalQuestoes - 1 ? ' final' : '');
+                const conteudo = i === indiceAtual ? '<span class="sapo" id="sapo">🐸</span>' : (i + 1);
+                html += '<div class="' + classes + '">' + conteudo + '</div>';
+            }
+            document.getElementById('trilha').innerHTML = html;
+        }
+
+        function carregarQuestao() {
+            if (indiceAtual >= totalQuestoes) { finalizarJogo(); return; }
+            const atual = questoesData[indiceAtual];
+            document.getElementById('contador-atual').innerText = indiceAtual + 1;
+            document.getElementById('pergunta-display').innerText = atual.pergunta;
+            desenharTrilha();
+            const sapo = document.getElementById('sapo');
+            if (sapo && indiceAtual > 0) sapo.classList.add('pulo');
+            erroNestaQuestao = 0;
+            campo.value = '';
+            campo.className = 'campo-resposta';
+            campo.disabled = false;
+            botao.disabled = false;
+            feedback.className = 'feedback';
+            feedback.innerHTML = '';
+            campo.focus();
+            tempoInicioQuestao = Date.now();
+        }
+
+        function conferir() {
+            if (campo.disabled) return;
+            const atual = questoesData[indiceAtual];
+            const digitado = campo.value.replace(/\D/g, '');
+            if (!digitado) {
+                feedback.className = 'feedback erro';
+                feedback.innerHTML = '✏️ Digite o resultado antes de conferir.';
+                return;
+            }
+            if (parseInt(digitado, 10) === parseInt(atual.resposta, 10)) {
+                campo.classList.remove('errado');
+                campo.classList.add('correto');
+                campo.disabled = true;
+                botao.disabled = true;
+                feedback.className = 'feedback ok';
+                feedback.innerHTML = erroNestaQuestao === 0 ? '🎉 Muito bem!' : '👍 Isso! Agora está certo.';
+                if (erroNestaQuestao === 0) acertosPerfeitos++;
+                salvarQuestao(erroNestaQuestao === 0);
+                setTimeout(() => { indiceAtual++; carregarQuestao(); }, 1000);
+            } else {
+                campo.classList.remove('errado'); void campo.offsetWidth; campo.classList.add('errado');
+                erros++; erroNestaQuestao++;
+                document.getElementById('contador-erros').innerText = erros;
+                feedback.className = 'feedback erro';
+                if (erroNestaQuestao === 1) {
+                    feedback.innerHTML = '❌ Ainda não. Pense de novo e tente outra vez!';
+                } else {
+                    feedback.innerHTML = '💡 ' + atual.pergunta.replace(' = ?', '') + ' = <span class="resposta-certa">' +
+                        atual.resposta + '</span><br>Digite o resultado para continuar.';
+                }
+                campo.select();
+            }
+        }
+
+        botao.onclick = conferir;
+        campo.addEventListener('keydown', e => { if (e.key === 'Enter') conferir(); });
+
+        function salvarQuestao(acertouSemErro) {
+            const tempo = (Date.now() - tempoInicioQuestao) / 1000;
+            fetch("{% url 'salvar_jogada' %}", {
+                method: 'POST',
+                keepalive: true,
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    operacao: 'matematica_tabuada_trilha',
+                    nivel: 'tabuada_trilha_questao',
+                    resposta_aluno: String(indiceAtual),
+                    acertou: acertouSemErro,
+                    tempo_segundos: tempo
+                })
+            }).catch(err => console.error('Erro ao salvar jogada:', err));
+        }
+
+        function finalizarJogo() {
+            document.getElementById('tela-quiz').style.display = 'none';
+            document.getElementById('tela-fim').style.display = 'block';
+            document.getElementById('resumo-acertos').innerText = acertosPerfeitos;
+        }
+
+        if (totalQuestoes === 0) {
+            document.getElementById('tela-quiz').style.display = 'none';
+            document.getElementById('placar').style.display = 'none';
+            document.getElementById('tela-vazio').style.display = 'block';
+        } else {
+            carregarQuestao();
+        }
+    </script>
+</body>
+</html>

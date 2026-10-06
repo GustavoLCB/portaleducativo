@@ -171,12 +171,27 @@
             </ol>
             <p class="nota">💡 Leia com atenção: as perguntas falam dos <u>horários</u>, dos <u>sentimentos</u> e de quem é quem (He's, She's, They're, You're, I'm).</p>
         </div>
+        {% elif modulo == 'review_4th_term' %}
+        <div class="quadro historia">
+            <h2>🌟 Review for the test — 4th term</h2>
+            <ol class="texto-historia">
+                <li>My name is Mike. I am 8 years old. This is my family.</li>
+                <li>My dad is happy when he is surfing.</li>
+                <li>My mom is happy when she is riding her bike.</li>
+                <li>My sister is happy when she is playing with her dolls.</li>
+                <li>Scooby is happy when he is running in the garden.</li>
+                <li>I am happy when I am playing soccer with my friends.</li>
+                <li>We are all very happy when we are together.</li>
+            </ol>
+            <p class="nota">💡 Remember: <u>He looks</u> / <u>She looks</u> / <u>They look</u> + feeling.
+            &nbsp;Tired → <b>yawning</b> • Happy → <b>smiling</b> • Angry → <b>frowning</b> • Having fun → <b>laughing</b> • Sad → <b>crying</b></p>
+        </div>
         {% endif %}
     </div>
 
     <div class="area-jogo" id="tela-intro">
         <div id="quadro-intro"></div>
-        <button class="btn-novo-jogo" onclick="comecarQuiz()">▶ {% if modulo == 'story_busy_saturday' %}Já li! Começar as questões{% else %}Começar as questões{% endif %}</button>
+        <button class="btn-novo-jogo" onclick="comecarQuiz()">▶ {% if modulo == 'story_busy_saturday' or modulo == 'review_4th_term' %}Já li! Começar as questões{% else %}Começar as questões{% endif %}</button>
     </div>
 
     <div class="sobreposicao" id="sobreposicao" onclick="if (event.target === this) fecharQuadro()">
@@ -189,7 +204,7 @@
 
     <div class="area-jogo" id="tela-quiz" {% if tem_quadro %}style="display:none"{% endif %}>
         {% if tem_quadro %}
-        <button class="btn-quadro" onclick="abrirQuadro()">{% if modulo == 'story_busy_saturday' %}📖 Ler o texto de novo{% else %}📋 Ver o quadro de novo{% endif %}</button>
+        <button class="btn-quadro" onclick="abrirQuadro()">{% if modulo == 'story_busy_saturday' or modulo == 'review_4th_term' %}📖 Ler o texto de novo{% else %}📋 Ver o quadro de novo{% endif %}</button>
         {% endif %}
         <div class="pergunta {% if modulo == 'vocabulario_visual' or modulo == 'casa_comodos' %}emoji-grande{% endif %}" id="pergunta-display"></div>
         <div class="grade-opcoes" id="opcoes-display"></div>

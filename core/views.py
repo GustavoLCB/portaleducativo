@@ -266,6 +266,7 @@ MODULOS_INGLES = {
     'feelings_grammar': ('ING - Feelings (Grammar)', '😊'),
     'prova_3periodo': ('ING - Prova 3º Período', '🏆'),
     'story_busy_saturday': ('ING - Story: A Busy Saturday', '📖'),
+    'review_4th_term': ('ING - Review 4th Term', '🌟'),
 }
 
 # Quantas questões cada partida de Inglês sorteia (padrão: 10).
@@ -273,6 +274,7 @@ QTD_QUESTOES_INGLES = {
     'feelings_grammar': 12,
     'prova_3periodo': 12,
     'story_busy_saturday': 12,
+    'review_4th_term': 12,
 }
 
 # Quantas dessas questões, NO MÍNIMO, são de DIGITAR (se houver no banco).
@@ -280,11 +282,12 @@ MIN_DIGITAR_INGLES = {
     'feelings_grammar': 7,
     'prova_3periodo': 7,
     'story_busy_saturday': 9,
+    'review_4th_term': 9,
 }
 
 # Cards que abrem com um quadro/texto antes das questões
 # (o conteúdo fica no template ingles_quiz.html).
-MODULOS_INGLES_COM_QUADRO = {'feelings_grammar', 'story_busy_saturday'}
+MODULOS_INGLES_COM_QUADRO = {'feelings_grammar', 'story_busy_saturday', 'review_4th_term'}
 
 
 @login_required(login_url='/')
@@ -758,6 +761,24 @@ def multiplos_de_10_quiz(request):
 
 
 @login_required(login_url='/')
+def tabuada_trilha_quiz(request):
+    """
+    Trilha da Tabuada (0 a 9): o aluno DIGITA o resultado de cada conta.
+    Baseado na folha "Vamos treinar a tabuada?" (29/09/2026). Sorteia 15
+    das 100 contas (0×0 a 9×9) do banco a cada partida.
+    """
+    todas = list(
+        BancoQuestao.objects.filter(disciplina__nome='matematica', modulo='tabuada_trilha', ano='3', ativo=True)
+        .values('enunciado', 'resposta_correta')
+    )
+    itens_jogo = [
+        {'pergunta': q['enunciado'], 'resposta': q['resposta_correta']}
+        for q in random.sample(todas, min(15, len(todas)))
+    ]
+    return render(request, 'tabuada_trilha_quiz.html', {'questoes_json': json.dumps(itens_jogo)})
+
+
+@login_required(login_url='/')
 def tabuada_2_a_5_quiz(request):
     """
     Quiz de Tabuada do 2 ao 5, mesmo padrão do 'tabuada_6_a_9_quiz' —
@@ -1143,6 +1164,8 @@ def montar_estatisticas_aluno(usuario):
                jogadas_todas.filter(operacao='matematica_tabuada_2_a_5', nivel='tabuada_2_a_5_questao'))
     _adicionar('Matemática', 'Tabuada do 6 ao 9', '✖️',
                jogadas_todas.filter(operacao='matematica_tabuada_6_a_9', nivel='tabuada_6_a_9_questao'))
+    _adicionar('Matemática', 'Trilha da Tabuada (0 a 9)', '🐸',
+               jogadas_todas.filter(operacao='matematica_tabuada_trilha', nivel='tabuada_trilha_questao'))
     _adicionar('Matemática', 'Colmeia da Multiplicação', '🐝',
                jogadas_todas.filter(operacao='matematica_colmeia', nivel='colmeia_par'))
     _adicionar('Matemática', 'Arme e Efetue', '🧮',
@@ -1289,6 +1312,7 @@ MODULOS_MATEMATICA_BANCO = {
     'multiplos_de_10': ('Multiplicação por Dezenas, Centenas e Milhares', '🔟'),
     'tabuada_2_a_5': ('Tabuada do 2 ao 5', '✖️'),
     'tabuada_6_a_9': ('Tabuada do 6 ao 9', '✖️'),
+    'tabuada_trilha': ('Trilha da Tabuada (0 a 9)', '🐸'),
     'revisao_3periodo': ('MAT - Revisão 3º Período', '📝'),
     'prova_3periodo': ('MAT - Prova 3º Período', '🏆'),
     # 'arme_efetua' fica de fora de propósito: seu 'dados_extras' guarda
