@@ -7,13 +7,15 @@ from collections import OrderedDict
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from .models import RegistroJogada, BancoQuestao
+from .folhas import MATERIAS_FOLHAS, FOLHAS
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -1571,3 +1573,34 @@ def redefinir_senha_aluno_view(request, aluno_id):
     # Se alguém tentar acessar por GET (ex: digitando a URL direto),
     # só mostra a tela de confirmação, sem trocar a senha ainda.
     return render(request, 'confirmar_redefinir_senha.html', {'aluno': aluno})
+
+
+# ---------------------------------------------------------------------------
+# FOLHAS de trabalho (PDF em branco, para estudar e imprimir)
+# ---------------------------------------------------------------------------
+PASTA_FOLHAS = Path(__file__).resolve().parent / 'folhas_pdf'
+
+
+@login_required(login_url='/')
+def folhas_lista(request, materia):
+    """Lista as folhas de trabalho de uma matéria."""
+    info = MATERIAS_FOLHAS.get(materia)
+    if not info:
+        raise Http404
+    folhas = sorted(FOLHAS.get(materia, []), key=lambda f: f['numero'])
+    contexto = dict(info)
+    contexto.update({'materia': materia, 'folhas': folhas, 'menu_url': reverse(info['menu'])})
+    return render(request, 'folhas.html', contexto)
+
+
+@login_required(login_url='/')
+def folhas_arquivo(request, materia, arquivo):
+    """Entrega o PDF (só para quem está logado e só se estiver no catálogo)."""
+    permitidos = {f['arquivo'] for f in FOLHAS.get(materia, [])}
+    caminho = PASTA_FOLHAS / materia / arquivo
+    if arquivo not in permitidos or not caminho.is_file():
+        raise Http404
+    modo = 'attachment' if request.GET.get('baixar') else 'inline'
+    resposta = FileResponse(open(caminho, 'rb'), content_type='application/pdf')
+    resposta['Content-Disposition'] = '%s; filename="%s"' % (modo, arquivo)
+    return resposta

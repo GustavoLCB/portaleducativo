@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ nome }} — Folhas</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; position: relative; background-color: {{ cor }};
+            padding: 20px;
+        }
+        .fundo-imagem {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient({{ cor }}80, {{ cor }}80),
+                url('{% static imagem %}');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+        .caixa {
+            position: relative; z-index: 2;
+            background-color: {{ caixa }};
+            border: 2px solid rgba(255,255,255,0.35);
+            border-radius: 20px; padding: 36px 30px; width: 620px; max-width: 94vw;
+            text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        h1 { color: #ffd54f; font-size: 1.6em; margin: 0 0 8px; }
+        p.intro { margin: 0 0 24px; color: #e8e8e0; font-size: 0.95em; }
+        .folha {
+            display: flex; align-items: center; gap: 14px; text-align: left;
+            background-color: #e8e8e0; color: {{ texto }};
+            border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+            border: 3px solid transparent; flex-wrap: wrap;
+        }
+        .folha .num {
+            flex: 0 0 auto; background: #f4b400; color: #3a2a00; font-weight: bold;
+            border-radius: 10px; padding: 8px 10px; text-align: center; min-width: 64px; line-height: 1.15;
+        }
+        .folha .num small { display: block; font-size: 0.68em; font-weight: 600; }
+        .folha .num span { font-size: 1.35em; }
+        .folha .topo { display: flex; align-items: center; gap: 14px; flex: 1 1 260px; min-width: 0; }
+        .folha .info { flex: 1 1 auto; min-width: 0; }
+        .folha .titulo { font-weight: bold; font-size: 1.02em; }
+        .folha .meta { font-size: 0.82em; opacity: 0.75; margin-top: 3px; }
+        .folha .acoes { display: flex; flex-direction: column; gap: 6px; flex: 0 0 auto; }
+        .folha a.btn {
+            text-decoration: none; font-weight: bold; font-size: 0.85em; text-align: center;
+            padding: 8px 12px; border-radius: 9px; background: {{ cor }}; color: #fff;
+            white-space: nowrap;
+        }
+        .folha a.btn.sec { background: transparent; color: {{ texto }}; border: 2px solid {{ cor }}; }
+        .folha a.btn:hover { filter: brightness(1.15); }
+        .vazio { background: rgba(255,255,255,0.12); border-radius: 14px; padding: 26px 18px; color: #fff; }
+        a.voltar { display: inline-block; margin-top: 20px; color: #e8e8e0; text-decoration: none; font-size: 0.9em; }
+        a.voltar:hover { text-decoration: underline; }
+        @media (max-width: 480px) {
+            .caixa { padding: 26px 16px; }
+            .folha { flex-wrap: wrap; }
+            .folha .acoes { flex-direction: row; width: 100%; }
+            .folha .acoes a.btn { flex: 1 1 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-imagem"></div>
+    <div class="caixa">
+        <h1>📄 {{ nome }} — Folhas</h1>
+        <p class="intro">Folhas de trabalho do ano, em branco, para estudar e imprimir.</p>
+
+        {% for f in folhas %}
+        <div class="folha">
+            <div class="topo">
+                <div class="num"><small>FOLHA Nº</small><span>{{ f.numero }}</span></div>
+                <div class="info">
+                    <div class="titulo">{{ f.titulo }}</div>
+                    <div class="meta">{{ f.data }} · {{ f.paginas }} página{{ f.paginas|pluralize }}</div>
+                </div>
+            </div>
+            <div class="acoes">
+                <a class="btn" href="{% url 'folhas_arquivo' materia f.arquivo %}" target="_blank" rel="noopener">👁️ Ver / Imprimir</a>
+                <a class="btn sec" href="{% url 'folhas_arquivo' materia f.arquivo %}?baixar=1">⬇️ Baixar</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="vazio">As folhas desta matéria serão colocadas aqui em breve. 📄</div>
+        {% endfor %}
+
+        <a class="voltar" href="{{ menu_url }}">⬅ Voltar para {{ nome }}</a>
+    </div>
+</body>
+</html>

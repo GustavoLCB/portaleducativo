@@ -12,6 +12,8 @@ urlpatterns = [
     path('selecionar-ano/', views.selecionar_ano_view, name='selecionar_ano'),
     path('trocar-ano/', views.trocar_ano_view, name='trocar_ano'),
     path('home/', views.home_view, name='home'),
+    path('folhas/<str:materia>/', views.folhas_lista, name='folhas'),
+    path('folhas/<str:materia>/<str:arquivo>', views.folhas_arquivo, name='folhas_arquivo'),
     path('em-breve/', views.em_breve_view, name='em_breve'),
 
     path('matematica/', views.menu_matematica, name='menu_matematica'),
