@@ -4,7 +4,8 @@ Para incluir uma folha nova:
   1. copie o PDF para  core/folhas_pdf/<materia>/  ;
   2. acrescente um dicionário na lista da matéria abaixo.
 O 'numero' é o número de ordem que aparece no canto superior direito da folha
-(as folhas são mostradas em ordem crescente desse número).
+(as folhas são mostradas em ordem crescente desse número). Folhas sem número
+podem usar 'rotulo' e 'marca' para o selo (ex.: TESTE 📝, SCIENCE 10.1).
 """
 
 MATERIAS_FOLHAS = {
@@ -30,13 +31,42 @@ MATERIAS_FOLHAS = {
 
 FOLHAS = {
     'matematica': [
+        {'numero': None, 'titulo': 'Prova do 3º período', 'data': '', 'paginas': 4,
+         'arquivo': 'prova-matematica-3periodo.pdf'},
+        {'numero': 56, 'titulo': 'Efetue e tire a prova real', 'data': '07/08/2026', 'paginas': 2,
+         'arquivo': 'matematica-folha-56-efetue-e-prova-real.pdf'},
+        {'numero': 57, 'titulo': 'Observando o numeral 5.539', 'data': '11/08/2026', 'paginas': 2,
+         'arquivo': 'matematica-folha-57-numeral-5539.pdf'},
+        {'numero': 58, 'titulo': 'Revisão – o numeral 2.435 e desafios', 'data': '14/08/2026', 'paginas': 2,
+         'arquivo': 'matematica-folha-58-revisao-numeral-2435.pdf'},
+        {'numero': 59, 'titulo': 'Trilha da multiplicação', 'data': '18/08/2026', 'paginas': 2,
+         'arquivo': 'matematica-folha-59-trilha-multiplicacao.pdf'},
+        {'numero': 60, 'titulo': 'Observando o numeral 4.392', 'data': '19/08/2026', 'paginas': 2,
+         'arquivo': 'matematica-folha-60-numeral-4392.pdf'},
+        {'numero': 63, 'titulo': 'Folha 63', 'data': '', 'paginas': 1,
+         'arquivo': 'matematica-folha-63.pdf'},
         {'numero': 73, 'titulo': 'Problemas e figuras geométricas', 'data': '23/09/2026',
          'paginas': 3, 'arquivo': 'matematica-folha-73-problemas-divisao-subtracao.pdf'},
         {'numero': 76, 'titulo': 'Vamos treinar a tabuada (trilha)', 'data': '29/09/2026',
          'paginas': 1, 'arquivo': 'matematica-folha-76-trilha-da-tabuada.pdf'},
     ],
-    'portugues': [],
+    'portugues': [
+        {'numero': None, 'titulo': 'Prova do 3º período', 'data': '', 'paginas': 4,
+         'arquivo': 'prova-portugues-3periodo.pdf'},
+        {'numero': None, 'rotulo': 'FOLHA', 'marca': '📚',
+         'titulo': 'Explorando os conhecimentos – verbos, substantivos e classes gramaticais',
+         'data': '06/08/2026', 'paginas': 6,
+         'arquivo': 'portugues-folha-verbos-substantivos-06-08.pdf'},
+    ],
     'ingles': [
+        {'numero': None, 'titulo': 'Prova do 3º período', 'data': '', 'paginas': 4,
+         'arquivo': 'prova-ingles-3periodo.pdf'},
+        {'numero': 25, 'titulo': 'Unit 4 – There is / There are (pages 64 and 65)', 'data': '03/08/2026',
+         'paginas': 2, 'arquivo': 'ingles-folha-25-there-is-there-are.pdf'},
+        {'numero': 30, 'titulo': 'Unit 4 – Prepositions of place (page 68)', 'data': '24/08/2026',
+         'paginas': 1, 'arquivo': 'ingles-folha-30-prepositions-of-place.pdf'},
+        {'numero': 30, 'titulo': 'Review for the exam – 3rd term', 'data': '09/09/2026',
+         'paginas': 3, 'arquivo': 'ingles-folha-30-review-3rd-term-exam.pdf'},
         {'numero': 33, 'titulo': 'Unit 6 – Feelings (páginas 96 e 97)', 'data': '21/09/2026',
          'paginas': 2, 'arquivo': 'ingles-folha-33-unit6-feelings.pdf'},
         {'numero': 34, 'titulo': 'Unit 6 – Grammar 1', 'data': '23/09/2026',
@@ -44,7 +74,50 @@ FOLHAS = {
         {'numero': 36, 'titulo': 'Review for the test – 4th term', 'data': '30/09/2026',
          'paginas': 4, 'arquivo': 'ingles-folha-36-review-4th-term.pdf'},
     ],
-    'ciencias': [],
-    'geografia': [],
-    'historia': [],
+    'ciencias': [
+        {'numero': None, 'titulo': 'Prova do 3º período', 'data': '', 'paginas': 4,
+         'arquivo': 'prova-ciencias-3periodo.pdf'},
+        {'numero': 8, 'titulo': 'Revisão – dispersão de sementes', 'data': '10/04/2026', 'paginas': 2,
+         'arquivo': 'ciencias-folha-08-revisao-dispersao-sementes.pdf'},
+        {'numero': 10, 'titulo': 'Definições sobre o solo', 'data': '13/05/2026', 'paginas': 1,
+         'arquivo': 'ciencias-folha-10-definicoes-solo.pdf'},
+        {'numero': 11, 'titulo': 'Revisão – o solo', 'data': '15/05/2026', 'paginas': 3,
+         'arquivo': 'ciencias-folha-11-revisao-solo.pdf'},
+        {'numero': None, 'rotulo': 'TESTE', 'marca': '📝', 'titulo': 'Teste – a importância do solo humoso',
+         'data': '20/05/2026', 'paginas': 2, 'arquivo': 'ciencias-teste-solo-humoso-20-05.pdf'},
+        {'numero': 12, 'titulo': 'Petróleo – De onde vem? Para onde vai?', 'data': '27/05/2026', 'paginas': 2,
+         'arquivo': 'ciencias-folha-12-petroleo.pdf'},
+        {'numero': 13, 'titulo': 'Tipos de solo', 'data': '29/05/2026', 'paginas': 2,
+         'arquivo': 'ciencias-folha-13-tipos-de-solo.pdf'},
+        {'numero': 14, 'titulo': 'Mapa mental – degradação do solo', 'data': '12/06/2026', 'paginas': 1,
+         'arquivo': 'ciencias-folha-14-mapa-mental-degradacao-solo.pdf'},
+        {'numero': 16, 'titulo': 'Revisão – o solo e a vida na Terra', 'data': '17/06/2026', 'paginas': 4,
+         'arquivo': 'ciencias-folha-16-revisao-solo-e-vida.pdf'},
+        {'numero': 18, 'titulo': 'Modo de vida dos animais', 'data': '31/07/2026', 'paginas': 1,
+         'arquivo': 'ciencias-folha-18-modo-de-vida-animais.pdf'},
+        {'numero': 20, 'titulo': 'Revisão – classificação dos animais', 'data': '14/08/2026', 'paginas': 3,
+         'arquivo': 'ciencias-folha-20-revisao-animais.pdf'},
+        {'numero': None, 'rotulo': 'SCIENCE', 'marca': '10.1', 'titulo': 'Science 10.1 – Mammals and Birds',
+         'data': '', 'paginas': 1, 'arquivo': 'science-10-1-mammals-and-birds.pdf'},
+        {'numero': None, 'rotulo': 'SCIENCE', 'marca': '10.2', 'titulo': 'Science 10.2 – Fish',
+         'data': '', 'paginas': 1, 'arquivo': 'science-10-2-fish.pdf'},
+        {'numero': None, 'rotulo': 'SCIENCE', 'marca': '10.3', 'titulo': 'Science 10.3 – Reptiles and Amphibians',
+         'data': '', 'paginas': 1, 'arquivo': 'science-10-3-reptiles-and-amphibians.pdf'},
+        {'numero': None, 'rotulo': 'TESTE', 'marca': '📝', 'titulo': 'Science Evaluation 2',
+         'data': '', 'paginas': 1, 'arquivo': 'science-evaluation-2.pdf'},
+    ],
+    'geografia': [
+        {'numero': None, 'titulo': 'Prova do 3º período', 'data': '', 'paginas': 4,
+         'arquivo': 'prova-geografia-3periodo.pdf'},
+        {'numero': 15, 'titulo': 'O campo e a cidade trazendo desenvolvimento para o país', 'data': '',
+         'paginas': 2, 'arquivo': 'geografia-folha-15-campo-e-cidade.pdf'},
+    ],
+    'historia': [
+        {'numero': None, 'titulo': 'Prova do 3º período', 'data': '', 'paginas': 4,
+         'arquivo': 'prova-historia-3periodo.pdf'},
+        {'numero': 24, 'titulo': 'Investigando as origens da cultura brasileira', 'data': '04/08/2026',
+         'paginas': 1, 'arquivo': 'historia-folha-24-origens-cultura-brasileira.pdf'},
+        {'numero': 25, 'titulo': 'Revisão de História – cultura brasileira', 'data': '06/08/2026',
+         'paginas': 2, 'arquivo': 'historia-folha-25-revisao-cultura.pdf'},
+    ],
 }

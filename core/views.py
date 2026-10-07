@@ -1587,7 +1587,7 @@ def folhas_lista(request, materia):
     info = MATERIAS_FOLHAS.get(materia)
     if not info:
         raise Http404
-    folhas = sorted(FOLHAS.get(materia, []), key=lambda f: f['numero'])
+    folhas = sorted(FOLHAS.get(materia, []), key=lambda f: (f['numero'] is None, f['numero'] or 0, f['titulo']))
     contexto = dict(info)
     contexto.update({'materia': materia, 'folhas': folhas, 'menu_url': reverse(info['menu'])})
     return render(request, 'folhas.html', contexto)

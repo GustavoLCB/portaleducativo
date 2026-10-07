@@ -74,10 +74,10 @@
         {% for f in folhas %}
         <div class="folha">
             <div class="topo">
-                <div class="num"><small>FOLHA Nº</small><span>{{ f.numero }}</span></div>
+                <div class="num">{% if f.numero %}<small>FOLHA Nº</small><span>{{ f.numero }}</span>{% elif f.rotulo %}<small>{{ f.rotulo }}</small><span>{{ f.marca }}</span>{% else %}<small>PROVA</small><span>📝</span>{% endif %}</div>
                 <div class="info">
                     <div class="titulo">{{ f.titulo }}</div>
-                    <div class="meta">{{ f.data }} · {{ f.paginas }} página{{ f.paginas|pluralize }}</div>
+                    <div class="meta">{% if f.data %}{{ f.data }} · {% endif %}{{ f.paginas }} página{{ f.paginas|pluralize }}</div>
                 </div>
             </div>
             <div class="acoes">
